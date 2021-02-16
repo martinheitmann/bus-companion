@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">skyss-companion</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Shared Preferences keys -->
+    <string name="shared_prefs_app_file">SC_SHARED_PREFS_FILE</string>
+    <string name="shared_prefs_auto_sync">AUTO_SYNC_VALUE</string>
+    <string name="shared_prefs_last_synced">LAST_SYNCED_VALUE</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+</resources>

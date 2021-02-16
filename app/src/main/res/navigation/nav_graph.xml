@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/tabsContainerFragment">
+
+    <fragment
+        android:id="@+id/tabsContainerFragment"
+        android:name="com.app.skyss_companion.view.TabsContainerFragment"
+        android:label="TabsContainerFragment" >
+        <action
+            android:id="@+id/action_tabsContainerFragment_to_stopPlaceFragment"
+            app:destination="@id/stopPlaceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stopPlaceFragment"
+        android:name="com.app.skyss_companion.view.stop_place.StopPlaceFragment"
+        android:label="stop_place_fragment"
+        tools:layout="@layout/stop_place_fragment" />
+</navigation>
