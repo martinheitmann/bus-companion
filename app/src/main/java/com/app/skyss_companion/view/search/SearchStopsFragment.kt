@@ -56,8 +56,8 @@ class SearchStopsFragment : Fragment() {
         })
 
         viewModel.isSyncing.observe(viewLifecycleOwner, {
-            if(it) binding.searchStopsSyncing.visibility = View.VISIBLE
-            else binding.searchStopsSyncing.visibility = View.GONE
+            if(it) binding.searchStopsCardviewLoading.visibility = View.VISIBLE
+            else binding.searchStopsCardviewLoading.visibility = View.GONE
         })
 
         binding.searchStopsEdittext.addTextChangedListener(object: TextWatcher {

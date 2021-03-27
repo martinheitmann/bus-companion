@@ -3,6 +3,7 @@ package com.app.skyss_companion.workers
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.hilt.work.HiltWorker
@@ -14,7 +15,13 @@ import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.widget.FavoriteWidgetService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
+@Deprecated("Not in use")
 @HiltWorker
 class WidgetUpdateWorker @AssistedInject constructor(
     @Assisted val appContext: Context,
@@ -23,7 +30,11 @@ class WidgetUpdateWorker @AssistedInject constructor(
     private val sharedPrefs: AppSharedPrefs
 ) : CoroutineWorker(appContext, workerParams) {
     val TAG = "WidgetUpdateWorker"
-
+    /**
+     *
+     * CLASS NOT IN USE
+     *
+     */
     override suspend fun doWork(): Result {
         try {
             Log.d(TAG, "UpdateService started")
@@ -43,6 +54,15 @@ class WidgetUpdateWorker @AssistedInject constructor(
                 }
             }
 
+            val pattern = "dd.MM.yyyy HH:mm:ss"
+            val simpleDateFormat: SimpleDateFormat = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                SimpleDateFormat(pattern, appContext.resources.configuration.locales.get(0))
+            } else {
+                SimpleDateFormat(pattern, appContext.resources.configuration.locale)
+            }
+            val date: String = simpleDateFormat.format(Date())
+            Log.d(TAG, "Current date: $date")
+
             val intent = Intent(appContext, FavoriteWidgetService::class.java).apply {
                 // Add the app widget ID to the intent extras.
                 putExtra("STOP_IDENTIFIER", stopIdentifier ?: "")
@@ -52,6 +72,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
             val rv = RemoteViews(appContext.packageName, R.layout.widget_view_favorited_stopgroup).apply {
                 setRemoteAdapter(R.id.widget_stopgroup_listview, intent)
                 setEmptyView(R.id.widget_stopgroup_listview, R.id.widget_stopgroup_tv_empty)
+                setTextViewText(R.id.widget_stopgroup_tv_updated, "Sist oppdatert: $date")
                 if(stopGroupName != null){
                     setTextViewText(R.id.widget_stopgroup_tv_title, stopGroupName)
                 }

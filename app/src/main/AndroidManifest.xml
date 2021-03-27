@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app.skyss_companion">
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Skysscompanion">
-        <receiver android:name=".widget.FavoritesListWidgetProvider"
-            android:permission="android.permission.BIND_REMOTEVIEWS" >
+
+        <receiver
+            android:name=".widget.FavoritesListWidgetProvider"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -28,8 +30,8 @@
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove"
-            android:exported="false" />
+            android:exported="false"
+            tools:node="remove" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -38,19 +40,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".widget.FavoritesWidgetConfigActivity">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
-        <service android:name=".widget.FavoriteWidgetService"
+        <service
+            android:name=".widget.FavoriteWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <service android:name=".widget.FavoriteWidgetUpdateService"
+        <service
+            android:name=".widget.FavoriteWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
     </application>
-
 </manifest>

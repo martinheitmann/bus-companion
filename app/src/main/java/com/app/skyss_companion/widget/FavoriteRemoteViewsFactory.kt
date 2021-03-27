@@ -10,6 +10,10 @@ import android.widget.RemoteViewsService
 import android.widget.TextView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.misc.StopPlaceUtils
+import com.app.skyss_companion.model.EnabledWidget
+import com.app.skyss_companion.model.StopGroup
+import com.app.skyss_companion.prefs.AppSharedPrefs
+import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
 import com.app.skyss_companion.view.stop_place.StopPlaceListDivider
 import com.app.skyss_companion.view.stop_place.StopPlaceListEntry
@@ -21,191 +25,78 @@ import java.io.IOException
 class FavoriteRemoteViewsFactory(
     intent: Intent,
     val context: Context,
-    val stopPlaceRepository: StopPlaceRepository
+    val stopPlaceRepository: StopPlaceRepository,
+    val enabledWidgetRepository: EnabledWidgetRepository,
+    val appSharedPrefs: AppSharedPrefs
     ) : RemoteViewsService.RemoteViewsFactory {
 
     val TAG = "FavoriteRemoteVF"
 
     var listItems: List<StopPlaceListItem> = listOf()
+    var blocks: Int = 3
+    var prefsBlocks: Int? = 3
     var stopGroupId: String? = intent.extras?.get("STOP_IDENTIFIER") as String
+    var widgetId: Int = intent.extras?.get("APPWIDGET_ID") as Int? ?: -1
 
-    override fun onCreate() {
-        // In onCreate() you setup any connections / cursors to your data source. Heavy lifting,
-        // for example downloading or creating content etc, should be deferred to onDataSetChanged()
-        // or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
-    }
+    override fun onCreate() { Log.d(TAG, "$TAG onCreate") }
+
     override fun onDataSetChanged() {
         Log.d(TAG, "onDataSetChanged triggered")
-        runBlocking {
-            val mStopGroupId = stopGroupId
-            if(mStopGroupId != null){
-                Log.d(TAG, "using stop group id $stopGroupId")
-                val stopPlace = stopPlaceRepository.fetchStopPlace(mStopGroupId)
-                if(stopPlace != null){
-                    val stops = stopPlace.stops
-                    if(stops != null){
-                        var mListItems = StopPlaceUtils.createListData(stops)
-                        listItems = mListItems
-                    }
+        val mStopGroupId = stopGroupId
+        val widgetConfig = fetchWidgetConfigBlocking(widgetId) //Blocking call!
+        blocks = WidgetUtils.limitDisplayedItems(widgetConfig?.maxWidth ?: 250, widgetConfig?.minWidth ?: 180)
+        prefsBlocks = fetchCellNumberBlocking()
+        Log.d(TAG, "prefsblock number fetched: $prefsBlocks")
+        if(mStopGroupId != null){
+            Log.d(TAG, "using stop group id $stopGroupId")
+            val stopPlace = fetchStopGroupBlocking(mStopGroupId) //Blocking call!
+            if(stopPlace != null){
+                val stops = stopPlace.stops
+                if(stops != null){
+                    val mListItems = StopPlaceUtils.createListData(stops)
+                    listItems = mListItems
                 }
             }
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroy() { }
 
-    }
-
-    override fun getCount(): Int {
-        return listItems.size
-    }
+    override fun getCount(): Int { return listItems.size }
 
     override fun getViewAt(position: Int): RemoteViews {
+        //Log.d(TAG, "getViewAt")
         return when(listItems[position]){
             is StopPlaceListDivider -> {
-                Log.d(TAG, "getViewAt triggered for view with pos $position, created list divider")
+                //Log.d(TAG, "getViewAt triggered for view with pos $position, created list divider")
                 RemoteViews(context.packageName, R.layout.widget_view_stopgroup_divider).apply {
                     setTextViewText(R.id.widget_stop_place_stop_name, (listItems[position] as StopPlaceListDivider).text)
                 }
             }
             is StopPlaceListEntry -> {
                 val item = listItems[position] as StopPlaceListEntry
-                Log.d(TAG, "getViewAt triggered for view with pos $position and item linenumber ${item.lineNumber} with ${item.displayTimes.size} items")
-                //createTimeEntryRemoteView(context, item)
-                createTimeEntryRemoteView2(context, item)
-                //return createSimpleTestView(context, listItems[position] as StopPlaceListEntry)
+                //Log.d(TAG, "getViewAt triggered for view with pos $position and item linenumber ${item.lineNumber} with ${item.displayTimes.size} items")
+                createTimeEntryRemoteView(context, item)
             }
             else -> throw IOException("No matching clause")
         }
     }
 
-    override fun getLoadingView(): RemoteViews? {
-        return null
-    }
+    override fun getLoadingView(): RemoteViews? { return null }
 
-    override fun getViewTypeCount(): Int {
-        return 2
-    }
+    override fun getViewTypeCount(): Int { return 2 }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long { return position.toLong() }
 
-    override fun hasStableIds(): Boolean {
-        return true
-    }
+    override fun hasStableIds(): Boolean { return true }
 
-    private fun createSimpleTestView(context: Context, data: StopPlaceListEntry) : RemoteViews {
-        return RemoteViews(context.packageName, R.layout.widget_view_stopgroup_simple_1).apply {
-            setTextViewText(R.id.textView4_test1, data.lineNumber)
-            setTextViewText(R.id.textView6_test2, data.directionName)
-            setViewVisibility(R.id.textView11_shouldbeinvisible, View.GONE)
-            //setTextViewText(R.id.textView4_test3, "Test1")
-            //setTextViewText(R.id.textView6_test4, "Test2")
-        }
-    }
-
+    /**
+     * Creates a list entry for the remoteview containing stopgroup details.
+     */
     private fun createTimeEntryRemoteView(context: Context, data: StopPlaceListEntry) : RemoteViews {
-
-        return RemoteViews(context.packageName, R.layout.widget_view_stopgroup_item).apply {
-            Log.d(TAG, "createTimeEntryRemoteView called with item $data")
-            setTextViewText(R.id.widget_stop_place_textview_line_number, data.lineNumber)
-            setTextViewText(R.id.widget_stop_place_textview_line_name, data.directionName)
-            if(data.displayTimes.isEmpty()){
-                val text = "Ingen flere avganger i dag"
-                setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_empty, text)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.VISIBLE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_1, View.GONE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_2, View.GONE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_3, View.GONE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_4, View.GONE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_5, View.GONE)
-                setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.GONE)
-            } else {
-                val items = data.displayTimes.take(6)
-                if(items.size == 1){
-                    val viewText1 = items[0]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_2, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_3, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_4, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_5, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.INVISIBLE)
-                }
-                if(items.size == 2){
-                    val viewText1 = items[0]
-                    val viewText2 = items[1]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_2, viewText2)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_3, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_4, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_5, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.INVISIBLE)
-                }
-                if(items.size == 3){
-                    val viewText1 = items[0]
-                    val viewText2 = items[1]
-                    val viewText3 = items[2]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_2, viewText2)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_3, viewText3)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_4, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_5, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.INVISIBLE)
-                }
-                if(items.size == 4){
-                    val viewText1 = items[0]
-                    val viewText2 = items[1]
-                    val viewText3 = items[2]
-                    val viewText4 = items[3]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_2, viewText2)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_3, viewText3)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_4, viewText4)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_5, View.INVISIBLE)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.INVISIBLE)
-                }
-                if(items.size == 5){
-                    val viewText1 = items[0]
-                    val viewText2 = items[1]
-                    val viewText3 = items[2]
-                    val viewText4 = items[3]
-                    val viewText5 = items[4]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_2, viewText2)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_3, viewText3)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_4, viewText4)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_5, viewText5)
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_6, View.INVISIBLE)
-                }
-                if(items.size == 6){
-                    val viewText1 = items[0]
-                    val viewText2 = items[1]
-                    val viewText3 = items[2]
-                    val viewText4 = items[3]
-                    val viewText5 = items[4]
-                    val viewText6 = items[5]
-                    setViewVisibility(R.id.widget_stop_place_linearlayout_time_tv_empty, View.GONE)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_1, viewText1)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_2, viewText2)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_3, viewText3)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_4, viewText4)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_5, viewText5)
-                    setTextViewText(R.id.widget_stop_place_linearlayout_time_tv_6, viewText6)
-                }
-            }
-        }
-    }
-
-    private fun createTimeEntryRemoteView2(context: Context, data: StopPlaceListEntry) : RemoteViews {
         return RemoteViews(context.packageName, R.layout.widget_view_stopgroup_item2).apply {
             removeAllViews(R.id.widget_stop_place2_linearlayout_time_container)
-            Log.d(TAG, "createTimeEntryRemoteView called with item $data")
+            //Log.d(TAG, "createTimeEntryRemoteView called with item $data")
             setTextViewText(R.id.widget_stop_place2_textview_line_number, data.lineNumber)
             setTextViewText(R.id.widget_stop_place2_textview_line_name, data.directionName)
             if(data.displayTimes.isEmpty()){
@@ -214,9 +105,10 @@ class FavoriteRemoteViewsFactory(
                 textView.setTextViewText(R.id.remoteview_element_textview, text)
                 addView(R.id.widget_stop_place2_linearlayout_time_container, textView)
             } else {
-                val items = data.displayTimes.take(6)
+                Log.d(TAG, "Rendering ${prefsBlocks ?: 3} items")
+                val items = data.displayTimes.take(prefsBlocks ?: 3)
                 for(i in items.indices){
-                    Log.d(TAG, "setting textview text to ${items[i]}")
+                    //Log.d(TAG, "setting textview text to ${items[i]}")
                     val rTextView = RemoteViews(context.packageName, R.layout.remoteview_textview)
                     rTextView.setTextViewText(R.id.remoteview_element_textview, items[i])
                     if(data.isEmphasized[i]){
@@ -225,6 +117,52 @@ class FavoriteRemoteViewsFactory(
                     addView(R.id.widget_stop_place2_linearlayout_time_container, rTextView)
                 }
             }
+        }
+    }
+
+    /**
+     * Fetches the relevant widgetId and corresponding name.
+     * Queries sharedpreferences for data.
+     */
+    private fun fetchWidgetConfigBlocking(widgetId: Int): EnabledWidget? {
+        var enabledWidget: EnabledWidget?
+        runBlocking {
+            enabledWidget = enabledWidgetRepository.getEnabledWidget(widgetId)
+        }
+        if(enabledWidget != null) return enabledWidget
+        return null
+    }
+
+    /**
+     * Fecthes a stopgroup.
+     * @param stopGroupId The id of the stopgroup to fetch.
+     */
+    private fun fetchStopGroupBlocking(stopGroupId: String): StopGroup? {
+        var stopGroup: StopGroup?
+        runBlocking {
+            stopGroup = stopPlaceRepository.fetchStopPlace(stopGroupId)
+        }
+        if(stopGroup != null) return stopGroup
+        return null
+    }
+
+    /**
+     * Fetches the number of blocks to display in a row entry.
+     * Queries sharedpreferences for data, or defaults to 3.
+     */
+    private fun fetchCellNumberBlocking(): Int? {
+        try {
+            var cellNumber: String?
+            runBlocking {
+                cellNumber = appSharedPrefs.readWidgetTimeItemsLimit()
+            }
+            if(cellNumber != null) {
+                return cellNumber?.toInt()
+            }
+            return 3
+        } catch (exception: Throwable){
+            Log.d(TAG, exception.stackTraceToString())
+            return 3
         }
     }
 }

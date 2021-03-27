@@ -45,4 +45,18 @@ class EnabledWidgetRepository @Inject constructor(private val enabledWidgetDao: 
         return enabledWidgetDao.delete(widgetId)
     }
 
+    @WorkerThread
+    suspend fun updateEnabledWidgetConfig(widgetId: Int, minW: Int, minH: Int, maxW: Int, maxH: Int){
+        val enabledWidget = enabledWidgetDao.getOne(widgetId)
+        if(enabledWidget != null){
+            val enabledWidgetWithNewConf = enabledWidget.copy(
+                maxWidth = maxW,
+                maxHeight = maxH,
+                minWidth = minW,
+                minHeight = minH
+            )
+            enabledWidgetDao.updateEnabledWidget(enabledWidgetWithNewConf)
+        }
+    }
+
 }

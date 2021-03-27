@@ -26,7 +26,6 @@ class SearchStopsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
-    val context = application.applicationContext
     val TAG = "SearchStopsViewModel"
     var stopSearchResults: MutableLiveData<List<StopGroup>> = MutableLiveData()
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -63,7 +62,7 @@ class SearchStopsViewModel @Inject constructor(
             OneTimeWorkRequestBuilder<StopGroupSyncWorker>()
                 .build()
 
-        WorkManager.getInstance(context).enqueue(syncDataRequest)
+        WorkManager.getInstance(getApplication()).enqueue(syncDataRequest)
     }
 
     fun cancelJob(){

@@ -10,7 +10,7 @@ interface EnabledWidgetDao {
     fun getAll(): Flow<List<EnabledWidget>>
 
     @Query("SELECT * FROM enabledwidget WHERE widgetId = :appWidgetId")
-    fun getOne(appWidgetId: Int): EnabledWidget
+    fun getOne(appWidgetId: Int): EnabledWidget?
 
     @Query("SELECT EXISTS(SELECT * FROM enabledwidget WHERE identifier = :identifier)")
     fun exists(identifier: String) : Flow<Boolean>
@@ -26,6 +26,9 @@ interface EnabledWidgetDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(enabledWidget: List<EnabledWidget>)
+
+    @Update
+    fun updateEnabledWidget(enabledWidget: EnabledWidget)
 
     @Delete
     fun delete(enabledWidget: EnabledWidget)

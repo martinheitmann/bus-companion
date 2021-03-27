@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/widget_header">
+        <ListPreference
+            android:defaultValue="false"
+            android:dependency="widget_time_items_limit"
+            android:entries="@array/limit_items_entries"
+            android:entryValues="@array/limit_items_values"
+            android:icon="@drawable/ic_baseline_sort_24"
+            android:key="widget_time_items_limit"
+            android:summary="Begrens antall tidspunkter som vises for hver linje i widget-elementet på hjem-skjermen. Reduser antallet dersom gjenstander ikke vises korrekt."
+            android:title="Antall tidspunkter for linjer" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

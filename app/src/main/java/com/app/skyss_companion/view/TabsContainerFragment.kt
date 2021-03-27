@@ -41,8 +41,15 @@ class TabsContainerFragment : Fragment() {
                     tab.text = "Søk"
                     tab.setIcon(R.drawable.ic_baseline_search_24)
                 }
+                2 -> {
+                    tab.text = "Instillinger"
+                    tab.setIcon(R.drawable.ic_baseline_settings_24)
+                }
             }
             viewPager.currentItem = position
         }.attach()
+
+        // Ensures that the app opens at the first tab
+        viewPager.setCurrentItem(0, false)
     }
 }
