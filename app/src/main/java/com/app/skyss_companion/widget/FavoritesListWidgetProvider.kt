@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.work.*
+import com.app.skyss_companion.workers.RemoveWidgetsWorker
 import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
 import com.app.skyss_companion.workers.WidgetUpdateWorker
 
@@ -26,6 +27,7 @@ class FavoritesListWidgetProvider : AppWidgetProvider() {
         if(intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE){
             val appWidgetId = intent.extras?.get(AppWidgetManager.EXTRA_APPWIDGET_ID) as Int?
             if(appWidgetId != null && context != null){
+                Log.d(TAG, "Updating widget with id $appWidgetId")
                 updateAppWidget(context, appWidgetId)
             }
         }
@@ -36,7 +38,7 @@ class FavoritesListWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        Log.d(TAG, "onUpdate called for widgets with ids: $appWidgetIds")
+        Log.d(TAG, "onUpdate called for widgets with ids: ${appWidgetIds.contentToString()}")
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetId, refresh = true)
@@ -57,9 +59,11 @@ class FavoritesListWidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
+        Log.d(TAG, "onDeleted called")
         if(appWidgetIds != null && context != null) {
+            Log.d(TAG, "onDeleted appWidget ids received: ${appWidgetIds.contentToString()}")
             val data = workDataOf("appWidgetIds" to appWidgetIds)
-            val clearWidgetsRequest: WorkRequest = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
+            val clearWidgetsRequest: WorkRequest = OneTimeWorkRequestBuilder<RemoveWidgetsWorker>()
                 .setInputData(data)
                 .build()
 

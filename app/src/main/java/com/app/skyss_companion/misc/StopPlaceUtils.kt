@@ -12,17 +12,17 @@ class StopPlaceUtils {
         val TAG = "StopPlaceUtils"
 
         fun createListData(stops: List<Stop>) : List<StopPlaceListItem> {
-            Log.d(TAG, "${stops.size} stops passed to list generator")
+            //Log.d(TAG, "${stops.size} stops passed to list generator")
             val items = mutableListOf<StopPlaceListItem>()
             stops.forEach { stop ->
-                Log.d(TAG, "Stop with name ${stop.description} contained  ${stop.routeDirections?.size ?: "null"} routes")
+                //Log.d(TAG, "Stop with name ${stop.description} contained  ${stop.routeDirections?.size ?: "null"} routes")
                 val header = StopPlaceListDivider(stop.description ?: "Ingen beskrivelse")
                 items.add(header)
                 stop.routeDirections?.forEach { rd ->
                     val displayTimes = mutableListOf<String>()
                     val directionName = rd.directionName
                     val passingTimes = rd.passingTimes
-                    Log.d(TAG, "Found ${passingTimes?.size} passing times for route with name '${directionName}'")
+                    //Log.d(TAG, "Found ${passingTimes?.size} passing times for route with name '${directionName}'")
                     passingTimes?.forEach { pt ->
                         val display = pt.displayTime
                         if(display != null){

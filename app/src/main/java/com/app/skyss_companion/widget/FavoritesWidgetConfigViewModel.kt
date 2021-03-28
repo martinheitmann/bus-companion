@@ -50,6 +50,7 @@ class FavoritesWidgetConfigViewModel @Inject constructor(
 
     fun persistEnabledWidget(widgetId: Int, identifier: String, onSuccess: (Int) -> Unit){
         viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "Persisting widget with id: $widgetId")
             if(widgetId != 0 && identifier.isNotEmpty()){
                 val ew = EnabledWidget(widgetId = widgetId, identifier = identifier)
                 enabledWidgetRepository.insertEnabledWidget(ew)
