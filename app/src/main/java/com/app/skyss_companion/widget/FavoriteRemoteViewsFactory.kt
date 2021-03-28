@@ -99,6 +99,7 @@ class FavoriteRemoteViewsFactory(
             //Log.d(TAG, "createTimeEntryRemoteView called with item $data")
             setTextViewText(R.id.widget_stop_place2_textview_line_number, data.lineNumber)
             setTextViewText(R.id.widget_stop_place2_textview_line_name, data.directionName)
+            // If there aren't any more departures left, display only a string
             if(data.displayTimes.isEmpty()){
                 val text = "Ingen flere avganger i dag"
                 val textView = RemoteViews(context.packageName, R.layout.remoteview_textview)
@@ -106,6 +107,7 @@ class FavoriteRemoteViewsFactory(
                 addView(R.id.widget_stop_place2_linearlayout_time_container, textView)
             } else {
                 Log.d(TAG, "Rendering ${prefsBlocks ?: 3} items")
+                // Display either the default number of departures or take from config if defined
                 val items = data.displayTimes.take(prefsBlocks ?: 3)
                 for(i in items.indices){
                     //Log.d(TAG, "setting textview text to ${items[i]}")

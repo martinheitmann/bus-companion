@@ -50,6 +50,7 @@ class FavoriteWidgetUpdateService : JobIntentService() {
                         var widthBlocks: Int? = null
 
                         val pattern = "dd.MM.yyyy HH:mm:ss"
+                        // SimpleDateFormat behaves differently on Oreo builds and above, check version
                         val simpleDateFormat: SimpleDateFormat = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                             SimpleDateFormat(
                                 pattern, applicationContext.resources.configuration.locales.get(
@@ -88,11 +89,10 @@ class FavoriteWidgetUpdateService : JobIntentService() {
 
                         val pendingSync = PendingIntent.getBroadcast(
                             applicationContext,
-                            0,
+                            appWidgetId, // IMPORTANT: Use a unique request code!
                             intentSync,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                        ) //Need to specify a proper flag for the intent. Or else the intent will become deleted.
-
+                            PendingIntent.FLAG_ONE_SHOT
+                        )
 
                         // Instantiate the RemoteViews object for the app widget layout.
                         val rv = RemoteViews(
