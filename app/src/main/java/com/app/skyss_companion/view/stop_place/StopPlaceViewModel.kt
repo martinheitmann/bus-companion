@@ -21,13 +21,11 @@ class StopPlaceViewModel @Inject constructor(
     application: Application,
     private val stopPlaceRepository: StopPlaceRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
     val TAG = "StopPlaceViewModel"
     val stopGroup: MutableLiveData<StopGroup> = MutableLiveData()
-    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
     val isFavorited: MutableLiveData<Boolean> = MutableLiveData()
-    //var currentDate = LocalDateTime.parse("2020-12-12T16:15:00.000Z")
 
     fun checkIsFavorited(identifier: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -62,6 +60,10 @@ class StopPlaceViewModel @Inject constructor(
                 isLoading.postValue(false)
             }
         }
+    }
+
+    fun getLineCodes(stopGroup: StopGroup): List<String> {
+        return stopGroup.lineCodes ?: emptyList()
     }
 
 

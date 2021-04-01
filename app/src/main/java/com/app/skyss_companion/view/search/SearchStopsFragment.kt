@@ -66,7 +66,7 @@ class SearchStopsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(s != null){
+                if(s != null && s.isNotBlank()){
                     val sb: StringBuilder = StringBuilder(s.length)
                     sb.append(s)
                     viewModel.filterResults(sb.toString())

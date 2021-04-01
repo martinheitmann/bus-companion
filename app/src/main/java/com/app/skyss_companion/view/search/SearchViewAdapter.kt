@@ -19,8 +19,7 @@ class SearchViewAdapter(private val onItemTapped: (String) -> Unit) : RecyclerVi
         var layout: View = view.findViewById(R.id.search_stops_list_element_framelayout)
         var title: TextView = view.findViewById(R.id.list_element_title)
         var busImage: ImageView = view.findViewById(R.id.imageview_bus)
-        var railImage: ImageView = view.findViewById(R.id.imageview_rail
-        )
+        var railImage: ImageView = view.findViewById(R.id.imageview_rail)
         init {
             // Define click listener for the ViewHolder's View.
         }

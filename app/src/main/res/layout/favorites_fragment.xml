@@ -19,7 +19,8 @@
         android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,14 +34,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="left|center_vertical"
                 android:text="Favoritter"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="clip_vertical|right"
+            android:gravity="clip_vertical|end"
             android:orientation="horizontal">
 
             <ImageButton
@@ -48,7 +50,8 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_refresh_24" />
+                android:src="@drawable/ic_baseline_refresh_24"
+                android:contentDescription="TODO" />
         </LinearLayout>
 
     </LinearLayout>

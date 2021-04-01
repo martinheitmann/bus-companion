@@ -17,6 +17,8 @@ class FavoritesWidgetConfigAdapter(private val onItemTapped: (String) -> Unit) :
     open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var card: View = view.findViewById(R.id.widget_config_list_item_card)
         var title: TextView = view.findViewById(R.id.widget_config_list_item_text)
+        var busImage: ImageView = view.findViewById(R.id.imageview_bus)
+        var railImage: ImageView = view.findViewById(R.id.imageview_rail)
         init {
             // Define click listener for the ViewHolder's View.
         }
@@ -33,6 +35,16 @@ class FavoritesWidgetConfigAdapter(private val onItemTapped: (String) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = dataSet[position].description
         holder.card.setOnClickListener { onItemTapped(dataSet[position].identifier) }
+        if(dataSet[position].serviceModes?.contains("Bus") == true){
+            holder.busImage.visibility = View.VISIBLE
+        } else {
+            holder.busImage.visibility = View.GONE
+        }
+        if(dataSet[position].serviceModes?.contains("Light rail") == true){
+            holder.railImage.visibility = View.VISIBLE
+        } else {
+            holder.railImage.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
