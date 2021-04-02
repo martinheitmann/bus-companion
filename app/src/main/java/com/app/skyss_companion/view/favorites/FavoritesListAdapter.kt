@@ -55,7 +55,7 @@ class FavoritesListAdapter(private val onItemTapped: (String) -> Unit) : Recycle
 
     fun setData(newItems: List<StopGroup>){
         if(newItems.isEmpty()){
-            dataSet = newItems
+            dataSet = emptyList()
             notifyDataSetChanged()
         } else {
             val diffResult = DiffUtil.calculateDiff(SearchStopsDiffUtilCallback(this.dataSet, newItems))

@@ -10,7 +10,6 @@ import com.app.skyss_companion.model.StopGroup
 import com.app.skyss_companion.prefs.AppSharedPrefs
 import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.workers.StopGroupSyncWorker
-import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,8 +21,6 @@ import javax.inject.Inject
 class SearchStopsViewModel @Inject constructor(
     application: Application,
     private val stopsGroupRepository: StopGroupRepository,
-    private val sharedPrefs: AppSharedPrefs,
-    private val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
     val TAG = "SearchStopsViewModel"
@@ -45,7 +42,7 @@ class SearchStopsViewModel @Inject constructor(
             try {
                 isLoading.postValue(true)
                 stopsGroupRepository.filterSearchResults(searchTerm).collect { res ->
-                    Log.d(TAG, "Search filter returned ${res.size} elements")
+                    Log.d(TAG, "Search filter returned ${res.size} elements: ${res.toString()}")
                     stopSearchResults.postValue(res)
                 }
             } catch(e: Exception){

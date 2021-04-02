@@ -10,12 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.databinding.SearchStopsFragmentBinding
-import com.app.skyss_companion.model.StopGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,7 +64,7 @@ class SearchStopsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(s != null && s.isNotBlank()){
+                if(s != null && s.length >= 3){
                     val sb: StringBuilder = StringBuilder(s.length)
                     sb.append(s)
                     viewModel.filterResults(sb.toString())

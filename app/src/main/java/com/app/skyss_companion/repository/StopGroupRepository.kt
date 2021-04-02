@@ -52,7 +52,7 @@ class StopGroupRepository @Inject constructor(private val stopGroupDao: StopGrou
 
     @WorkerThread
     fun filterSearchResults(searchTerm: String) : Flow<List<StopGroup>> {
-       return allStopGroups.map { stopGroupsList -> stopGroupsList.filter { stopGroup -> stopGroup.description?.contains(searchTerm) ?: false } }
+       return allStopGroups.map { stopGroupsList -> stopGroupsList.filter { stopGroup -> stopGroup.description?.contains(searchTerm, ignoreCase = true) ?: false } }
     }
 
 }

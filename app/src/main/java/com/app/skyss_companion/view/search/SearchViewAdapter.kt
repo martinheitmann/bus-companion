@@ -1,5 +1,6 @@
 package com.app.skyss_companion.view.search
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,28 @@ import com.app.skyss_companion.model.StopGroup
 
 
 class SearchViewAdapter(private val onItemTapped: (String) -> Unit) : RecyclerView.Adapter<SearchViewAdapter.ViewHolder>() {
-    var dataSet = listOf<StopGroup>()
+    val TAG = "SearchViewAdapter"
+    val dataSet = mutableListOf<StopGroup>()
 
-    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var layout: View = view.findViewById(R.id.search_stops_list_element_framelayout)
         var title: TextView = view.findViewById(R.id.list_element_title)
         var busImage: ImageView = view.findViewById(R.id.imageview_bus)
         var railImage: ImageView = view.findViewById(R.id.imageview_rail)
-        init {
-            // Define click listener for the ViewHolder's View.
+        fun bind(position: Int){
+            Log.d(TAG, "Item position: $position, title: ${dataSet[position].description}")
+            title.text = dataSet[position].description
+            layout.setOnClickListener { onItemTapped(dataSet[position].identifier) }
+            if(dataSet[position].serviceModes?.contains("Bus") == true){
+                busImage.visibility = View.VISIBLE
+            } else {
+                busImage.visibility = View.GONE
+            }
+            if(dataSet[position].serviceModes?.contains("Light rail") == true){
+                railImage.visibility = View.VISIBLE
+            } else {
+                railImage.visibility = View.GONE
+            }
         }
     }
 
@@ -34,25 +48,23 @@ class SearchViewAdapter(private val onItemTapped: (String) -> Unit) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.title.text = dataSet[position].description
-        holder.layout.setOnClickListener { onItemTapped(dataSet[position].identifier) }
-        if(dataSet[position].serviceModes?.contains("Bus") == true){
-            holder.busImage.visibility = View.VISIBLE
-        } else {
-            holder.busImage.visibility = View.GONE
-        }
-        if(dataSet[position].serviceModes?.contains("Light rail") == true){
-            holder.railImage.visibility = View.VISIBLE
-        } else {
-            holder.railImage.visibility = View.GONE
-        }
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int {
+        Log.d(TAG, "Adapter data count: " + dataSet.size)
         return dataSet.size
     }
 
     fun setData(newItems: List<StopGroup>){
+        //val diffResult = DiffUtil.calculateDiff(SearchStopsDiffUtilCallback(this.dataSet, newItems), true)
+        dataSet.clear()
+        dataSet.addAll(newItems)
+        notifyDataSetChanged()
+        //diffResult.dispatchUpdatesTo(this)
+    }
+
+    /*fun setData(newItems: List<StopGroup>){
         if(newItems.isEmpty()){
             dataSet = newItems
             notifyDataSetChanged()
@@ -61,6 +73,6 @@ class SearchViewAdapter(private val onItemTapped: (String) -> Unit) : RecyclerVi
             dataSet = newItems
             diffResult.dispatchUpdatesTo(this)
         }
-    }
+    }*/
 
 }
