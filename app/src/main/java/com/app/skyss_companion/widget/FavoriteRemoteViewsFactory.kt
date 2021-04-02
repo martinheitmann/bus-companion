@@ -41,7 +41,7 @@ class FavoriteRemoteViewsFactory(
     override fun onCreate() { Log.d(TAG, "$TAG onCreate") }
 
     override fun onDataSetChanged() {
-        Log.d(TAG, "onDataSetChanged triggered")
+        Log.d(TAG, "onDataSetChanged triggered for factory:  " + this.hashCode())
         val mStopGroupId = stopGroupId
         val widgetConfig = fetchWidgetConfigBlocking(widgetId) //Blocking call!
         blocks = WidgetUtils.limitDisplayedItems(widgetConfig?.maxWidth ?: 250, widgetConfig?.minWidth ?: 180)

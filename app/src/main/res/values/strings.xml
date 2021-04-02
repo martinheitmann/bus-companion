@@ -27,4 +27,8 @@
 
     <!-- Widget Preferences -->
     <string name="widget_header">Widget</string>
+
+    <!-- Widget Intent Constants -->
+    <string name="stop_group_id">STOP_GROUP_ID</string>
+    <string name="stop_group">STOP_GROUP</string>
 </resources>

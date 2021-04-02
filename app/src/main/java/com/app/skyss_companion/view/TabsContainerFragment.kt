@@ -48,8 +48,5 @@ class TabsContainerFragment : Fragment() {
             }
             viewPager.currentItem = position
         }.attach()
-
-        // Ensures that the app opens at the first tab
-        viewPager.setCurrentItem(0, false)
     }
 }
