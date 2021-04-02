@@ -44,9 +44,23 @@ class SearchStopsFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
 
+        binding.searchStopsTextviewItemCount.visibility = View.GONE
         viewModel.stopSearchResults.observe(viewLifecycleOwner, {
             Log.d(TAG, "Observer triggered with ${it.size} items")
             adapter.setData(it)
+            if(it.isEmpty()){
+                binding.searchStopsTextviewItemCount.text = "Ingen søkeresultater å vise"
+                binding.searchStopsTextviewItemCount.visibility = View.VISIBLE
+            }
+            else {
+                if(it.size == 1){
+                    binding.searchStopsTextviewItemCount.text = "Viser 1 søkeresultat"
+                }
+                else {
+                    binding.searchStopsTextviewItemCount.text = "Viser ${it.size} søkeresultater"
+                }
+                binding.searchStopsTextviewItemCount.visibility = View.VISIBLE
+            }
         })
 
         viewModel.isLoading.observe(viewLifecycleOwner, {
