@@ -88,6 +88,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Søk holdeplasser"
+            android:textColor="?colorOnPrimary"
+            android:textSize="20sp" />
+
         <EditText
             android:id="@+id/search_stops_edittext"
             android:layout_width="match_parent"
@@ -98,13 +109,12 @@
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawableTint="#CCFFFFFF"
             android:hint="Søk etter holdeplasser"
+            android:importantForAutofill="no"
             android:inputType="text"
             android:padding="8dp"
             android:singleLine="true"
             android:textColor="?colorOnPrimary"
-            android:textColorHint="#CCFFFFFF"
-            android:textStyle="italic"
-            android:importantForAutofill="no" />
+            android:textColorHint="#CCFFFFFF" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -112,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.20" />
 
     <TextView
         android:id="@+id/search_stops_textview_item_count"
