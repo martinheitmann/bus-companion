@@ -7,9 +7,20 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
+import java.util.*
 
 class Converters {
     private val moshi = Moshi.Builder().build()
+
+    @TypeConverter
+    fun dateFromLong(value: Long) : Date? {
+        return Date(value)
+    }
+
+    @TypeConverter
+    fun dateToLong(value: Date) : Long? {
+        return value.time
+    }
 
     @TypeConverter
     fun stringFromStringArray(value: List<String>?) : String? {
