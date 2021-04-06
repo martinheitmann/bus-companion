@@ -6,13 +6,16 @@ import androidx.lifecycle.*
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import com.app.skyss_companion.model.RecentlyUsed
 import com.app.skyss_companion.model.StopGroup
 import com.app.skyss_companion.prefs.AppSharedPrefs
+import com.app.skyss_companion.repository.RecentlyUsedRepository
 import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.workers.StopGroupSyncWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,10 +24,12 @@ import javax.inject.Inject
 class SearchStopsViewModel @Inject constructor(
     application: Application,
     private val stopsGroupRepository: StopGroupRepository,
+    private val recentlyUsedRepository: RecentlyUsedRepository
 ) : AndroidViewModel(application) {
 
     val TAG = "SearchStopsViewModel"
     var stopSearchResults: MutableLiveData<List<StopGroup>> = MutableLiveData()
+    var recentlyUsedStopGroups: Flow<List<RecentlyUsed>>
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var isSyncing: MutableLiveData<Boolean> = MutableLiveData(false)
     private var coroutineJob: Job? = null
@@ -34,6 +39,7 @@ class SearchStopsViewModel @Inject constructor(
         stopsGroupRepository.isSyncing.observeForever { value ->
             isSyncing.postValue(value)
         }
+        recentlyUsedStopGroups = recentlyUsedRepository.allRecentlyUsed
     }
 
     fun filterResults(searchTerm: String) {
@@ -52,6 +58,10 @@ class SearchStopsViewModel @Inject constructor(
                 isLoading.postValue(false)
             }
         }
+    }
+
+    fun addStopGroupToRecentlyUsed(){
+
     }
 
     private fun checkIfSyncNecessary(){

@@ -43,6 +43,11 @@ class FavoritesFragment : Fragment() {
 
         viewModel.favoritedStopGroups.observe(viewLifecycleOwner, { favorites ->
             adapter.setData(favorites)
+            if(favorites.isEmpty()){
+                binding.favoritesTextviewEmpty.visibility = View.VISIBLE
+            } else {
+                binding.favoritesTextviewEmpty.visibility = View.GONE
+            }
         })
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.app.skyss_companion.dao.EnabledWidgetDao
 import com.app.skyss_companion.dao.FavoriteDao
+import com.app.skyss_companion.dao.RecentlyUsedDao
 import com.app.skyss_companion.dao.StopGroupDao
 import com.app.skyss_companion.database.AppDatabase
 import dagger.Module
@@ -27,6 +28,12 @@ object DatabaseModule {
     @Provides
     fun provideFavoriteDao(appDatabase: AppDatabase): FavoriteDao {
         return appDatabase.favoriteDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRecentlyUsedDao(appDatabase: AppDatabase): RecentlyUsedDao {
+        return appDatabase.recentlyUsedDao()
     }
 
     @Singleton

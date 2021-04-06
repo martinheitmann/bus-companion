@@ -3,17 +3,20 @@ package com.app.skyss_companion.database
 import androidx.room.*
 import com.app.skyss_companion.dao.EnabledWidgetDao
 import com.app.skyss_companion.dao.FavoriteDao
+import com.app.skyss_companion.dao.RecentlyUsedDao
 import com.app.skyss_companion.dao.StopGroupDao
 import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.model.Favorite
+import com.app.skyss_companion.model.RecentlyUsed
 import com.app.skyss_companion.model.StopGroup
 
-@Database(entities = [StopGroup::class, Favorite::class, EnabledWidget::class], version = 1)
+@Database(entities = [StopGroup::class, Favorite::class, EnabledWidget::class, RecentlyUsed::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun stopGroupDao(): StopGroupDao
     abstract fun favoriteDao(): FavoriteDao
     abstract fun enabledWidgetDao(): EnabledWidgetDao
+    abstract fun recentlyUsedDao(): RecentlyUsedDao
 
    /* companion object {
         private var INSTANCE: AppDatabase? = null
