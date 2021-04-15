@@ -11,7 +11,7 @@ class StopPlaceUtils {
 
         val TAG = "StopPlaceUtils"
 
-        fun createListData(stops: List<Stop>) : List<StopPlaceListItem> {
+        fun createListData(stops: List<Stop>): List<StopPlaceListItem> {
             //Log.d(TAG, "${stops.size} stops passed to list generator")
             val items = mutableListOf<StopPlaceListItem>()
             stops.forEach { stop ->
@@ -25,7 +25,7 @@ class StopPlaceUtils {
                     //Log.d(TAG, "Found ${passingTimes?.size} passing times for route with name '${directionName}'")
                     passingTimes?.forEach { pt ->
                         val display = pt.displayTime
-                        if(display != null){
+                        if (display != null) {
                             displayTimes.add(display)
                         }
                     }
@@ -33,9 +33,49 @@ class StopPlaceUtils {
                         lineNumber = rd.publicIdentifier ?: "0",
                         directionName = directionName ?: "Ukjent rute",
                         displayTimes = displayTimes,
-                        isEmphasized = passingTimes?.map { pt -> pt.status == "OnTime" } ?: mutableListOf()
+                        isEmphasized = passingTimes?.map { pt -> pt.status == "OnTime" }
+                            ?: mutableListOf()
                     )
                     items.add(listItem)
+                }
+            }
+            return items
+        }
+
+        fun createFilteredListData(
+            stops: List<Stop>,
+            lineCodes: List<String>
+        ): List<StopPlaceListItem> {
+            val items = mutableListOf<StopPlaceListItem>()
+            stops.forEach { stop ->
+                val relevantRouteDirections = stop.routeDirections?.filter { routeDirection ->
+                    lineCodes.contains(routeDirection.publicIdentifier)
+                }?.toList()
+                if (relevantRouteDirections != null) {
+                    if (relevantRouteDirections.isNotEmpty()) {
+                        val header = StopPlaceListDivider(stop.description ?: "Ingen beskrivelse")
+                        items.add(header)
+                        relevantRouteDirections?.forEach { rd ->
+                            val displayTimes = mutableListOf<String>()
+                            val directionName = rd.directionName
+                            val passingTimes = rd.passingTimes
+                            //Log.d(TAG, "Found ${passingTimes?.size} passing times for route with name '${directionName}'")
+                            passingTimes?.forEach { pt ->
+                                val display = pt.displayTime
+                                if (display != null) {
+                                    displayTimes.add(display)
+                                }
+                            }
+                            val listItem = StopPlaceListEntry(
+                                lineNumber = rd.publicIdentifier ?: "0",
+                                directionName = directionName ?: "Ukjent rute",
+                                displayTimes = displayTimes,
+                                isEmphasized = passingTimes?.map { pt -> pt.status == "OnTime" }
+                                    ?: mutableListOf()
+                            )
+                            items.add(listItem)
+                        }
+                    }
                 }
             }
             return items

@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 
 
-class StopPlaceLineCodeAdapter(private val context: Context, private val onTap: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StopPlaceFilterLineCodeAdapter(private val context: Context, private val onTap: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TAG = "StopPlaceAdapter"
     var dataSet = listOf<String>()
 
     private inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lineNumber: TextView = view.findViewById(R.id.stop_place_linecode_textview)
+        var lineNumber: TextView = view.findViewById(R.id.stop_place_linecode_filter_textview)
         fun bind(position: Int, onTap: (Int) -> Unit){
             lineNumber.text = dataSet[position]
             lineNumber.setOnClickListener {
@@ -26,7 +26,7 @@ class StopPlaceLineCodeAdapter(private val context: Context, private val onTap: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
             LayoutInflater.from(context).inflate(
-                R.layout.stop_place_linecode_item,
+                R.layout.stop_place_linecode_filter_item,
                 parent,
                 false
             )

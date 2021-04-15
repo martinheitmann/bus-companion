@@ -3,6 +3,7 @@ package com.app.skyss_companion.view.stop_place
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.app.skyss_companion.misc.StopPlaceUtils
 import com.app.skyss_companion.model.Favorite
 import com.app.skyss_companion.model.Stop
 import com.app.skyss_companion.model.StopGroup
@@ -26,6 +27,45 @@ class StopPlaceViewModel @Inject constructor(
     val stopGroup: MutableLiveData<StopGroup> = MutableLiveData()
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
     val isFavorited: MutableLiveData<Boolean> = MutableLiveData()
+    val lineCodeFilter: MutableLiveData<List<String>> = MutableLiveData(emptyList())
+    val filteredStopPlaceListItems: MediatorLiveData<List<StopPlaceListItem>> = MediatorLiveData()
+    val lineCodes = MutableLiveData<List<String>>()
+    val description = MutableLiveData<String?>()
+
+    // We register the MediatorLiveData with the selected line codes
+    // and stop group data in order to provide filtering through
+    // the different LiveData sources.
+    init {
+        // This transformation should trigger whenever a stop group is fetched.
+        filteredStopPlaceListItems.addSource(stopGroup) { stopGroup ->
+            lineCodes.postValue(stopGroup.lineCodes ?: emptyList())
+            val stops = stopGroup.stops
+            if (stops != null) {
+                val stopPlaceListItems = StopPlaceUtils.createListData(stops)
+                filteredStopPlaceListItems.postValue(stopPlaceListItems)
+            }
+        }
+        filteredStopPlaceListItems.addSource(lineCodeFilter){ lineCodes ->
+            val stops: List<Stop> = stopGroup.value?.stops ?: emptyList()
+            val newItems = filterByLineCodes(stops, lineCodes)
+            filteredStopPlaceListItems.postValue(newItems)
+        }
+    }
+
+    fun addLineCodeToFilter(index: Int){
+        val currentFilter = lineCodeFilter.value?.toMutableList() ?: return
+        val currentLineCodes = lineCodes.value?.toMutableList() ?: return
+        val itemToAdd = currentLineCodes[index]
+        if(currentFilter.contains(itemToAdd)) return
+        currentFilter.add(itemToAdd)
+        lineCodeFilter.postValue(currentFilter)
+    }
+
+    fun removeLineCodeFromFilter(index: Int){
+        val currentlySelectedLineCodes = lineCodeFilter.value?.toMutableList() ?: return
+        currentlySelectedLineCodes.removeAt(index)
+        lineCodeFilter.postValue(currentlySelectedLineCodes)
+    }
 
     fun checkIsFavorited(identifier: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -33,6 +73,14 @@ class StopPlaceViewModel @Inject constructor(
                 isFavorited.postValue(result)
             }
         }
+    }
+
+    private fun filterByLineCodes(stops: List<Stop>, lineCodes: List<String>): List<StopPlaceListItem>{
+        if(lineCodes.isEmpty()) {
+            Log.d(TAG, "Line code filter was empty.")
+            return StopPlaceUtils.createListData(stops)
+        }
+        return StopPlaceUtils.createFilteredListData(stops, lineCodes)
     }
 
     fun removeFavorited(identifier: String){
@@ -64,6 +112,13 @@ class StopPlaceViewModel @Inject constructor(
 
     fun getLineCodes(stopGroup: StopGroup): List<String> {
         return stopGroup.lineCodes ?: emptyList()
+    }
+
+    /**
+     * Helper method for forcing a LiveData refresh.
+     */
+    fun <T> MutableLiveData<T>.forceRefresh() {
+        this.value = this.value
     }
 
 

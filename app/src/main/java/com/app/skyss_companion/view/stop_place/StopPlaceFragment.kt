@@ -22,11 +22,13 @@ class StopPlaceFragment : Fragment() {
     private val viewModel: StopPlaceViewModel by viewModels()
     private lateinit var adapter: StopPlaceAdapter
     private lateinit var lineCodesAdapter: StopPlaceLineCodeAdapter
+    private lateinit var lineCodesFilterAdapter: StopPlaceFilterLineCodeAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var lineCodesRecyclerView: RecyclerView
-    //private lateinit var flexboxLayoutManager: FlexboxLayoutManager
     private lateinit var lineCodesLayoutManager: LinearLayoutManager
+    private lateinit var lineCodesFilterLayoutManager: LinearLayoutManager
+    private lateinit var lineCodesFilterRecyclerView: RecyclerView
     private var _binding: StopPlaceFragmentBinding? = null
 
     private val binding get() = _binding!!
@@ -41,12 +43,14 @@ class StopPlaceFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         adapter = StopPlaceAdapter(requireContext())
-        lineCodesAdapter = StopPlaceLineCodeAdapter(requireContext())
+        lineCodesAdapter = StopPlaceLineCodeAdapter(requireContext(), onTap = {index -> viewModel.addLineCodeToFilter(index)})
+        lineCodesFilterAdapter = StopPlaceFilterLineCodeAdapter(requireContext(), onTap = {index -> viewModel.removeLineCodeFromFilter(index)})
         recyclerView = binding.stopPlaceRecyclerview
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
         lineCodesRecyclerView = binding.stopPlaceLinecodesRecyclerview
+        lineCodesFilterRecyclerView = binding.stopPlaceRecyclerviewLinecodeFilter
         val identifier = arguments?.getString("STOP_IDENTIFIER")
 
         /*flexboxLayoutManager = FlexboxLayoutManager(context).apply {
@@ -56,10 +60,16 @@ class StopPlaceFragment : Fragment() {
         }*/
 
         lineCodesLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        lineCodesFilterLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         lineCodesRecyclerView.apply {
             layoutManager = lineCodesLayoutManager
             adapter = lineCodesAdapter
+        }
+
+        lineCodesFilterRecyclerView.apply {
+            layoutManager = lineCodesFilterLayoutManager
+            adapter = lineCodesFilterAdapter
         }
 
         if(identifier != null){
@@ -67,18 +77,19 @@ class StopPlaceFragment : Fragment() {
             binding.stopPlaceImagebuttonNotFavorited.setOnClickListener { viewModel.addFavorited(identifier) }
             viewModel.checkIsFavorited(identifier)
             viewModel.fetchStopPlace(identifier)
-            viewModel.stopGroup.observe(viewLifecycleOwner, { sg ->
-                binding.stopPlaceTetxviewName.text = sg.description
-                val stops = sg.stops
-                val lineCodes = sg.lineCodes
-                if(stops != null){
-                    val data = StopPlaceUtils.createListData(stops)
-                    adapter.setData(data)
-                }
-                if(lineCodes != null){
-                    Log.d(TAG, "Found line codes: $lineCodes")
-                    lineCodesAdapter.setData(lineCodes)
-                }
+            viewModel.stopGroup.observe(viewLifecycleOwner, { stopGroup ->
+                binding.stopPlaceTetxviewName.text = stopGroup.description
+            })
+            viewModel.filteredStopPlaceListItems.observe(viewLifecycleOwner, { listItems ->
+                adapter.setData(listItems)
+            })
+            viewModel.lineCodeFilter.observe(viewLifecycleOwner, { filter ->
+                if(filter.isEmpty()) lineCodesFilterRecyclerView.visibility = View.GONE
+                else lineCodesFilterRecyclerView.visibility = View.VISIBLE
+                lineCodesFilterAdapter.setData(filter)
+            })
+            viewModel.lineCodes.observe(viewLifecycleOwner, { lineCodes ->
+                lineCodesAdapter.setData(lineCodes)
             })
         }
 
