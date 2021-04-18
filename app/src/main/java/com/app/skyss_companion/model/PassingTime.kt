@@ -10,5 +10,6 @@ data class PassingTime (
     var displayTime: String? = null,
     var notes: List<Any>? = null,
     var predictionInaccurate: String? = null,
-    var passed: Boolean? = null
+    var passed: Boolean? = null,
+    var occupancy: String? = null
 )
