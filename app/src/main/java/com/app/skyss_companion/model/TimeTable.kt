@@ -1,5 +1,5 @@
-import com.app.skyss_companion.model.PassingTime
+package com.app.skyss_companion.model
 
 data class TimeTable(
-    val passingTimes: List<PassingTime>
+    val passingTimes: List<PassingTime>? = null
 )

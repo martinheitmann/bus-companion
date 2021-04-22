@@ -1,13 +1,7 @@
 package com.app.skyss_companion.mappers
 
-import com.app.skyss_companion.http.model.PassingTimeResponse
-import com.app.skyss_companion.http.model.RouteDirectionResponse
-import com.app.skyss_companion.http.model.StopGroupResponse
-import com.app.skyss_companion.http.model.StopResponse
-import com.app.skyss_companion.model.PassingTime
-import com.app.skyss_companion.model.RouteDirection
-import com.app.skyss_companion.model.Stop
-import com.app.skyss_companion.model.StopGroup
+import com.app.skyss_companion.http.model.*
+import com.app.skyss_companion.model.*
 
 class StopResponseEntityMapper {
     companion object {
@@ -105,6 +99,20 @@ class StopResponseEntityMapper {
                 )
             }
             return null
+        }
+
+        fun mapTimeTable(timeTable: TimeTableResponse) : TimeTable? {
+            val pt: List<PassingTimeResponse>? = timeTable.PassingTimes
+            if(pt != null){
+                return TimeTable(
+                    passingTimes = mapAllPassingTimeResponses(pt).filterNotNull(),
+                )
+            }
+            return null
+        }
+
+        fun mapAllTimeTables(timeTables: List<TimeTableResponse>) : List<TimeTable?>{
+            return timeTables.map { tt -> mapTimeTable(tt) }
         }
 
         fun mapAllStopGroupResponses(stopGroups: List<StopGroupResponse>) : List<StopGroup?> {

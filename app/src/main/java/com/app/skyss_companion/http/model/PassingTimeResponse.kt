@@ -10,5 +10,6 @@ data class PassingTimeResponse(
     var DisplayTime: String? = null,
     var Notes: List<Any>? = null,
     var PredictionInaccurate: String? = null,
-    var Passed: Boolean? = null
+    var Passed: Boolean? = null,
+    var Occupancy: String? = null
 )

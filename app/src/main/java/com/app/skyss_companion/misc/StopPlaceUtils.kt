@@ -30,6 +30,8 @@ class StopPlaceUtils {
                         }
                     }
                     val listItem = StopPlaceListEntry(
+                        stopIdentifier = stop.identifier,
+                        routeDirectionIdentifier = rd.identifier,
                         lineNumber = rd.publicIdentifier ?: "0",
                         directionName = directionName ?: "Ukjent rute",
                         displayTimes = displayTimes,
@@ -55,7 +57,7 @@ class StopPlaceUtils {
                     if (relevantRouteDirections.isNotEmpty()) {
                         val header = StopPlaceListDivider(stop.description ?: "Ingen beskrivelse")
                         items.add(header)
-                        relevantRouteDirections?.forEach { rd ->
+                        relevantRouteDirections.forEach { rd ->
                             val displayTimes = mutableListOf<String>()
                             val directionName = rd.directionName
                             val passingTimes = rd.passingTimes
@@ -67,6 +69,8 @@ class StopPlaceUtils {
                                 }
                             }
                             val listItem = StopPlaceListEntry(
+                                stopIdentifier = stop.identifier,
+                                routeDirectionIdentifier = rd.identifier,
                                 lineNumber = rd.publicIdentifier ?: "0",
                                 directionName = directionName ?: "Ukjent rute",
                                 displayTimes = displayTimes,
