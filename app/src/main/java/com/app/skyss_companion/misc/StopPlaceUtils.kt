@@ -35,6 +35,7 @@ class StopPlaceUtils {
                         lineNumber = rd.publicIdentifier ?: "0",
                         directionName = directionName ?: "Ukjent rute",
                         displayTimes = displayTimes,
+                        stopName = stop.description,
                         isEmphasized = passingTimes?.map { pt -> pt.status == "OnTime" }
                             ?: mutableListOf()
                     )
@@ -74,6 +75,7 @@ class StopPlaceUtils {
                                 lineNumber = rd.publicIdentifier ?: "0",
                                 directionName = directionName ?: "Ukjent rute",
                                 displayTimes = displayTimes,
+                                stopName = stop.description,
                                 isEmphasized = passingTimes?.map { pt -> pt.status == "OnTime" }
                                     ?: mutableListOf()
                             )

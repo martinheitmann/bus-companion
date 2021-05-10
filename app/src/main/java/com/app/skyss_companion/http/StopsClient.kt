@@ -75,9 +75,12 @@ class StopsClient @Inject constructor(
     suspend fun fetchTimeTables(stopIdentifier: String, routeDirectionIdentifier: String, date: String): ApiTimeTablesResponse? {
         if(stopIdentifier.isEmpty() || routeDirectionIdentifier.isEmpty() || date.isEmpty()) return null
         val baseUrl = timeTableUrl
-        val params = "StopIdentifier=${stopIdentifier}&RouteDirectionIdentifier=${routeDirectionIdentifier}&Date=${date}"
-        val encodedParams = URLEncoder.encode(params, "utf-8")
-        val fullUrl = baseUrl + encodedParams
+        val encodedStopIdentifier = URLEncoder.encode(stopIdentifier, "utf-8")
+        val encodedRouteDirectionIdentifier = URLEncoder.encode(routeDirectionIdentifier, "utf-8")
+        val encodedDate = URLEncoder.encode(date, "utf-8")
+        val fullParams = "StopIdentifier=${encodedStopIdentifier}&RouteDirectionIdentifier=${encodedRouteDirectionIdentifier}&Date=${encodedDate}"
+        val fullUrl = baseUrl + fullParams
+        Log.d(TAG, "Requesting data from '${fullUrl}'")
         val request: Request = Builder()
             .url(fullUrl)
             .build()

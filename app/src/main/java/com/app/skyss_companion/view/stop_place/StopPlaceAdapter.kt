@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
+import kotlin.reflect.KFunction2
 
 
-class StopPlaceAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StopPlaceAdapter(private val context: Context, private val onTap: (String?, String?, String?, String?, String?) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TAG = "StopPlaceAdapter"
     var dataSet = listOf<StopPlaceListItem>()
 
@@ -30,11 +32,15 @@ class StopPlaceAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         var lineNumber: TextView = view.findViewById(R.id.widget_stop_place_textview_line_number)
         var lineName: TextView = view.findViewById(R.id.widget_stop_place_textview_line_name)
         var timeContainer: LinearLayout = view.findViewById(R.id.widget_stop_place_linearlayout_time_container)
+        var cardViewContainer: CardView = view.findViewById(R.id.widget_stop_place_cardview)
 
         @SuppressLint("SetTextI18n")
         fun bind(position: Int){
             timeContainer.removeAllViews()
             val data = dataSet[position] as StopPlaceListEntry
+            cardViewContainer.setOnClickListener {
+                onTap(data.stopIdentifier, data.routeDirectionIdentifier, data.stopName, data.directionName, data.lineNumber)
+            }
             lineNumber.text = data.lineNumber.toString()
             lineName.text = data.directionName
             if(data.displayTimes.isEmpty()){

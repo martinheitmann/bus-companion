@@ -14,7 +14,7 @@ class StopPlaceLineCodeAdapter(private val context: Context, private val onTap: 
     var dataSet = listOf<String>()
 
     private inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var lineNumber: TextView = view.findViewById(R.id.stop_place_linecode_textview)
+        var lineNumber: TextView = view.findViewById(R.id.route_direction_filter_list_item)
         fun bind(position: Int, onTap: (Int) -> Unit){
             lineNumber.text = dataSet[position]
             lineNumber.setOnClickListener {

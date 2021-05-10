@@ -6,7 +6,9 @@ import com.app.skyss_companion.http.StopsClient
 import com.app.skyss_companion.mappers.StopResponseEntityMapper
 import com.app.skyss_companion.model.StopGroup
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class StopPlaceRepository @Inject constructor(private val stopsClient: StopsClient) {
 
     val TAG = "StopPlaceRepository"

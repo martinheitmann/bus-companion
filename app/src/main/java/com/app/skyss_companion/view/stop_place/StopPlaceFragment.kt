@@ -1,20 +1,17 @@
 package com.app.skyss_companion.view.stop_place
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.StopPlaceFragmentBinding
-import com.app.skyss_companion.misc.StopPlaceUtils
-import com.google.android.flexbox.*
 import dagger.hilt.android.AndroidEntryPoint
+import com.app.skyss_companion.R
 
 @AndroidEntryPoint
 class StopPlaceFragment : Fragment() {
@@ -42,7 +39,7 @@ class StopPlaceFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = StopPlaceAdapter(requireContext())
+        adapter = StopPlaceAdapter(requireContext(), ::navigateToTimeTable)
         lineCodesAdapter = StopPlaceLineCodeAdapter(requireContext(), onTap = {index -> viewModel.addLineCodeToFilter(index)})
         lineCodesFilterAdapter = StopPlaceFilterLineCodeAdapter(requireContext(), onTap = {index -> viewModel.removeLineCodeFromFilter(index)})
         recyclerView = binding.stopPlaceRecyclerview
@@ -117,6 +114,18 @@ class StopPlaceFragment : Fragment() {
 
         binding.stopPlaceBackButton.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun navigateToTimeTable(stopIdentifier: String?, routeDirectionIdentifier: String?, stopName: String?, directionName: String?, lineNumber: String?){
+        if(stopIdentifier != null && routeDirectionIdentifier != null){
+            val bundle = Bundle()
+            bundle.putString("STOP_IDENTIFIER", stopIdentifier)
+            bundle.putString("ROUTE_DIRECTION_IDENTIFIER", routeDirectionIdentifier)
+            bundle.putString("STOPGROUP_NAME", stopName)
+            bundle.putString("ROUTE_DIRECTION_NAME", directionName)
+            bundle.putString("LINE_NUMBER", lineNumber)
+            findNavController().navigate(R.id.action_stopPlaceFragment_to_routeDirectionTimeTableFragment, bundle)
         }
     }
 

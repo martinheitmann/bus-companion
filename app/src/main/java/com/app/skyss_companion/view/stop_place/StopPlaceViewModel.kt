@@ -9,7 +9,6 @@ import com.app.skyss_companion.model.Stop
 import com.app.skyss_companion.model.StopGroup
 import com.app.skyss_companion.repository.FavoriteRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
-import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
