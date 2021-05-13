@@ -1,19 +1,19 @@
 package com.app.skyss_companion.view.routedirection_timetable
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
-import kotlin.reflect.KFunction0
 
 
 class PassingTimeDaysTabAdapter(private val context: Context, private val onTap: (Int) -> Unit) : RecyclerView.Adapter<PassingTimeDaysTabAdapter.ViewHolder>() {
     val TAG = "PassingTimeFilterAdapter"
     var dataSet = listOf<PassingTimeDayTab>()
-    //var selectedIndex = -1
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var lineNumber: TextView = view.findViewById(R.id.route_direction_filter_list_item)
@@ -21,6 +21,23 @@ class PassingTimeDaysTabAdapter(private val context: Context, private val onTap:
             lineNumber.text = dataSet[position].display
             lineNumber.setOnClickListener {
                 onTap(position)
+            }
+            if(dataSet[position].isSelected){
+                lineNumber.background = ContextCompat.getDrawable(
+                    context,
+                    R.drawable.textview_date_rounded_primaryvariant
+                )
+                val typedValue = TypedValue()
+                context.theme.resolveAttribute(R.attr.colorOnPrimary, typedValue, true)
+                lineNumber.setTextColor(typedValue.data)
+            } else {
+                lineNumber.background = ContextCompat.getDrawable(
+                    context,
+                    R.drawable.textview_date_rounded
+                )
+                val typedValue = TypedValue()
+                context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+                lineNumber.setTextColor(typedValue.data)
             }
         }
     }

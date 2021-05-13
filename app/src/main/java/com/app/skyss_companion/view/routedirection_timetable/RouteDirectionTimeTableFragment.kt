@@ -49,7 +49,7 @@ class RouteDirectionTimeTableFragment : Fragment() {
         binding.timeTableStopPlaceName.text = stopName
         binding.timeTableRouteDirectionLinecode.text = lineNumber
 
-        passingTimeDayTabsAdapter = PassingTimeDaysTabAdapter(this.requireContext(), ::onTap)
+        passingTimeDayTabsAdapter = PassingTimeDaysTabAdapter(this.requireContext(), ::onDaysTabTapped)
         passingTimeDayTabsRecyclerView = binding.timeTableRouteDirectionFilterRecyclerview
         passingTimeDayTabsLinearLayoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         passingTimeDayTabsRecyclerView.adapter = passingTimeDayTabsAdapter
@@ -69,13 +69,15 @@ class RouteDirectionTimeTableFragment : Fragment() {
         viewModel.passingTimeDayTabs.observe(viewLifecycleOwner, {
             Log.d(TAG, "Fragment passingTimeDayTabs observer triggered. ${it.size} items: ${it}.")
             passingTimeDayTabsAdapter.setData(it)
+            viewModel.setSelectedDayTab(it)
         })
         
         viewModel.fetchTimeTables(stopIdentifier, routeDirectionIdentifier)
     }
 
-    private fun onTap(num: Int){
-
+    private fun onDaysTabTapped(num: Int){
+        Log.d(TAG, "onDaysTabTapped num = $num")
+        viewModel.markSelected(num)
     }
 
     private fun mOnTap(num: Int){

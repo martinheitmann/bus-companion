@@ -5,5 +5,6 @@ import java.time.LocalDateTime
 data class PassingTimeListItem(
     val tripIdentifier: String,
     val displayTime: String,
-    val timeStamp: LocalDateTime
+    val timeStamp: LocalDateTime,
+    val isSelected: Boolean
 )

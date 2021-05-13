@@ -6,5 +6,6 @@ import java.util.*
 
 data class PassingTimeDayTab(
     val time: LocalDateTime,
-    val display: String
+    val display: String,
+    val isSelected: Boolean
 )

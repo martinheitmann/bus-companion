@@ -26,7 +26,7 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
     val dateTimeTables: MutableLiveData<List<DateTimeTable>> = MutableLiveData()
     val passingTimeDayTabs: MediatorLiveData<List<PassingTimeDayTab>> = MediatorLiveData()
     val passingTimeListItems: MediatorLiveData<List<PassingTimeListItem>> = MediatorLiveData()
-    val selectedDayTab: MutableLiveData<Int> = MutableLiveData(-1)
+    val selectedDayTab: MutableLiveData<PassingTimeDayTab?> = MutableLiveData()
 
     init {
         passingTimeDayTabs.addSource(dateTimeTables) { dateTimeTables ->
@@ -38,60 +38,81 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
             val items = getTimeTablesPassingTimes(dateTimeTables)
             passingTimeListItems.postValue(items)
         }
-        /*passingTimeListItems.addSource(selectedDayTab) { selectedIndex ->
-            if(selectedIndex > 0){
-                val selectedPassingTimesFilter = passingTimeDayTabs.value?.get(selectedIndex)?.let { ptfd ->
-                    val items = passingTimeListItems.value ?: emptyList()
-                    val filteredItems = applyFilter(ptfd, items)
-                    passingTimeListItems.postValue(filteredItems)
-                }
-            }
-        }*/
+        passingTimeListItems.addSource(selectedDayTab) { selectedDayTab ->
+            Log.d(TAG, "Selected day triggered: $selectedDayTab")
+            val items = getTimeTablesPassingTimes(dateTimeTables.value ?: emptyList())
+            val filteredItems = applyFilter(selectedDayTab, items)
+            passingTimeListItems.postValue(filteredItems)
+        }
     }
 
-    fun fetchTimeTables(stopIdentifier: String, routeDirectionIdentifier: String){
-        if(stopIdentifier.isNotEmpty() && routeDirectionIdentifier.isNotEmpty()){
+    fun setSelectedDayTab(tabs: List<PassingTimeDayTab>){
+        Log.d(TAG, "setSelectedDayTab received list: $tabs")
+        tabs.find { t -> t.isSelected }?.let {
+            Log.d(TAG, "setSelectedDayTab found item: $it")
+            selectedDayTab.postValue(it)
+        } ?: selectedDayTab.postValue(null)
+    }
+
+    fun fetchTimeTables(stopIdentifier: String, routeDirectionIdentifier: String) {
+        if (stopIdentifier.isNotEmpty() && routeDirectionIdentifier.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
-                dateTimeTables.postValue(timeTableRepository.fetchTimeTables(stopIdentifier, routeDirectionIdentifier, 6))
+                dateTimeTables.postValue(
+                    timeTableRepository.fetchTimeTables(
+                        stopIdentifier,
+                        routeDirectionIdentifier,
+                        6
+                    )
+                )
             }
         }
     }
 
-    fun select(index: Int){
-        selectedDayTab.postValue(index)
+    fun markSelected(index: Int) {
+        val newList = passingTimeDayTabs.value?.mapIndexed { mIndex, passingTimeDayTab ->
+            if(mIndex == index && !passingTimeDayTab.isSelected) passingTimeDayTab.copy(isSelected = true)
+            else passingTimeDayTab.copy(isSelected = false)
+        }
+        passingTimeDayTabs.postValue(newList)
     }
 
-    fun unselect(){
-        selectedDayTab.postValue(-1)
-    }
-
-    fun applyFilter(filter: PassingTimeDayTab?, items: List<PassingTimeListItem>) : List<PassingTimeListItem>{
-        if(filter != null){
+    fun applyFilter(
+        filter: PassingTimeDayTab?,
+        items: List<PassingTimeListItem>
+    ): List<PassingTimeListItem> {
+        if (filter != null) {
             return items.filter { i ->
-                i.timeStamp.dayOfYear == filter.time.dayOfYear
+                i.timeStamp.dayOfMonth == filter.time.dayOfMonth
                         && i.timeStamp.year == filter.time.year
             }
         }
         return items
     }
 
-    fun getTimeTablesPassingTimes(timeTables: List<DateTimeTable>) : List<PassingTimeListItem>{
+    fun getTimeTablesPassingTimes(timeTables: List<DateTimeTable>): List<PassingTimeListItem> {
         var displayItems = emptyList<PassingTimeListItem>()
         timeTables.forEach { timeTable ->
             timeTable.timeTable.passingTimes
                 ?.filter { passingTime ->
                     LocalDateTime.parse(
                         passingTime.timestamp,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                        DateTimeFormatter.ofPattern(
+                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            Locale.getDefault()
+                        )
                     ).isAfter(LocalDateTime.now())
                 }
                 ?.forEach { passingTime ->
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                    val formatter = DateTimeFormatter.ofPattern(
+                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                        Locale.getDefault()
+                    )
                     val localDateTime = LocalDateTime.parse(passingTime.timestamp, formatter)
                     val displayItem = PassingTimeListItem(
                         tripIdentifier = passingTime.tripIdentifier ?: "",
                         displayTime = passingTime.displayTime ?: "",
-                        timeStamp = localDateTime
+                        timeStamp = localDateTime,
+                        isSelected = false
                     )
                     displayItems = displayItems + displayItem
                 }
@@ -99,14 +120,16 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
         return displayItems
     }
 
-    fun getTimeTableFilterDisplays(timeTables: List<DateTimeTable>) : List<PassingTimeDayTab> {
+    fun getTimeTableFilterDisplays(timeTables: List<DateTimeTable>): List<PassingTimeDayTab> {
         var filterItems = emptyList<PassingTimeDayTab>()
         timeTables.forEach { timeTable ->
             val timeTableDate = timeTable.date
-            val dayOfWeek = timeTableDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+            val dayOfWeek =
+                timeTableDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
             val filterItem = PassingTimeDayTab(
-                time = LocalDateTime.now(),
-                display = dayOfWeek
+                time = timeTableDate,
+                display = dayOfWeek,
+                isSelected = false
             )
             filterItems = filterItems + filterItem
         }
