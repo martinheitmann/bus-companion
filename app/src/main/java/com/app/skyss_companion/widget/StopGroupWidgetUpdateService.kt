@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class FavoriteWidgetUpdateService : JobIntentService() {
+class StopGroupWidgetUpdateService : JobIntentService() {
     private val TAG = "UpdateService"
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -132,7 +132,7 @@ class FavoriteWidgetUpdateService : JobIntentService() {
         stopIdentifier: String?,
         appWidgetId: Int,
     ): Intent {
-        return Intent(applicationContext, FavoriteWidgetService::class.java).apply {
+        return Intent(applicationContext, StopGroupWidgetService::class.java).apply {
             // Add the app widget ID to the intent extras.
             putExtra("STOP_IDENTIFIER", stopIdentifier ?: "")
             putExtra("APPWIDGET_ID", appWidgetId)
@@ -146,7 +146,7 @@ class FavoriteWidgetUpdateService : JobIntentService() {
      * Creates the intent needed for the sync/refresh button to function.
      */
     private fun createSyncIntent(appWidgetId: Int): Intent {
-        val intentSync = Intent(applicationContext, FavoritesListWidgetProvider::class.java)
+        val intentSync = Intent(applicationContext, MainAppWidgetProvider::class.java)
         intentSync.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         intentSync.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         return intentSync

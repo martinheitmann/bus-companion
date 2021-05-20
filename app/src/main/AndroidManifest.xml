@@ -17,7 +17,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
 
         <receiver
-            android:name=".widget.FavoritesListWidgetProvider"
+            android:name=".widget.MainAppWidgetProvider"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="true">
             <intent-filter>
@@ -42,17 +42,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".widget.FavoritesWidgetConfigActivity">
+        <activity android:name=".widget.StopGroupWidgetConfigActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".widget.FavoriteWidgetService"
+            android:name=".widget.StopGroupWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
-            android:name=".widget.FavoriteWidgetUpdateService"
+            android:name=".widget.StopGroupWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 </manifest>

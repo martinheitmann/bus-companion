@@ -11,7 +11,7 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.misc.SearchStopsDiffUtilCallback
 import com.app.skyss_companion.model.StopGroup
 
-class FavoritesWidgetConfigAdapter(private val onItemTapped: (String) -> Unit) : RecyclerView.Adapter<FavoritesWidgetConfigAdapter.ViewHolder>() {
+class StopGroupWidgetConfigAdapter(private val onItemTapped: (String) -> Unit) : RecyclerView.Adapter<StopGroupWidgetConfigAdapter.ViewHolder>() {
     var dataSet = listOf<StopGroup>()
 
     open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

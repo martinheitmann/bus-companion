@@ -9,13 +9,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FavoriteWidgetService : RemoteViewsService() {
+class StopGroupWidgetService : RemoteViewsService() {
 
     @Inject lateinit var stopPlaceRepository: StopPlaceRepository
     @Inject lateinit var enabledWidgetRepository: EnabledWidgetRepository
     @Inject lateinit var appSharedPreferences: AppSharedPrefs
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
-        return FavoriteRemoteViewsFactory(intent, applicationContext, stopPlaceRepository, enabledWidgetRepository, appSharedPreferences)
+        return StopGroupRemoteViewsFactory(intent, applicationContext, stopPlaceRepository, enabledWidgetRepository, appSharedPreferences)
     }
 }

@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 
-class FavoriteRemoteViewsFactory(
+class StopGroupRemoteViewsFactory(
     intent: Intent,
     val context: Context,
     val stopPlaceRepository: StopPlaceRepository,

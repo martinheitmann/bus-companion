@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesWidgetConfigViewModel @Inject constructor(
+class StopGroupWidgetConfigViewModel @Inject constructor(
     application: Application,
     private val favoriteRepository: FavoriteRepository,
     private val enabledWidgetRepository: EnabledWidgetRepository,

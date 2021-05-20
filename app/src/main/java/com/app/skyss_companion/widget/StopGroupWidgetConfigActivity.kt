@@ -10,22 +10,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.WidgetFavoritesConfigBinding
-import com.app.skyss_companion.model.StopGroup
-import com.app.skyss_companion.view.favorites.FavoritesWidgetConfigAdapter
+import com.app.skyss_companion.view.favorites.StopGroupWidgetConfigAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class FavoritesWidgetConfigActivity : AppCompatActivity() {
+class StopGroupWidgetConfigActivity : AppCompatActivity() {
     val TAG = "FWidgetConfigActivity"
     var mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private lateinit var binding: WidgetFavoritesConfigBinding
 
-    private val viewModel: FavoritesWidgetConfigViewModel by viewModels()
+    private val viewModel: StopGroupWidgetConfigViewModel by viewModels()
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: LinearLayoutManager
-    lateinit var adapter: FavoritesWidgetConfigAdapter
+    lateinit var adapter: StopGroupWidgetConfigAdapter
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -42,7 +41,7 @@ class FavoritesWidgetConfigActivity : AppCompatActivity() {
         // Set up recyclerview components
         recyclerView = binding.favoritesConfigRecyclerview
         layoutManager = LinearLayoutManager(this)
-        adapter = FavoritesWidgetConfigAdapter {
+        adapter = StopGroupWidgetConfigAdapter {
             onItemSelected(it)
         }
         recyclerView.layoutManager = layoutManager
@@ -89,7 +88,7 @@ class FavoritesWidgetConfigActivity : AppCompatActivity() {
 
     private fun setupWidget(appWidgetId: Int,){
         // Push widget update to surface with newly set prefix
-        FavoritesListWidgetProvider().updateAppWidget(this, appWidgetId)
+        MainAppWidgetProvider().updateAppWidget(this, appWidgetId)
         // Make sure we pass back the original appWidgetId
         val resultValue = Intent()
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

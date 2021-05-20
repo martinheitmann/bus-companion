@@ -12,13 +12,10 @@ import androidx.work.WorkerParameters
 import com.app.skyss_companion.R
 import com.app.skyss_companion.prefs.AppSharedPrefs
 import com.app.skyss_companion.repository.StopGroupRepository
-import com.app.skyss_companion.widget.FavoriteWidgetService
+import com.app.skyss_companion.widget.StopGroupWidgetService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Deprecated("Not in use")
@@ -63,7 +60,7 @@ class WidgetUpdateWorker @AssistedInject constructor(
             val date: String = simpleDateFormat.format(Date())
             Log.d(TAG, "Current date: $date")
 
-            val intent = Intent(appContext, FavoriteWidgetService::class.java).apply {
+            val intent = Intent(appContext, StopGroupWidgetService::class.java).apply {
                 // Add the app widget ID to the intent extras.
                 putExtra("STOP_IDENTIFIER", stopIdentifier ?: "")
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

@@ -1,6 +1,5 @@
 package com.app.skyss_companion.widget
 
-import android.app.job.JobScheduler
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -11,12 +10,11 @@ import androidx.core.app.JobIntentService
 import androidx.work.*
 import com.app.skyss_companion.workers.RemoveWidgetsWorker
 import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
-import com.app.skyss_companion.workers.WidgetUpdateWorker
 
 /**
  * Implementation of App Widget functionality.
  */
-class FavoritesListWidgetProvider : AppWidgetProvider() {
+class MainAppWidgetProvider : AppWidgetProvider() {
     val TAG = "FavoritesLWProvider"
 
     // We have to invoke this in order to update the widget from
@@ -118,6 +116,6 @@ class FavoritesListWidgetProvider : AppWidgetProvider() {
         val intent: Intent = mIntent ?: Intent()
         intent.putExtra("APP_WIDGET_ID", appWidgetId)
         if(refresh == true) intent.putExtra("APP_WIDGET_REFRESH", true)
-        JobIntentService.enqueueWork(context, FavoriteWidgetUpdateService::class.java, 0, intent)
+        JobIntentService.enqueueWork(context, StopGroupWidgetUpdateService::class.java, 0, intent)
     }
 }

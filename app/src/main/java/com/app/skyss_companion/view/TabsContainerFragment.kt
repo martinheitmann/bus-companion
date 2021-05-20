@@ -48,5 +48,6 @@ class TabsContainerFragment : Fragment() {
             }
             viewPager.currentItem = position
         }.attach()
+        viewPager.currentItem = 0
     }
 }
