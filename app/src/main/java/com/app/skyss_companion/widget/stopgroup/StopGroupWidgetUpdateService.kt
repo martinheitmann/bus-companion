@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.stopgroup
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -11,6 +11,7 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
+import com.app.skyss_companion.widget.MainAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -26,12 +27,13 @@ class StopGroupWidgetUpdateService : JobIntentService() {
 
     @Inject
     lateinit var stopGroupRepository: StopGroupRepository
+
     @Inject
     lateinit var enabledWidgetRepository: EnabledWidgetRepository
+
     @Inject
     lateinit var stopPlaceRepository: StopPlaceRepository
-
-
+    
     override fun onHandleWork(mIntent: Intent) {
         serviceScope.launch(Dispatchers.IO) {
             val manager = AppWidgetManager.getInstance(applicationContext)
@@ -43,7 +45,7 @@ class StopGroupWidgetUpdateService : JobIntentService() {
                 // for instance during the config activity
                 if (enabledWidget != null) {
                     val widgetStopGroup =
-                        stopGroupRepository.findStopGroup(enabledWidget.identifier)
+                        stopGroupRepository.findStopGroup(enabledWidget.stopGroupIdentifier ?: "")
                     if (widgetStopGroup != null) {
                         val stopGroupName = widgetStopGroup.description
                         val stopIdentifier = widgetStopGroup.identifier

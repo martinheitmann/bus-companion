@@ -12,7 +12,7 @@ import androidx.work.WorkerParameters
 import com.app.skyss_companion.R
 import com.app.skyss_companion.prefs.AppSharedPrefs
 import com.app.skyss_companion.repository.StopGroupRepository
-import com.app.skyss_companion.widget.StopGroupWidgetService
+import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.text.SimpleDateFormat

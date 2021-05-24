@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.stopgroup
 
 import android.app.Application
 import android.util.Log
@@ -8,9 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.model.StopGroup
+import com.app.skyss_companion.model.WidgetType
 import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.repository.FavoriteRepository
-import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -52,7 +52,7 @@ class StopGroupWidgetConfigViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "Persisting widget with id: $widgetId")
             if(widgetId != 0 && identifier.isNotEmpty()){
-                val ew = EnabledWidget(widgetId = widgetId, identifier = identifier)
+                val ew = EnabledWidget(widgetId = widgetId, widgetType = WidgetType.FULL_STOPGROUP, stopGroupIdentifier = identifier)
                 enabledWidgetRepository.insertEnabledWidget(ew)
                 onSuccess(widgetId)
             }

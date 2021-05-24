@@ -29,15 +29,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/time_table_stop_place_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="TextView1"
-                android:textColor="?colorOnPrimary"
-                android:textSize="18sp" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/time_table_stop_place_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="TextView1"
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="18sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/time_table_bookmark_active"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_bookmark_24"
+                    tools:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/time_table_bookmark_inactive"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_bookmark_border_24"
+                    android:visibility="visible"
+                    tools:visibility="gone" />
+            </LinearLayout>
 
 
             <LinearLayout

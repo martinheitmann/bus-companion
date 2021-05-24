@@ -50,12 +50,6 @@ class StopPlaceFragment : Fragment() {
         lineCodesFilterRecyclerView = binding.stopPlaceRecyclerviewLinecodeFilter
         val identifier = arguments?.getString("STOP_IDENTIFIER")
 
-        /*flexboxLayoutManager = FlexboxLayoutManager(context).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            alignItems = AlignItems.CENTER
-        }*/
-
         lineCodesLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         lineCodesFilterLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -70,8 +64,8 @@ class StopPlaceFragment : Fragment() {
         }
 
         if(identifier != null){
-            binding.stopPlaceImagebuttonFavorited.setOnClickListener { viewModel.removeFavorited(identifier) }
-            binding.stopPlaceImagebuttonNotFavorited.setOnClickListener { viewModel.addFavorited(identifier) }
+            binding.stopPlaceImagebuttonBookmarkActive.setOnClickListener { viewModel.removeFavorited(identifier) }
+            binding.stopPlaceImagebuttonBookmarkInactive.setOnClickListener { viewModel.addFavorited(identifier) }
             viewModel.checkIsFavorited(identifier)
             viewModel.fetchStopPlace(identifier)
             viewModel.stopGroup.observe(viewLifecycleOwner, { stopGroup ->
@@ -102,13 +96,13 @@ class StopPlaceFragment : Fragment() {
 
         })
 
-        viewModel.isFavorited.observe(viewLifecycleOwner, { value ->
+        viewModel.isBookmarked.observe(viewLifecycleOwner, { value ->
             if(value){
-                binding.stopPlaceImagebuttonFavorited.visibility = View.VISIBLE
-                binding.stopPlaceImagebuttonNotFavorited.visibility = View.GONE
+                binding.stopPlaceImagebuttonBookmarkActive.visibility = View.VISIBLE
+                binding.stopPlaceImagebuttonBookmarkInactive.visibility = View.GONE
             } else {
-                binding.stopPlaceImagebuttonFavorited.visibility = View.GONE
-                binding.stopPlaceImagebuttonNotFavorited.visibility = View.VISIBLE
+                binding.stopPlaceImagebuttonBookmarkActive.visibility = View.GONE
+                binding.stopPlaceImagebuttonBookmarkInactive.visibility = View.VISIBLE
             }
         })
 

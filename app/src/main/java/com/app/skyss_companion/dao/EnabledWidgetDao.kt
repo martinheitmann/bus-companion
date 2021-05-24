@@ -12,11 +12,17 @@ interface EnabledWidgetDao {
     @Query("SELECT * FROM enabledwidget WHERE widgetId = :appWidgetId")
     fun getOne(appWidgetId: Int): EnabledWidget?
 
-    @Query("SELECT EXISTS(SELECT * FROM enabledwidget WHERE identifier = :identifier)")
-    fun exists(identifier: String) : Flow<Boolean>
+    @Query("SELECT EXISTS(SELECT * FROM enabledwidget WHERE stopGroupIdentifier = :identifier)")
+    fun stopGroupExists(identifier: String) : Flow<Boolean>
 
-    @Query("DELETE FROM enabledwidget WHERE identifier = :identifier")
-    fun delete(identifier: String)
+    @Query("SELECT EXISTS(SELECT * FROM enabledwidget WHERE routeDirectionIdentifier = :identifier)")
+    fun routeDirectionExists(identifier: String) : Flow<Boolean>
+
+    @Query("DELETE FROM enabledwidget WHERE stopGroupIdentifier = :identifier")
+    fun deleteStopGroup(identifier: String)
+
+    @Query("DELETE FROM enabledwidget WHERE routeDirectionIdentifier = :identifier")
+    fun deleteRouteDirection(identifier: String)
 
     @Query("DELETE FROM enabledwidget WHERE widgetId = :widgetId")
     fun delete(widgetId: Int)

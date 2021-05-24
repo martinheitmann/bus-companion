@@ -21,8 +21,13 @@ class EnabledWidgetRepository @Inject constructor(private val enabledWidgetDao: 
     }
 
     @WorkerThread
-    suspend fun exists(identifier: String) : Flow<Boolean> {
-        return enabledWidgetDao.exists(identifier)
+    suspend fun routeDirectionExists(identifier: String) : Flow<Boolean> {
+        return enabledWidgetDao.routeDirectionExists(identifier)
+    }
+
+    @WorkerThread
+    suspend fun stopGroupExists(identifier: String) : Flow<Boolean> {
+        return enabledWidgetDao.stopGroupExists(identifier)
     }
 
     @WorkerThread
@@ -35,28 +40,10 @@ class EnabledWidgetRepository @Inject constructor(private val enabledWidgetDao: 
         return enabledWidgetDao.delete(enabledWidget)
     }
 
-    @WorkerThread
-    suspend fun removeEnabledWidget(identifier: String){
-        return enabledWidgetDao.delete(identifier)
-    }
 
     @WorkerThread
     suspend fun removeEnabledWidget(widgetId: Int){
         return enabledWidgetDao.delete(widgetId)
-    }
-
-    @WorkerThread
-    suspend fun updateEnabledWidgetConfig(widgetId: Int, minW: Int, minH: Int, maxW: Int, maxH: Int){
-        val enabledWidget = enabledWidgetDao.getOne(widgetId)
-        if(enabledWidget != null){
-            val enabledWidgetWithNewConf = enabledWidget.copy(
-                maxWidth = maxW,
-                maxHeight = maxH,
-                minWidth = minW,
-                minHeight = minH
-            )
-            enabledWidgetDao.updateEnabledWidget(enabledWidgetWithNewConf)
-        }
     }
 
 }

@@ -30,11 +30,6 @@ class UpdateEnabledWidgetConfigWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             val widgetId = inputData.getInt("OPTION_APPWIDGET_ID", -1)
-            val maxWidth = inputData.getInt("OPTION_APPWIDGET_MAX_WIDTH", 250)
-            val maxHeight = inputData.getInt("OPTION_APPWIDGET_MAX_HEIGHT", 180)
-            val minWidth = inputData.getInt("OPTION_APPWIDGET_MIN_WIDTH", 0)
-            val minHeight = inputData.getInt("OPTION_APPWIDGET_MIN_HEIGHT", 0)
-            enabledWidgetRepository.updateEnabledWidgetConfig(widgetId, minWidth, minHeight, maxWidth, maxHeight)
             AppWidgetManager.getInstance(appContext).notifyAppWidgetViewDataChanged(widgetId, R.id.widget_stopgroup_listview)
             Result.success()
         } catch (exception: Exception) {

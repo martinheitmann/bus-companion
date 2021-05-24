@@ -66,6 +66,26 @@ class RouteDirectionTimeTableFragment : Fragment() {
             passingTimeListAdapter.setData(it)
         })
 
+        viewModel.checkIsBookmarked(stopIdentifier, routeDirectionIdentifier)
+        viewModel.isBookmarked.observe(viewLifecycleOwner, { isBookmarked ->
+            if(isBookmarked != null && isBookmarked){
+                binding.timeTableBookmarkActive.visibility = View.VISIBLE
+                binding.timeTableBookmarkInactive.visibility = View.GONE
+            }
+            if(isBookmarked != null && !isBookmarked){
+                binding.timeTableBookmarkActive.visibility = View.GONE
+                binding.timeTableBookmarkInactive.visibility = View.VISIBLE
+            }
+        })
+
+        binding.timeTableBookmarkActive.setOnClickListener {
+            viewModel.removeBookmark(stopIdentifier, routeDirectionIdentifier)
+        }
+
+        binding.timeTableBookmarkInactive.setOnClickListener {
+            viewModel.bookmark(routeDirectionIdentifier, stopIdentifier, directionName, stopName, lineNumber)
+        }
+
         viewModel.passingTimeDayTabs.observe(viewLifecycleOwner, {
             Log.d(TAG, "Fragment passingTimeDayTabs observer triggered. ${it.size} items: ${it}.")
             passingTimeDayTabsAdapter.setData(it)

@@ -2,10 +2,7 @@ package com.app.skyss_companion.di
 
 import android.content.Context
 import androidx.room.Room
-import com.app.skyss_companion.dao.EnabledWidgetDao
-import com.app.skyss_companion.dao.FavoriteDao
-import com.app.skyss_companion.dao.RecentlyUsedDao
-import com.app.skyss_companion.dao.StopGroupDao
+import com.app.skyss_companion.dao.*
 import com.app.skyss_companion.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -40,6 +37,18 @@ object DatabaseModule {
     @Provides
     fun provideEnabledWidgetDao(appDatabase: AppDatabase): EnabledWidgetDao {
         return appDatabase.enabledWidgetDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBookmarkedStopGroupDao(appDatabase: AppDatabase): BookmarkedStopGroupDao {
+        return appDatabase.bookmarkedStopGroupDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBookmarkedRouteDirectionDao(appDatabase: AppDatabase): BookmarkedRouteDirectionDao {
+        return appDatabase.bookmarkedRouteDirectionDao()
     }
 
     @Singleton

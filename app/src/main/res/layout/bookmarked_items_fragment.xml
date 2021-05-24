@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.favorites.FavoritesFragment" >
+    tools:context=".view.bookmark.BookmarkedItemsFragment" >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -56,32 +56,21 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorites_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/favorites_textview_empty"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/bookmarked_items_tablayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Du har ikke valgt noen holdeplasser som kan vises i denne listen."
-        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toTopOf="@+id/guideline4"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/bookmarked_items_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmarked_items_tablayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

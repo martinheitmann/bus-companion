@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.work.*
+import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetUpdateService
 import com.app.skyss_companion.workers.RemoveWidgetsWorker
 import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
 
@@ -88,16 +89,7 @@ class MainAppWidgetProvider : AppWidgetProvider() {
             Log.d(TAG, "onAppWidgetOptionsChanged max width/height: $width/$height")
             Log.d(TAG, "onAppWidgetOptionsChanged min width/height: $mWidth/$mHeight")
 
-            val data = workDataOf(
-                "OPTION_APPWIDGET_ID" to appWidgetId,
-                "OPTION_APPWIDGET_MAX_WIDTH" to width,
-                "OPTION_APPWIDGET_MAX_HEIGHT" to width,
-                "OPTION_APPWIDGET_MIN_WIDTH" to mWidth,
-                "OPTION_APPWIDGET_MIN_HEIGHT" to mHeight
-            )
-
             val updateConfigRequest: WorkRequest = OneTimeWorkRequestBuilder<UpdateEnabledWidgetConfigWorker>()
-                .setInputData(data)
                 .build()
 
             WorkManager

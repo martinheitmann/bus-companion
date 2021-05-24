@@ -1,4 +1,4 @@
-package com.app.skyss_companion.view.favorites
+package com.app.skyss_companion.widget.stopgroup
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +11,14 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.misc.SearchStopsDiffUtilCallback
 import com.app.skyss_companion.model.StopGroup
 
-class FavoritesListAdapter(private val onItemTapped: (String) -> Unit) : RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
+class StopGroupWidgetConfigAdapter(private val onItemTapped: (String) -> Unit) : RecyclerView.Adapter<StopGroupWidgetConfigAdapter.ViewHolder>() {
     var dataSet = listOf<StopGroup>()
 
     open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var layout: View = view.findViewById(R.id.search_stops_list_element_framelayout)
-        var title: TextView = view.findViewById(R.id.list_element_title)
+        var card: View = view.findViewById(R.id.widget_config_list_item_card)
+        var title: TextView = view.findViewById(R.id.widget_config_list_item_text)
         var busImage: ImageView = view.findViewById(R.id.imageview_bus)
-        var railImage: ImageView = view.findViewById(
-            R.id.imageview_rail
-        )
+        var railImage: ImageView = view.findViewById(R.id.imageview_rail)
         init {
             // Define click listener for the ViewHolder's View.
         }
@@ -29,14 +27,14 @@ class FavoritesListAdapter(private val onItemTapped: (String) -> Unit) : Recycle
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_stops_list_element, parent, false)
+            .inflate(R.layout.widget_favorite_config_item, parent, false)
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = dataSet[position].description
-        holder.layout.setOnClickListener { onItemTapped(dataSet[position].identifier) }
+        holder.card.setOnClickListener { onItemTapped(dataSet[position].identifier) }
         if(dataSet[position].serviceModes?.contains("Bus") == true){
             holder.busImage.visibility = View.VISIBLE
         } else {
@@ -55,7 +53,7 @@ class FavoritesListAdapter(private val onItemTapped: (String) -> Unit) : Recycle
 
     fun setData(newItems: List<StopGroup>){
         if(newItems.isEmpty()){
-            dataSet = emptyList()
+            dataSet = newItems
             notifyDataSetChanged()
         } else {
             val diffResult = DiffUtil.calculateDiff(SearchStopsDiffUtilCallback(this.dataSet, newItems))

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_tabsContainerFragment_to_stopPlaceFragment"
             app:destination="@id/stopPlaceFragment" />
+        <action
+            android:id="@+id/action_tabsContainerFragment_to_routeDirectionTimeTableFragment"
+            app:destination="@id/routeDirectionTimeTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/stopPlaceFragment"

@@ -13,6 +13,9 @@ interface StopGroupDao {
     @Query("SELECT * FROM stopgroup WHERE identifier = :identifier")
     fun find(identifier: String): StopGroup?
 
+    @Query("SELECT * FROM stopgroup WHERE identifier IN (:identifiers)")
+    fun find(identifiers: List<String>): List<StopGroup>
+
     @Query("SELECT * FROM stopgroup")
     fun getAll(): Flow<List<StopGroup>>
 

@@ -4,9 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.app.skyss_companion.misc.StopPlaceUtils
-import com.app.skyss_companion.model.Favorite
+import com.app.skyss_companion.model.BookmarkedStopGroup
 import com.app.skyss_companion.model.Stop
 import com.app.skyss_companion.model.StopGroup
+import com.app.skyss_companion.repository.BookmarkedStopGroupRepository
 import com.app.skyss_companion.repository.FavoriteRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +22,12 @@ class StopPlaceViewModel @Inject constructor(
     application: Application,
     private val stopPlaceRepository: StopPlaceRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val bookmarkedStopGroupRepository: BookmarkedStopGroupRepository
 ) : AndroidViewModel(application) {
     val TAG = "StopPlaceViewModel"
     val stopGroup: MutableLiveData<StopGroup> = MutableLiveData()
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
-    val isFavorited: MutableLiveData<Boolean> = MutableLiveData()
+    val isBookmarked: MutableLiveData<Boolean> = MutableLiveData()
     val lineCodeFilter: MutableLiveData<List<String>> = MutableLiveData(emptyList())
     val filteredStopPlaceListItems: MediatorLiveData<List<StopPlaceListItem>> = MediatorLiveData()
     val lineCodes = MutableLiveData<List<String>>()
@@ -68,8 +70,11 @@ class StopPlaceViewModel @Inject constructor(
 
     fun checkIsFavorited(identifier: String){
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteRepository.exists(identifier).collect { result ->
+            /*favoriteRepository.exists(identifier).collect { result ->
                 isFavorited.postValue(result)
+            }*/
+            bookmarkedStopGroupRepository.bookmarkedStopGroupExists(identifier).collect { result ->
+                isBookmarked.postValue(result)
             }
         }
     }
@@ -83,15 +88,23 @@ class StopPlaceViewModel @Inject constructor(
     }
 
     fun removeFavorited(identifier: String){
-        viewModelScope.launch(Dispatchers.IO) {
+        /*viewModelScope.launch(Dispatchers.IO) {
             favoriteRepository.removeFavorite(identifier)
+        }*/
+        viewModelScope.launch(Dispatchers.IO) {
+            bookmarkedStopGroupRepository.removeBookmarkedStopGroup(identifier)
         }
+
     }
 
     fun addFavorited(identifier: String){
-        viewModelScope.launch(Dispatchers.IO) {
+        /*viewModelScope.launch(Dispatchers.IO) {
             val favorite = Favorite(identifier)
             favoriteRepository.insertFavorite(favorite)
+        }*/
+        viewModelScope.launch(Dispatchers.IO) {
+            val bookmarkedStopGroup = BookmarkedStopGroup(identifier)
+            bookmarkedStopGroupRepository.insertBookmarkedStopGroup(bookmarkedStopGroup)
         }
     }
 

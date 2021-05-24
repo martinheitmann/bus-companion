@@ -1,13 +1,11 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.stopgroup
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
-import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import android.widget.TextView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.misc.StopPlaceUtils
 import com.app.skyss_companion.model.EnabledWidget
@@ -18,6 +16,7 @@ import com.app.skyss_companion.repository.StopPlaceRepository
 import com.app.skyss_companion.view.stop_place.StopPlaceListDivider
 import com.app.skyss_companion.view.stop_place.StopPlaceListEntry
 import com.app.skyss_companion.view.stop_place.StopPlaceListItem
+import com.app.skyss_companion.widget.WidgetUtils
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
@@ -33,7 +32,6 @@ class StopGroupRemoteViewsFactory(
     val TAG = "FavoriteRemoteVF"
 
     var listItems: List<StopPlaceListItem> = listOf()
-    var blocks: Int = 3
     var prefsBlocks: Int? = 3
     var stopGroupId: String? = intent.extras?.get("STOP_IDENTIFIER") as String
     var widgetId: Int = intent.extras?.get("APPWIDGET_ID") as Int? ?: -1
@@ -44,7 +42,6 @@ class StopGroupRemoteViewsFactory(
         Log.d(TAG, "onDataSetChanged triggered for factory:  " + this.hashCode())
         val mStopGroupId = stopGroupId
         val widgetConfig = fetchWidgetConfigBlocking(widgetId) //Blocking call!
-        blocks = WidgetUtils.limitDisplayedItems(widgetConfig?.maxWidth ?: 250, widgetConfig?.minWidth ?: 180)
         prefsBlocks = fetchCellNumberBlocking()
         Log.d(TAG, "prefsblock number fetched: $prefsBlocks")
         if(mStopGroupId != null){

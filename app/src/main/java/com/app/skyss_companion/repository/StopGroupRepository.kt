@@ -55,4 +55,9 @@ class StopGroupRepository @Inject constructor(private val stopGroupDao: StopGrou
        return allStopGroups.map { stopGroupsList -> stopGroupsList.filter { stopGroup -> stopGroup.description?.contains(searchTerm, ignoreCase = true) ?: false } }
     }
 
+    @WorkerThread
+    suspend fun findStopGroupsByIdentifiers(identifiers: List<String>): List<StopGroup> {
+        return stopGroupDao.find(identifiers)
+    }
+
 }

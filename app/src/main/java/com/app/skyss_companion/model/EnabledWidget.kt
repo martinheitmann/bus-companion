@@ -8,9 +8,7 @@ import java.io.Serializable
 data class EnabledWidget(
     @PrimaryKey(autoGenerate = true) var id: Int? = null,
     val widgetId: Int,
-    val identifier: String,
-    val minWidth: Int? = null,
-    val minHeight: Int? = null,
-    val maxWidth: Int? = null,
-    val maxHeight: Int? = null,
+    val widgetType: WidgetType? = null,
+    val stopGroupIdentifier: String? = null,
+    val routeDirectionIdentifier: String? = null,
 ) : Serializable

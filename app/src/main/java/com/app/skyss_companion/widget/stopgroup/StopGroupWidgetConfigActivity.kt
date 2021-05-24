@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.stopgroup
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.WidgetFavoritesConfigBinding
-import com.app.skyss_companion.view.favorites.StopGroupWidgetConfigAdapter
+import com.app.skyss_companion.widget.MainAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 

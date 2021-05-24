@@ -31,23 +31,24 @@ class TabsContainerFragment : Fragment() {
         tabsContainerAdapter = TabsContainerAdapter(this)
         viewPager.adapter = tabsContainerAdapter
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when(position){
-                0 -> {
-                    tab.text = "Favoritter"
-                    tab.setIcon(R.drawable.ic_baseline_star_24)
-                }
-                1 -> {
-                    tab.text = "Søk"
-                    tab.setIcon(R.drawable.ic_baseline_search_24)
-                }
-                2 -> {
-                    tab.text = "Instillinger"
-                    tab.setIcon(R.drawable.ic_baseline_settings_24)
+        val tabConfigurationStrategy =
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                when (position) {
+                    0 -> {
+                        tab.text = "Favoritter"
+                        tab.setIcon(R.drawable.ic_baseline_star_24)
+                    }
+                    1 -> {
+                        tab.text = "Søk"
+                        tab.setIcon(R.drawable.ic_baseline_search_24)
+                    }
+                    2 -> {
+                        tab.text = "Instillinger"
+                        tab.setIcon(R.drawable.ic_baseline_settings_24)
+                    }
                 }
             }
-            viewPager.currentItem = position
-        }.attach()
-        viewPager.currentItem = 0
+
+        TabLayoutMediator(tabLayout, viewPager, tabConfigurationStrategy).attach()
     }
 }

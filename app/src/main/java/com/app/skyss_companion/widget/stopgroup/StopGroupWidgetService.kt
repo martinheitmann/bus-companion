@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.stopgroup
 
 import android.content.Intent
 import android.widget.RemoteViewsService
