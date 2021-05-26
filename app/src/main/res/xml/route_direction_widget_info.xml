@@ -4,7 +4,7 @@
     android:initialLayout="@layout/widget_view_passingtimes"
     android:configure="com.app.skyss_companion.widget.routedirection.RouteDirectionWidgetConfigActivity"
     android:minWidth="250dp"
-    android:minHeight="180dp"
+    android:minHeight="80dp"
     android:previewImage="@drawable/example_appwidget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"

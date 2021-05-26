@@ -8,12 +8,17 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.JobIntentService
 import com.app.skyss_companion.R
-import com.app.skyss_companion.model.EnabledWidget
+import com.app.skyss_companion.model.PassingTime
+import com.app.skyss_companion.model.TimeTable
+import com.app.skyss_companion.prefs.AppSharedPrefs
 import com.app.skyss_companion.repository.*
+import com.app.skyss_companion.widget.RouteDirectionAppWidgetProvider
 import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -33,6 +38,9 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
     @Inject
     lateinit var enabledWidgetRepository: EnabledWidgetRepository
 
+    @Inject
+    lateinit var sharedPrefs: AppSharedPrefs
+
     override fun onHandleWork(mIntent: Intent) {
         Log.d(TAG, "onHandleWork invoked.")
         serviceScope.launch(Dispatchers.IO) {
@@ -46,10 +54,12 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
                         stopGroupIdentifier,
                         routeDirectionIdentifier
                     )?.let { bookmarkedRouteDirection ->
-                        val currentDate = getAndFormatCurrentDate()
+                        val sharedPrefsLimit = fetchCellNumber()
+                        val currentDate: String = getAndFormatCurrentDate()
                         val displayDates = fetchTimeTableDates(
                             enabledWidget.stopGroupIdentifier,
-                            enabledWidget.routeDirectionIdentifier
+                            enabledWidget.routeDirectionIdentifier,
+                            sharedPrefsLimit
                         )
                         val intentSync = createSyncIntent(enabledWidget.widgetId)
                         val pendingSync = PendingIntent.getBroadcast(
@@ -120,7 +130,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
             R.layout.widget_view_passingtimes
         ).apply {
             removeAllViews(R.id.widget_passing_times_time_container)
-            setTextViewText(R.id.widget_stopgroup_tv_updated, fullDateString)
+            setTextViewText(R.id.widget_passing_times_last_updated, fullDateString)
             setTextViewText(R.id.widget_passing_times_linecode, lineCode)
             setTextViewText(R.id.widget_passing_times_name, routeDirectionName)
             setTextViewText(R.id.widget_passing_times_stop_group_name, stopGroupName)
@@ -147,7 +157,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
      * Creates the intent needed for the sync/refresh button to function.
      */
     private fun createSyncIntent(appWidgetId: Int): Intent {
-        val intentSync = Intent(applicationContext, StopGroupAppWidgetProvider::class.java)
+        val intentSync = Intent(applicationContext, RouteDirectionAppWidgetProvider::class.java)
         intentSync.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         intentSync.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         return intentSync
@@ -155,17 +165,44 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
 
     private suspend fun fetchTimeTableDates(
         stopGroupIdentifier: String,
-        routeDirectionIdentifier: String
+        routeDirectionIdentifier: String,
+        limit: Int
     ): List<String>? {
         val timeTables =
             timeTableRepository.fetchTimeTables(stopGroupIdentifier, routeDirectionIdentifier, 0)
         if (timeTables.isNotEmpty()) {
             timeTables[0].let { dateTimeTable ->
-                return dateTimeTable.timeTable.passingTimes?.mapNotNull { passingTime ->
+                val filteredTimeTable = filterPassedDisplayTimes(dateTimeTable.timeTable, limit)
+                return filteredTimeTable?.mapNotNull { passingTime ->
                     passingTime.displayTime
                 }
             }
         }
         return null
+    }
+
+    private fun filterPassedDisplayTimes(tt: TimeTable, limit: Int): List<PassingTime>? {
+        return tt.passingTimes?.filter { passingTime ->
+            LocalDateTime.parse(
+                passingTime.timestamp,
+                DateTimeFormatter.ofPattern(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                    Locale.getDefault()
+                )
+            ).isAfter(LocalDateTime.now())
+        }?.take(limit)
+    }
+
+    private suspend fun fetchCellNumber(): Int {
+        try {
+            val cellNumber: String? = sharedPrefs.readWidgetTimeItemsLimit()
+            if(cellNumber != null) {
+                return cellNumber?.toInt()
+            }
+            return 3
+        } catch (exception: Throwable){
+            Log.d(TAG, exception.stackTraceToString())
+            return 3
+        }
     }
 }
