@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StopGroupWidgetService : RemoteViewsService() {
+class StopGroupWidgetRemoteViewsService : RemoteViewsService() {
 
     @Inject lateinit var stopPlaceRepository: StopPlaceRepository
     @Inject lateinit var enabledWidgetRepository: EnabledWidgetRepository

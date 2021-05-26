@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.stopgroup
+package com.app.skyss_companion.widget.routedirection
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -9,28 +9,29 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.skyss_companion.databinding.WidgetFavoritesConfigBinding
+import com.app.skyss_companion.databinding.WidgetViewPassingtimesConfigActivityBinding
+import com.app.skyss_companion.widget.RouteDirectionAppWidgetProvider
 import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class StopGroupWidgetConfigActivity : AppCompatActivity() {
-    val TAG = "FWidgetConfigActivity"
+class RouteDirectionWidgetConfigActivity : AppCompatActivity() {
+    val TAG = "RDidgetConfigActivity"
     var mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
-    private lateinit var binding: WidgetFavoritesConfigBinding
+    private lateinit var binding: WidgetViewPassingtimesConfigActivityBinding
 
-    private val viewModel: StopGroupWidgetConfigViewModel by viewModels()
+    private val viewModel: RouteDirectionWidgetConfigViewModel by viewModels()
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: LinearLayoutManager
-    lateinit var adapter: StopGroupWidgetConfigAdapter
+    lateinit var adapter: RouteDirectionWidgetConfigAdapter
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         Log.d(TAG, "onCreate")
         // Set the view layout resource to use.
-        binding = WidgetFavoritesConfigBinding.inflate(layoutInflater)
+        binding = WidgetViewPassingtimesConfigActivityBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
     }
@@ -39,21 +40,19 @@ class StopGroupWidgetConfigActivity : AppCompatActivity() {
         super.onStart()
 
         // Set up recyclerview components
-        recyclerView = binding.favoritesConfigRecyclerview
+        recyclerView = binding.passingtimesConfigRecyclerview
         layoutManager = LinearLayoutManager(this)
-        adapter = StopGroupWidgetConfigAdapter {
-            onItemSelected(it)
-        }
+        adapter = RouteDirectionWidgetConfigAdapter(::onItemSelected)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
         viewModel.isLoading.observe(this, {
             if(it){
-                binding.favoritesConfigRecyclerview.visibility = View.GONE
-                binding.favoritesConfigProgressbar.visibility = View.VISIBLE
+                binding.passingtimesConfigRecyclerview.visibility = View.GONE
+                binding.passingtimesConfigProgressbar.visibility = View.VISIBLE
             } else {
-                binding.favoritesConfigRecyclerview.visibility = View.VISIBLE
-                binding.favoritesConfigProgressbar.visibility = View.GONE
+                binding.passingtimesConfigRecyclerview.visibility = View.VISIBLE
+                binding.passingtimesConfigProgressbar.visibility = View.GONE
             }
         })
 
@@ -74,21 +73,20 @@ class StopGroupWidgetConfigActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel.bookmarkedStopGroups.observe(this, {
+        viewModel.bookmarkedRouteDirections.observe(this, {
             adapter.setData(it)
         })
     }
 
-    private fun onItemSelected(id: String){
+    private fun onItemSelected(routeDirectionIdentifier: String, stopGroupIdentifier: String){
         if(mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID){
-            Log.d(TAG, "Widget item with id $id selected")
-            viewModel.persistEnabledWidget(mAppWidgetId, id, ::setupWidget)
+            viewModel.persistEnabledWidget(mAppWidgetId, stopGroupIdentifier, routeDirectionIdentifier, ::setupWidget)
         }
     }
 
-    private fun setupWidget(appWidgetId: Int,){
+    private fun setupWidget(appWidgetId: Int){
         // Push widget update to surface with newly set prefix
-        StopGroupAppWidgetProvider().updateAppWidget(this, appWidgetId)
+        RouteDirectionAppWidgetProvider().updateAppWidget(this, appWidgetId)
         // Make sure we pass back the original appWidgetId
         val resultValue = Intent()
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

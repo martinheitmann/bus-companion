@@ -17,7 +17,8 @@
         android:fullBackupContent="@xml/backup_descriptor">
 
         <receiver
-            android:name=".widget.MainAppWidgetProvider"
+            android:name=".widget.StopGroupAppWidgetProvider"
+            android:label="Holdeplass"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="true">
             <intent-filter>
@@ -27,6 +28,20 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorites_list_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.RouteDirectionAppWidgetProvider"
+            android:label="Linje"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/route_direction_widget_info" />
         </receiver>
 
         <provider
@@ -47,12 +62,21 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <activity android:name=".widget.routedirection.RouteDirectionWidgetConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <service
-            android:name=".widget.stopgroup.StopGroupWidgetService"
+            android:name=".widget.stopgroup.StopGroupWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
             android:name=".widget.stopgroup.StopGroupWidgetUpdateService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".widget.routedirection.RouteDirectionWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 </manifest>

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.work.*
+import com.app.skyss_companion.widget.routedirection.RouteDirectionWidgetUpdateService
 import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetUpdateService
 import com.app.skyss_companion.workers.RemoveWidgetsWorker
 import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
@@ -15,8 +16,8 @@ import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
 /**
  * Implementation of App Widget functionality.
  */
-class MainAppWidgetProvider : AppWidgetProvider() {
-    val TAG = "FavoritesLWProvider"
+class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
+    val TAG = "RouteDirWidgetProvider"
 
     // We have to invoke this in order to update the widget from
     // a button on the app widget.
@@ -107,7 +108,11 @@ class MainAppWidgetProvider : AppWidgetProvider() {
         Log.d(TAG, "updateAppWidget called with appWidgetId $appWidgetId")
         val intent: Intent = mIntent ?: Intent()
         intent.putExtra("APP_WIDGET_ID", appWidgetId)
-        if(refresh == true) intent.putExtra("APP_WIDGET_REFRESH", true)
-        JobIntentService.enqueueWork(context, StopGroupWidgetUpdateService::class.java, 0, intent)
+        JobIntentService.enqueueWork(
+            context,
+            RouteDirectionWidgetUpdateService::class.java,
+            2,
+            intent
+        )
     }
 }

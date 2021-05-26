@@ -11,7 +11,7 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
-import com.app.skyss_companion.widget.MainAppWidgetProvider
+import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class StopGroupWidgetUpdateService : JobIntentService() {
-    private val TAG = "UpdateService"
+    private val TAG = "StopGroupWidgetUpdService"
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
@@ -37,9 +37,7 @@ class StopGroupWidgetUpdateService : JobIntentService() {
     override fun onHandleWork(mIntent: Intent) {
         serviceScope.launch(Dispatchers.IO) {
             val manager = AppWidgetManager.getInstance(applicationContext)
-            val appWidgetId = mIntent.extras?.get("APP_WIDGET_ID") as Int?
-
-            if (appWidgetId != null) {
+                val appWidgetId = mIntent.extras?.get("APP_WIDGET_ID") as Int
                 val enabledWidget = enabledWidgetRepository.getEnabledWidget(appWidgetId)
                 // We need this check to fail if the widget hasn't been added yet,
                 // for instance during the config activity
@@ -52,12 +50,12 @@ class StopGroupWidgetUpdateService : JobIntentService() {
                         val date: String = getAndFormatCurrentDate()
 
                         // Create intents for the adapter and refresh button
-                        val intent = createAdapterIntent(stopIdentifier, appWidgetId)
-                        val intentSync = createSyncIntent(appWidgetId)
+                        val intent = createAdapterIntent(stopIdentifier, enabledWidget.widgetId)
+                        val intentSync = createSyncIntent(enabledWidget.widgetId)
 
                         val pendingSync = PendingIntent.getBroadcast(
                             applicationContext,
-                            appWidgetId, // IMPORTANT: Use a unique request code!
+                            enabledWidget.widgetId, // IMPORTANT: Use a unique request code!
                             intentSync,
                             PendingIntent.FLAG_ONE_SHOT
                         )
@@ -66,13 +64,13 @@ class StopGroupWidgetUpdateService : JobIntentService() {
                         val rv = createRemoteViews(intent, date, stopGroupName, pendingSync)
                         // If this isn't called explicitly, the widget won't refresh row column count on manual refresh
                         manager.notifyAppWidgetViewDataChanged(
-                            appWidgetId,
+                            enabledWidget.widgetId,
                             R.id.widget_stopgroup_listview
                         )
-                        manager.updateAppWidget(appWidgetId, rv)
+                        manager.updateAppWidget(enabledWidget.widgetId, rv)
                     }
                 }
-            }
+
         }
     }
 
@@ -134,7 +132,7 @@ class StopGroupWidgetUpdateService : JobIntentService() {
         stopIdentifier: String?,
         appWidgetId: Int,
     ): Intent {
-        return Intent(applicationContext, StopGroupWidgetService::class.java).apply {
+        return Intent(applicationContext, StopGroupWidgetRemoteViewsService::class.java).apply {
             // Add the app widget ID to the intent extras.
             putExtra("STOP_IDENTIFIER", stopIdentifier ?: "")
             putExtra("APPWIDGET_ID", appWidgetId)
@@ -148,7 +146,7 @@ class StopGroupWidgetUpdateService : JobIntentService() {
      * Creates the intent needed for the sync/refresh button to function.
      */
     private fun createSyncIntent(appWidgetId: Int): Intent {
-        val intentSync = Intent(applicationContext, MainAppWidgetProvider::class.java)
+        val intentSync = Intent(applicationContext, StopGroupAppWidgetProvider::class.java)
         intentSync.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         intentSync.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         return intentSync

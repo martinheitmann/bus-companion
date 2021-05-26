@@ -9,8 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.model.StopGroup
 import com.app.skyss_companion.model.WidgetType
+import com.app.skyss_companion.repository.BookmarkedStopGroupRepository
 import com.app.skyss_companion.repository.EnabledWidgetRepository
-import com.app.skyss_companion.repository.FavoriteRepository
+import com.app.skyss_companion.repository.StopGroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,24 +22,25 @@ import javax.inject.Inject
 @HiltViewModel
 class StopGroupWidgetConfigViewModel @Inject constructor(
     application: Application,
-    private val favoriteRepository: FavoriteRepository,
+    private val bookmarkedStopGroupRepository: BookmarkedStopGroupRepository,
+    private val stopGroupRepository: StopGroupRepository,
     private val enabledWidgetRepository: EnabledWidgetRepository,
     private val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
     val TAG = "FavoritesWidgetConfigVM"
     val isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    val favoritedStopGroups: MutableLiveData<List<StopGroup>> = MutableLiveData()
+    val bookmarkedStopGroups: MutableLiveData<List<StopGroup>> = MutableLiveData()
     var coroutineJob: Job? = null
 
     init {
         try {
             isLoading.postValue(true)
             coroutineJob = viewModelScope.launch(Dispatchers.IO) {
-                favoriteRepository.getFavorites().collect { res ->
-                    val fetchedFavoritedStopGroups = favoriteRepository.getFavoritedStopGroups(
-                        res.map { _res -> _res.identifier }
+                bookmarkedStopGroupRepository.getAllBookmarkedStopGroups().collect { res ->
+                    val fetchedBookmarkedStopGroups = stopGroupRepository.findStopGroupsByIdentifiers(
+                        res.map { _res -> _res.stopGroupIdentifier }
                     )
-                    favoritedStopGroups.postValue(fetchedFavoritedStopGroups)
+                    bookmarkedStopGroups.postValue(fetchedBookmarkedStopGroups)
                 }
             }
         } catch(e: Throwable){
