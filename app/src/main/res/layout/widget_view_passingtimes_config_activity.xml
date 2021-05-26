@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Gjør flere holdeplasser tilgjengelig som widget ved å legge dem til som favoritter."
+            android:text="Gjør flere linjer tilgjengelig som widget ved å lagre dem i appen."
             android:textColor="?colorOnPrimary" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

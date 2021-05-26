@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:gravity="left|center_vertical"
-                android:text="Favoritter"
+                android:text="Lagrede holdeplasser og linjer"
                 android:textColor="?colorOnPrimary"
                 android:textSize="20sp"
                 tools:ignore="RtlHardcoded" />
@@ -50,7 +50,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Holderplasser tilgjengelig i denne listen er også tilgjengelig som widget på hjem-skjermen."
+                android:text="Holderplasser og linjer tilgjengelig i denne listen er også tilgjengelig som widget på hjem-skjermen."
                 android:textColor="?colorOnPrimary" />
         </LinearLayout>
 
