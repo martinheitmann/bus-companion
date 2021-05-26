@@ -89,7 +89,10 @@
             android:id="@+id/widget_passing_times_time_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"></LinearLayout>
     </LinearLayout>
 
