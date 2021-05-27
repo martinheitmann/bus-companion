@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
@@ -187,8 +188,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
                 passingTime.timestamp,
                 DateTimeFormatter.ofPattern(
                     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                    Locale.getDefault()
-                )
+                ).withZone(ZoneId.of("Europe/Oslo"))
             ).isAfter(LocalDateTime.now())
         }?.take(limit)
     }

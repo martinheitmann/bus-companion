@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
@@ -130,9 +131,8 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
                     LocalDateTime.parse(
                         passingTime.timestamp,
                         DateTimeFormatter.ofPattern(
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                            Locale.getDefault()
-                        )
+                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                        ).withZone(ZoneId.of("Europe/Oslo"))
                     ).isAfter(LocalDateTime.now())
                 }
                 ?.forEach { passingTime ->
