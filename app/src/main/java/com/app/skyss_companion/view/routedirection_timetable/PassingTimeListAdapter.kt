@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 
@@ -14,6 +15,7 @@ class PassingTimeListAdapter(private val context: Context, private val onTap: (I
     var dataSet = listOf<PassingTimeListItem>()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var card: CardView = view.findViewById(R.id.route_direction_time_table_list_item_card)
         var displayTime: TextView = view.findViewById(R.id.route_direction_time_table_list_item_textview)
         fun bind(position: Int, onTap: (Int) -> Unit){
             displayTime.text = dataSet[position].displayTime

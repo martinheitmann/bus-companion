@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.JobIntentService
 import com.app.skyss_companion.R
+import com.app.skyss_companion.misc.DateUtils
 import com.app.skyss_companion.model.PassingTime
 import com.app.skyss_companion.model.TimeTable
 import com.app.skyss_companion.prefs.AppSharedPrefs
@@ -183,13 +184,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
     }
 
     private fun filterPassedDisplayTimes(tt: TimeTable, limit: Int): List<PassingTime>? {
-        return tt.passingTimes?.filter { passingTime ->
-            LocalDateTime.parse(
-                passingTime.timestamp,
-                DateTimeFormatter.ofPattern(
-                    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                ).withZone(ZoneId.of("Europe/Oslo"))
-            ).isAfter(LocalDateTime.now())
+        return tt.passingTimes?.filter { passingTime -> DateUtils.isAfterNow(passingTime.timestamp, DateUtils.DATE_PATTERN)
         }?.take(limit)
     }
 

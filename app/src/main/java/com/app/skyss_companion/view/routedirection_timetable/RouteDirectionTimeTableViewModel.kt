@@ -6,7 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.skyss_companion.misc.DateUtils
 import com.app.skyss_companion.model.BookmarkedRouteDirection
+import com.app.skyss_companion.model.PassingTime
 import com.app.skyss_companion.repository.BookmarkedRouteDirectionRepository
 import com.app.skyss_companion.repository.TimeTableRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -123,24 +125,16 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
         return items
     }
 
-    fun getTimeTablesPassingTimes(timeTables: List<DateTimeTable>): List<PassingTimeListItem> {
+    private fun getTimeTablesPassingTimes(timeTables: List<DateTimeTable>): List<PassingTimeListItem> {
         var displayItems = emptyList<PassingTimeListItem>()
         timeTables.forEach { timeTable ->
-            timeTable.timeTable.passingTimes
-                ?.filter { passingTime ->
-                    LocalDateTime.parse(
-                        passingTime.timestamp,
-                        DateTimeFormatter.ofPattern(
-                            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-                        ).withZone(ZoneId.of("Europe/Oslo"))
-                    ).isAfter(LocalDateTime.now())
-                }
-                ?.forEach { passingTime ->
-                    val formatter = DateTimeFormatter.ofPattern(
-                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        Locale.getDefault()
-                    )
-                    val localDateTime = LocalDateTime.parse(passingTime.timestamp, formatter)
+            Log.d(TAG, "Passing times before filtering: ${timeTable.timeTable.passingTimes}")
+             val ftt = timeTable.timeTable.passingTimes
+                ?.filter { passingTime -> DateUtils.isAfterNow(passingTime.timestamp, DateUtils.DATE_PATTERN) }
+            Log.d(TAG, "Date being filtered after: ${LocalDateTime.now()}")
+            Log.d(TAG, "Passing times after filtering: $ftt")
+                ftt?.forEach { passingTime ->
+                    val localDateTime = DateUtils.formatDate(passingTime.timestamp, DateUtils.DATE_PATTERN)
                     val displayItem = PassingTimeListItem(
                         tripIdentifier = passingTime.tripIdentifier ?: "",
                         displayTime = passingTime.displayTime ?: "",
