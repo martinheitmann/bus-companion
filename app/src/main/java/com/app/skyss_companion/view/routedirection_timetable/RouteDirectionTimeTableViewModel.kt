@@ -52,7 +52,6 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
             val filteredItems = applyFilter(selectedDayTab, items)
             passingTimeListItems.postValue(filteredItems)
         }
-
     }
 
     fun checkIsBookmarked(stopGroupIdentifier: String, routeDirectionIdentifier: String){

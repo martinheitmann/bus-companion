@@ -109,6 +109,10 @@ class StopPlaceFragment : Fragment() {
         binding.stopPlaceBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.stopPlaceImagebuttonRefresh.setOnClickListener {
+            identifier?.let { viewModel.fetchStopPlace(it) }
+        }
     }
 
     private fun navigateToTimeTable(stopIdentifier: String?, routeDirectionIdentifier: String?, stopName: String?, directionName: String?, lineNumber: String?){

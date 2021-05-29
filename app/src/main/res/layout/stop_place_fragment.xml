@@ -40,22 +40,31 @@
             <ImageButton
                 android:id="@+id/stop_place_imagebutton_bookmark_inactive"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:contentDescription="TODO"
                 android:src="@drawable/ic_baseline_bookmark_border_24"
-                tools:visibility="gone"
-                app:tint="#CCFFFFFF" />
+                app:tint="#CCFFFFFF"
+                tools:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/stop_place_imagebutton_bookmark_active"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="TODO"
                 android:src="@drawable/ic_baseline_bookmark_24"
-                tools:visibility="gone"
+                app:tint="#CCFFFFFF"
+                tools:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/stop_place_imagebutton_refresh"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_refresh_24"
                 app:tint="#CCFFFFFF" />
+
         </LinearLayout>
 
         <LinearLayout

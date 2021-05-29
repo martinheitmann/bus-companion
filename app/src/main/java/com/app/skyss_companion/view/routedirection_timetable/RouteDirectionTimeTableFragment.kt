@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -84,6 +85,18 @@ class RouteDirectionTimeTableFragment : Fragment() {
 
         binding.timeTableBookmarkInactive.setOnClickListener {
             viewModel.bookmark(routeDirectionIdentifier, stopIdentifier, directionName, stopName, lineNumber)
+        }
+
+        binding.timeTableBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.timeTableStopPlaceName.setOnClickListener {
+            // findNavController().popBackStack()
+        }
+
+        binding.timeTableRefreshButton.setOnClickListener {
+            viewModel.fetchTimeTables(stopIdentifier, routeDirectionIdentifier)
         }
 
         viewModel.passingTimeDayTabs.observe(viewLifecycleOwner, {
