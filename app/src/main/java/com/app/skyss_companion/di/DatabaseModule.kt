@@ -53,6 +53,12 @@ object DatabaseModule {
 
     @Singleton
     @Provides
+    fun providePassingTimeAlertDao(appDatabase: AppDatabase): PassingTimeAlertDao {
+        return appDatabase.passingTimeAlertDao()
+    }
+
+    @Singleton
+    @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context.applicationContext,

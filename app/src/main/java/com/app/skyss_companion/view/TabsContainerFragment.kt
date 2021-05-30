@@ -35,14 +35,18 @@ class TabsContainerFragment : Fragment() {
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 when (position) {
                     0 -> {
-                        tab.text = "Favoritter"
-                        tab.setIcon(R.drawable.ic_baseline_star_24)
+                        tab.text = "Bokmerker"
+                        tab.setIcon(R.drawable.ic_baseline_bookmark_24)
                     }
                     1 -> {
                         tab.text = "Søk"
                         tab.setIcon(R.drawable.ic_baseline_search_24)
                     }
                     2 -> {
+                        tab.text = "Varsler"
+                        tab.setIcon(R.drawable.ic_baseline_notifications_24)
+                    }
+                    3 -> {
                         tab.text = "Instillinger"
                         tab.setIcon(R.drawable.ic_baseline_settings_24)
                     }
