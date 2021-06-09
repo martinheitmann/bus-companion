@@ -1,23 +1,54 @@
 package com.app.skyss_companion.misc
 
-import java.time.LocalDateTime
-import java.time.ZoneId
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.time.*
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DateUtils {
     companion object {
-        val DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        const val TAG = "DateUtils"
+        const val DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
         fun isAfterNow(s: String?, formatterPattern: String): Boolean {
-            return LocalDateTime.parse(
-                s,
-                getFormatter(formatterPattern)
-            ).isAfter(LocalDateTime.now())
+            if (s != null) {
+                val zonedDateTime = parseUtcDateStringToEuOsloTimeZone(s)
+                if(zonedDateTime.isAfter(ZonedDateTime.now())) return true
+                return false
+            }
+            return false
+        }
+
+        fun parseUtcDateStringToEuOsloTimeZone(s: String): ZonedDateTime {
+            val ldt = parseDateStringToLocalDateTime(
+                s, getFormatter(
+                    DATE_PATTERN
+                )
+            )
+            val zdt1 = convertLocalDateTimeToUtcZonedDateTime(ldt)
+            return changeZoneForZonedDateTime(zdt1)
         }
 
         fun getFormatter(pattern: String): DateTimeFormatter {
             return DateTimeFormatter.ofPattern(pattern)
-                .withZone(ZoneId.of("Europe/Oslo"))
+        }
+
+        fun convertLocalDateTimeToUtcOffsetDateTime(ldt: LocalDateTime): OffsetDateTime {
+            return ldt.atZone(ZoneId.of("UTC"))
+                .toOffsetDateTime()
+        }
+
+        fun changeZoneForZonedDateTime(zdt: ZonedDateTime): ZonedDateTime {
+            return zdt.withZoneSameInstant(ZoneId.of("Europe/Oslo"))
+        }
+
+        fun convertLocalDateTimeToUtcZonedDateTime(ldt: LocalDateTime): ZonedDateTime {
+            return ldt.atZone(ZoneId.of("UTC"))
+        }
+
+        fun parseDateStringToLocalDateTime(s: String, formatter: DateTimeFormatter): LocalDateTime {
+            return LocalDateTime.parse(s, formatter)
         }
 
         fun formatDate(s: String?, pattern: String): LocalDateTime {

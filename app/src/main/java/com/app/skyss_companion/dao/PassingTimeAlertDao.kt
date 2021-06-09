@@ -16,11 +16,11 @@ interface PassingTimeAlertDao {
     fun delete(id: Int)
 
     @Insert
-    fun insert(stopGroup: PassingTimeAlert)
+    fun insert(passingTimeAlert: PassingTimeAlert)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(stopGroup: List<PassingTimeAlert>)
+    fun insertAll(passingTimeAlert: List<PassingTimeAlert>)
 
     @Delete
-    fun delete(stopGroup: PassingTimeAlert)
+    fun delete(passingTimeAlert: PassingTimeAlert)
 }
