@@ -4,7 +4,11 @@ import androidx.room.*
 import com.app.skyss_companion.dao.*
 import com.app.skyss_companion.model.*
 
-@Database(entities = [StopGroup::class, Favorite::class, EnabledWidget::class, RecentlyUsed::class, BookmarkedRouteDirection::class, BookmarkedStopGroup::class, PassingTimeAlert::class], version = 1)
+@Database(
+    entities = [StopGroup::class, Favorite::class, EnabledWidget::class, RecentlyUsed::class, BookmarkedRouteDirection::class, BookmarkedStopGroup::class, PassingTimeAlert::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun stopGroupDao(): StopGroupDao
