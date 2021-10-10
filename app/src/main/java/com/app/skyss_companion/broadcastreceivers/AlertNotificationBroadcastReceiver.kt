@@ -92,9 +92,8 @@ class AlertNotificationBroadcastReceiver : BroadcastReceiver() {
                         val displayTime = passingTime?.displayTime
                         if (displayTime != null) {
                             //val notificationIntent = NotificationUtils.createAlertNotificationIntent(context)
-                            val notificationIntent =
-                                NotificationUtils.createAlertNotificationClickActionIntent(
-                                    context,
+                            val notificationBundle =
+                                NotificationUtils.createAlertNotificationClickActionBundle(
                                     stopIdentifier = stopIdentifier,
                                     routeDirectionIdentifier = routeDirectionIdentifier,
                                     stopName = stopName,
@@ -102,14 +101,15 @@ class AlertNotificationBroadcastReceiver : BroadcastReceiver() {
                                     lineNumber = lineNumber
                                 )
                             val notificationPendingIntent =
-                                NotificationUtils.createNotificationPendingIntent(
-                                    context, 0, notificationIntent
+                                NotificationUtils.createNotificationClickActionDeepLinkPendingIntent(
+                                    context, notificationBundle
                                 )
 
                             val notificationText =
                                 NotificationUtils.getAlertNotificationTextPreformatted(
                                     stopName = stopName,
                                     lineNumber = lineNumber,
+                                    lineName = directionName,
                                     date = displayTime
                                 )
                             val notificationTitle = NotificationUtils.getAlertNotificationTitle(
@@ -133,9 +133,8 @@ class AlertNotificationBroadcastReceiver : BroadcastReceiver() {
                     // If the operation didn't finish quickly enough,
                     // just show the regular notification.
                     //val notificationIntent = NotificationUtils.createAlertNotificationIntent(context)
-                    val notificationIntent =
-                        NotificationUtils.createAlertNotificationClickActionIntent(
-                            context,
+                    val notificationBundle =
+                        NotificationUtils.createAlertNotificationClickActionBundle(
                             stopIdentifier = stopIdentifier,
                             routeDirectionIdentifier = routeDirectionIdentifier,
                             stopName = stopName,
@@ -143,14 +142,15 @@ class AlertNotificationBroadcastReceiver : BroadcastReceiver() {
                             lineNumber = lineNumber
                         )
                     val notificationPendingIntent =
-                        NotificationUtils.createNotificationPendingIntent(
-                            context, 0, notificationIntent
+                        NotificationUtils.createNotificationClickActionDeepLinkPendingIntent(
+                            context, notificationBundle
                         )
 
                     val notificationText =
                         NotificationUtils.getAlertNotificationTextPreformatted(
                             stopName = stopName,
                             lineNumber = lineNumber,
+                            lineName = directionName,
                             date = "$departureHour:$departureMinute"
                         )
                     val notificationTitle = NotificationUtils.getAlertNotificationTitle(

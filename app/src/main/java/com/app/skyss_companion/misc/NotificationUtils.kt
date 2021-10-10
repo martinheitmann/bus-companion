@@ -11,13 +11,13 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.app.skyss_companion.MainActivity
-import java.time.LocalDateTime
 import android.text.SpannableString
 
 import android.text.Spannable
 import android.text.style.StyleSpan
-import android.app.Notification
-import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.os.Bundle
+import android.util.Log
+import androidx.navigation.NavDeepLinkBuilder
 import com.app.skyss_companion.R
 import com.app.skyss_companion.broadcastreceivers.AlertNotificationBroadcastReceiver
 import com.app.skyss_companion.view.routedirection_timetable.RouteDirectionTimeTableFragment
@@ -27,6 +27,8 @@ import java.time.ZonedDateTime
 class NotificationUtils {
 
     companion object {
+
+        val TAG = "NotificationUtils"
 
         /**
          * Creates and sends a notification.
@@ -104,6 +106,42 @@ class NotificationUtils {
         }
 
         /**
+         * Creates a PendingIntent for starting an activity using the
+         * PendingIntent.getActivity() method. Sets the argument intent
+         * as the PendingIntent intent.
+         */
+        @SuppressLint("UnspecifiedImmutableFlag")
+        fun createNotificationClickActionPendingIntent(
+            context: Context,
+            requestCode: Int,
+            intent: Intent
+        ): PendingIntent {
+            return PendingIntent.getActivity(
+                context,
+                requestCode,
+                intent,
+                0
+            )
+        }
+
+        /**
+         * Creates a PendingIntent for starting an activity using the
+         * PendingIntent.getActivity() method. Sets the argument intent
+         * as the PendingIntent intent.
+         */
+        @SuppressLint("UnspecifiedImmutableFlag")
+        fun createNotificationClickActionDeepLinkPendingIntent(
+            context: Context,
+            arguments: Bundle
+        ): PendingIntent {
+            return NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.routeDirectionTimeTableFragment)
+                .setArguments(arguments)
+                .createPendingIntent()
+        }
+
+        /**
          * Creates the intent for the alert notification interaction. Sends the user to
          * the MainActivity if any of the arguments are null. Otherwise, sends the user to
          * the route direction table.
@@ -116,7 +154,9 @@ class NotificationUtils {
             directionName: String? = null,
             lineNumber: String? = null
         ): Intent {
+            Log.d(TAG, "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber")
             return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null){
+                Log.d(TAG, "intent for RouteDirectionTimeTableFragment created")
                 val intent = Intent(context, RouteDirectionTimeTableFragment::class.java)
                 intent.putExtra("STOP_IDENTIFIER", stopIdentifier)
                 intent.putExtra("ROUTE_DIRECTION_IDENTIFIER", routeDirectionIdentifier)
@@ -124,7 +164,38 @@ class NotificationUtils {
                 intent.putExtra("ROUTE_DIRECTION_NAME", directionName)
                 intent.putExtra("LINE_NUMBER", lineNumber)
                 intent
-            } else Intent(context, MainActivity::class.java)
+            } else {
+                Log.d(TAG, "intent for MainActivity created")
+                Intent(context, MainActivity::class.java)
+            }
+        }
+
+        /**
+         * Creates the intent for the alert notification interaction. Sends the user to
+         * the MainActivity if any of the arguments are null. Otherwise, sends the user to
+         * the route direction table.
+         */
+        fun createAlertNotificationClickActionBundle(
+            stopIdentifier: String? = null,
+            routeDirectionIdentifier: String? = null,
+            stopName: String? = null,
+            directionName: String? = null,
+            lineNumber: String? = null
+        ): Bundle {
+            Log.d(TAG, "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber")
+            return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null){
+                Log.d(TAG, "intent for RouteDirectionTimeTableFragment created")
+                val bundle = Bundle()
+                bundle.putString("STOP_IDENTIFIER", stopIdentifier)
+                bundle.putString("ROUTE_DIRECTION_IDENTIFIER", routeDirectionIdentifier)
+                bundle.putString("STOPGROUP_NAME", stopName)
+                bundle.putString("ROUTE_DIRECTION_NAME", directionName)
+                bundle.putString("LINE_NUMBER", lineNumber)
+                bundle
+            } else {
+                Log.d(TAG, "intent for MainActivity created")
+                Bundle()
+            }
         }
 
         /**
@@ -172,9 +243,10 @@ class NotificationUtils {
         fun getAlertNotificationTextZdt(
             lineNumber: String,
             stopName: String,
+            lineName: String,
             date: ZonedDateTime
         ): String {
-            return "Linje $lineNumber har avgang fra $stopName kl. ${
+            return "Linje $lineNumber $lineName har avgang fra $stopName kl. ${
                 String.format(
                     "%02d",
                     date.hour
@@ -188,11 +260,12 @@ class NotificationUtils {
         fun getAlertNotificationTextPreformatted(
             lineNumber: String,
             stopName: String,
+            lineName: String,
             date: String
         ): String {
             return if (date.contains("min")) {
-                "Linje $lineNumber har avgang fra $stopName om ${date}. Trykk her for å åpne rutetabellen."
-            } else "Linje $lineNumber har avgang fra $stopName kl. ${date}. Trykk her for å åpne rutetabellen."
+                "Linje $lineNumber $lineName har avgang fra $stopName om ${date}. Trykk her for å åpne rutetabellen."
+            } else "Linje $lineNumber $lineName har avgang fra $stopName kl. ${date}. Trykk her for å åpne rutetabellen."
         }
 
         /**

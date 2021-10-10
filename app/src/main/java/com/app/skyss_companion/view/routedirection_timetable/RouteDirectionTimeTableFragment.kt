@@ -1,11 +1,13 @@
 package com.app.skyss_companion.view.routedirection_timetable
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -146,11 +148,19 @@ class RouteDirectionTimeTableFragment : Fragment(), SetAlertDialogFragment.SetAl
         inputMinutes: Int
     ) {
         viewModel.setAlert(passingTimeListItem, inputMinutes, arguments)
+        showSuccessToast(requireContext())
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         // Can be implemented if you want to perform some action
         // upon dialog dismiss.
+    }
+
+    private fun showSuccessToast(context: Context){
+        val text = "Varsel opprettet!"
+        val duration = Toast.LENGTH_SHORT
+        val toast = Toast.makeText(context, text, duration)
+        toast.show()
     }
 
 }
