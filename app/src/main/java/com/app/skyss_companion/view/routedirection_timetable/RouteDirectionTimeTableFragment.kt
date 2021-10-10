@@ -6,17 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.RouteDirectionTimeTableFragmentBinding
+import com.app.skyss_companion.misc.AlarmUtils
+import com.app.skyss_companion.misc.DateUtils
+import com.app.skyss_companion.misc.NotificationUtils
+import com.app.skyss_companion.model.PassingTimeAlert
 
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Duration
+import java.time.ZonedDateTime
 
 @AndroidEntryPoint
-class RouteDirectionTimeTableFragment : Fragment() {
+class RouteDirectionTimeTableFragment : Fragment(), SetAlertDialogFragment.SetAlertDialogListener {
     val TAG = "RouteDirTTableFragment"
     private val viewModel: RouteDirectionTimeTableViewModel by viewModels()
 
@@ -29,11 +36,12 @@ class RouteDirectionTimeTableFragment : Fragment() {
     private lateinit var passingTimeListItemsLinearLayoutManager: GridLayoutManager
 
     private var _binding: RouteDirectionTimeTableFragmentBinding? = null
-
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = RouteDirectionTimeTableFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,9 +58,11 @@ class RouteDirectionTimeTableFragment : Fragment() {
         binding.timeTableStopPlaceName.text = stopName
         binding.timeTableRouteDirectionLinecode.text = lineNumber
 
-        passingTimeDayTabsAdapter = PassingTimeDaysTabAdapter(this.requireContext(), ::onDaysTabTapped)
+        passingTimeDayTabsAdapter =
+            PassingTimeDaysTabAdapter(this.requireContext(), ::onDaysTabTapped)
         passingTimeDayTabsRecyclerView = binding.timeTableRouteDirectionFilterRecyclerview
-        passingTimeDayTabsLinearLayoutManager = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        passingTimeDayTabsLinearLayoutManager =
+            LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         passingTimeDayTabsRecyclerView.adapter = passingTimeDayTabsAdapter
         passingTimeDayTabsRecyclerView.layoutManager = passingTimeDayTabsLinearLayoutManager
 
@@ -69,11 +79,11 @@ class RouteDirectionTimeTableFragment : Fragment() {
 
         viewModel.checkIsBookmarked(stopIdentifier, routeDirectionIdentifier)
         viewModel.isBookmarked.observe(viewLifecycleOwner, { isBookmarked ->
-            if(isBookmarked != null && isBookmarked){
+            if (isBookmarked != null && isBookmarked) {
                 binding.timeTableBookmarkActive.visibility = View.VISIBLE
                 binding.timeTableBookmarkInactive.visibility = View.GONE
             }
-            if(isBookmarked != null && !isBookmarked){
+            if (isBookmarked != null && !isBookmarked) {
                 binding.timeTableBookmarkActive.visibility = View.GONE
                 binding.timeTableBookmarkInactive.visibility = View.VISIBLE
             }
@@ -84,7 +94,13 @@ class RouteDirectionTimeTableFragment : Fragment() {
         }
 
         binding.timeTableBookmarkInactive.setOnClickListener {
-            viewModel.bookmark(routeDirectionIdentifier, stopIdentifier, directionName, stopName, lineNumber)
+            viewModel.bookmark(
+                routeDirectionIdentifier,
+                stopIdentifier,
+                directionName,
+                stopName,
+                lineNumber
+            )
         }
 
         binding.timeTableBackButton.setOnClickListener {
@@ -104,17 +120,37 @@ class RouteDirectionTimeTableFragment : Fragment() {
             passingTimeDayTabsAdapter.setData(it)
             viewModel.setSelectedDayTab(it)
         })
-        
+
         viewModel.fetchTimeTables(stopIdentifier, routeDirectionIdentifier)
     }
 
-    private fun onDaysTabTapped(num: Int){
+    private fun onDaysTabTapped(num: Int) {
         Log.d(TAG, "onDaysTabTapped num = $num")
         viewModel.markSelected(num)
     }
 
-    private fun mOnTap(num: Int){
+    private fun mOnTap(num: Int) {
+        Log.d(TAG, "mOnTap num = $num")
+        val passingTime = viewModel.passingTimeListItems.value?.get(num)
+        passingTime?.let {
+            val newFragment = SetAlertDialogFragment(passingTime)
+            newFragment.setListener(this)
+            newFragment.show(childFragmentManager, "alerts")
+        } ?: run {
+            Log.d(TAG, "Showing dialog failed.")
+        }
+    }
 
+    override fun onDialogPositiveClick(
+        passingTimeListItem: PassingTimeListItem,
+        inputMinutes: Int
+    ) {
+        viewModel.setAlert(passingTimeListItem, inputMinutes, arguments)
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        // Can be implemented if you want to perform some action
+        // upon dialog dismiss.
     }
 
 }

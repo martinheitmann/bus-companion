@@ -9,18 +9,21 @@ interface PassingTimeAlertDao {
     @Query("SELECT * FROM passingtimealert")
     fun getAll(): Flow<List<PassingTimeAlert>>
 
+    @Query("SELECT * FROM passingtimealert WHERE id = :id")
+    fun find(id: Long): PassingTimeAlert
+
     @Query("SELECT EXISTS(SELECT * FROM passingtimealert WHERE id = :id)")
-    fun exists(id: Int): Flow<Boolean>
+    fun exists(id: Long): Flow<Boolean>
 
     @Query("DELETE FROM passingtimealert WHERE id = :id")
-    fun delete(id: Int)
+    fun delete(id: Long)
 
     @Insert
-    fun insert(passingTimeAlert: PassingTimeAlert)
+    fun insert(passingTimeAlert: PassingTimeAlert): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(passingTimeAlert: List<PassingTimeAlert>)
+    @Insert
+    fun insertAll(passingTimeAlert: List<PassingTimeAlert>): List<Long>
 
     @Delete
-    fun delete(passingTimeAlert: PassingTimeAlert)
+    fun delete(passingTimeAlert: PassingTimeAlert): Int
 }

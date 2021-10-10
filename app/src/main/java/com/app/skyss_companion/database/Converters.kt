@@ -7,10 +7,41 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
 
+/**
+ * Class containing a collection of type converter functions
+ * for use with the Room persistence library.
+ *
+ * Serialization of objects with no methods for conversion
+ * to primitives are handled using Moshi.
+ */
 class Converters {
     private val moshi = Moshi.Builder().build()
+
+    @TypeConverter
+    fun localDateTimeFromLong(value: Long): LocalDateTime {
+        return LocalDateTime.from(Instant.ofEpochMilli(value))
+    }
+
+    @TypeConverter
+    fun localDateTimeToLong(value: LocalDateTime): Long {
+        return value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    }
+
+    @TypeConverter
+    fun zonedDateTimeFromLong(value: String): ZonedDateTime {
+        return ZonedDateTime.parse(value)
+    }
+
+    @TypeConverter
+    fun zonedDateTimeToLong(value: ZonedDateTime): String {
+        return value.toString()
+    }
 
     @TypeConverter
     fun dateFromLong(value: Long) : Date? {
