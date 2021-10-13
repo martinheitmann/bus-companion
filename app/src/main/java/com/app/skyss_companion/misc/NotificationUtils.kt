@@ -1,12 +1,15 @@
 package com.app.skyss_companion.misc
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.media.AudioAttributes
+import android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -22,6 +25,8 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.broadcastreceivers.AlertNotificationBroadcastReceiver
 import com.app.skyss_companion.view.routedirection_timetable.RouteDirectionTimeTableFragment
 import java.time.ZonedDateTime
+import android.media.RingtoneManager
+import android.opengl.Visibility
 
 
 class NotificationUtils {
@@ -54,6 +59,8 @@ class NotificationUtils {
                 )
                 .setPriority(priority) // Should be at least high.
                 .setContentIntent(pendingIntent)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setVibrate(longArrayOf(2000, 0, 2000))
                 .setAutoCancel(true)
 
             with(NotificationManagerCompat.from(context)) {
@@ -78,6 +85,16 @@ class NotificationUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = NotificationChannel(channelId, channelName, channelImportance).apply {
                     description = channelDesc
+                    vibrationPattern = longArrayOf(2000, 0, 2000)
+                    lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                    importance = NotificationManager.IMPORTANCE_HIGH
+                    setSound(
+                        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
+                        AudioAttributes.Builder()
+                            .setUsage(USAGE_NOTIFICATION_EVENT)
+                            .build(),
+                    )
+                    enableVibration(true)
                 }
                 // Register the channel with the system
                 val notificationManager: NotificationManager =
@@ -154,8 +171,11 @@ class NotificationUtils {
             directionName: String? = null,
             lineNumber: String? = null
         ): Intent {
-            Log.d(TAG, "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber")
-            return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null){
+            Log.d(
+                TAG,
+                "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber"
+            )
+            return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null) {
                 Log.d(TAG, "intent for RouteDirectionTimeTableFragment created")
                 val intent = Intent(context, RouteDirectionTimeTableFragment::class.java)
                 intent.putExtra("STOP_IDENTIFIER", stopIdentifier)
@@ -182,8 +202,11 @@ class NotificationUtils {
             directionName: String? = null,
             lineNumber: String? = null
         ): Bundle {
-            Log.d(TAG, "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber")
-            return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null){
+            Log.d(
+                TAG,
+                "$stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber"
+            )
+            return if (stopIdentifier != null && routeDirectionIdentifier != null && stopName != null && directionName != null && lineNumber != null) {
                 Log.d(TAG, "intent for RouteDirectionTimeTableFragment created")
                 val bundle = Bundle()
                 bundle.putString("STOP_IDENTIFIER", stopIdentifier)

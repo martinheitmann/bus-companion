@@ -13,8 +13,8 @@ android {
         applicationId "com.app.skyss_companion"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 3
-        versionName "1.1.6"
+        versionCode 6
+        versionName "1.2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
