@@ -23,13 +23,17 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
     // a button on the app widget.
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
-        Log.d(TAG, "onReceive called")
-        if(intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE){
-            val appWidgetId = intent.extras?.get(AppWidgetManager.EXTRA_APPWIDGET_ID) as Int?
-            if(appWidgetId != null && context != null){
-                Log.d(TAG, "Updating widget with id $appWidgetId")
-                updateAppWidget(context, appWidgetId)
+        try{
+            Log.d(TAG, "onReceive called")
+            if (intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
+                val appWidgetId = intent.extras?.get(AppWidgetManager.EXTRA_APPWIDGET_ID) as Int?
+                if (appWidgetId != null && context != null) {
+                    Log.d(TAG, "Updating widget with id $appWidgetId")
+                    updateAppWidget(context, appWidgetId)
+                }
             }
+        } catch(e: Throwable){
+            Log.d(TAG, "onReceive caught exception: ${e.stackTraceToString()}")
         }
     }
 
@@ -38,10 +42,14 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        Log.d(TAG, "onUpdate called for widgets with ids: ${appWidgetIds.contentToString()}")
-        // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetId, refresh = true)
+        try {
+            Log.d(TAG, "onUpdate called for widgets with ids: ${appWidgetIds.contentToString()}")
+            // There may be multiple widgets active, so update all of them
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetId, refresh = true)
+            }
+        } catch (e: Throwable){
+            Log.d(TAG, "onUpdate caught exception: ${e.stackTraceToString()}")
         }
     }
 

@@ -5,6 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorPrimary"
     tools:context=".view.search.SearchStopsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,13 +13,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_stops_textview_item_count"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:layout_constraintVertical_bias="0.0"
         tools:visibility="gone" />
 
@@ -30,6 +31,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:animateLayoutChanges="true"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -69,7 +71,8 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:indeterminateTint="?colorPrimary"
+
+        android:indeterminateTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -77,53 +80,62 @@
         app:layout_constraintTop_toTopOf="@+id/search_stops_recyclerview"
         tools:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?android:colorPrimary"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView4"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Søk holdeplasser"
-            android:textColor="?colorOnPrimary"
-            android:textSize="20sp" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/search_stops_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/edittext_rounded"
-            android:drawableStart="@drawable/ic_baseline_search_24"
-            android:drawableTint="#CCFFFFFF"
-            android:hint="Søk etter holdeplasser"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:textColor="?colorOnPrimary"
-            android:textColorHint="#CCFFFFFF" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Søk holdeplasser"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/search_stops_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/edittext_rounded_blue"
+                android:drawableStart="@drawable/ic_baseline_search_24"
+                android:drawableTint="#CCFFFFFF"
+                android:hint="Søk etter holdeplasser"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:padding="8dp"
+                android:singleLine="true" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <TextView
         android:id="@+id/search_stops_textview_item_count"
@@ -132,57 +144,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Ingen søkeresultater å vise"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        tools:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_stops_recent_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_stops_textview_recently_used"
-        tools:visibility="gone" />
-
-    <TextView
-        android:id="@+id/search_stops_textview_recently_used"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Nylig brukt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        tools:visibility="gone" />
-
-    <TextView
-        android:id="@+id/search_stops_textview_recyclerview_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Ingen søkeresultater å vise"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_stops_textview_recently_used"
-        tools:visibility="gone" />
-
-    <TextView
-        android:id="@+id/search_stops_textview_recents_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Ingen nylig brukte holdeplasser å vise"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="?colorOnPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         tools:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

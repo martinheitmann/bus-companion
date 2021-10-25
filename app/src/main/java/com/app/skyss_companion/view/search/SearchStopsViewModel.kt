@@ -3,9 +3,7 @@ package com.app.skyss_companion.view.search
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
+import androidx.work.*
 import com.app.skyss_companion.model.RecentlyUsed
 import com.app.skyss_companion.model.StopGroup
 import com.app.skyss_companion.prefs.AppSharedPrefs
@@ -51,7 +49,7 @@ class SearchStopsViewModel @Inject constructor(
                     Log.d(TAG, "Search filter returned ${res.size} elements: ${res.toString()}")
                     stopSearchResults.postValue(res)
                 }
-            } catch(e: Exception){
+            } catch (e: Exception) {
                 Log.d(TAG, e.stackTraceToString())
             } finally {
                 Log.d(TAG, "filterResults - finally reached")
@@ -60,19 +58,25 @@ class SearchStopsViewModel @Inject constructor(
         }
     }
 
-    fun addStopGroupToRecentlyUsed(){
+    fun addStopGroupToRecentlyUsed() {
 
     }
 
-    private fun checkIfSyncNecessary(){
+    private fun checkIfSyncNecessary() {
         val syncDataRequest: WorkRequest =
             OneTimeWorkRequestBuilder<StopGroupSyncWorker>()
+                .setConstraints(
+                    Constraints
+                        .Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                )
                 .build()
 
         WorkManager.getInstance(getApplication()).enqueue(syncDataRequest)
     }
 
-    fun cancelJob(){
+    fun cancelJob() {
         coroutineJob?.cancel()
     }
 

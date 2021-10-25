@@ -16,7 +16,6 @@ import com.app.skyss_companion.repository.StopPlaceRepository
 import com.app.skyss_companion.view.stop_place.StopPlaceListDivider
 import com.app.skyss_companion.view.stop_place.StopPlaceListEntry
 import com.app.skyss_companion.view.stop_place.StopPlaceListItem
-import com.app.skyss_companion.widget.WidgetUtils
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 

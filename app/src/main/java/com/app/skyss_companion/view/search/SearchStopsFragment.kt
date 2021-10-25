@@ -74,12 +74,10 @@ class SearchStopsFragment : Fragment() {
                 if(s.isNullOrBlank()){
                     Log.d(TAG, "onTextChanged: String is empty")
                     disableStopGroupListUiComponents()
-                    enableRecentlyUsedUiComponents()
                 }
                 if(s != null && s.isNotEmpty()){
                     Log.d(TAG, "onTextChanged: String is not empty")
                     enableStopGroupListUiComponents()
-                    disableRecentlyUsedUiComponents()
                 }
                 if(s != null && s.length >= 3){
                     Log.d(TAG, "onTextChanged: String has at least 3 characters")
@@ -126,22 +124,9 @@ class SearchStopsFragment : Fragment() {
         else binding.searchStopsCardviewLoading.visibility = View.GONE
     }
 
-    private fun enableRecentlyUsedUiComponents(){
-        binding.searchStopsRecentRecyclerview.visibility = View.VISIBLE
-        binding.searchStopsTextviewRecentlyUsed.visibility = View.VISIBLE
-        binding.searchStopsTextviewRecentsEmpty.visibility = View.GONE
-    }
-
-    private fun disableRecentlyUsedUiComponents(){
-        binding.searchStopsRecentRecyclerview.visibility = View.GONE
-        binding.searchStopsTextviewRecentlyUsed.visibility = View.GONE
-        binding.searchStopsTextviewRecentsEmpty.visibility = View.GONE
-    }
-
     private fun disableStopGroupListUiComponents(){
         binding.searchStopsTextviewItemCount.visibility = View.GONE
         binding.searchStopsRecyclerview.visibility = View.GONE
-        binding.searchStopsTextviewRecyclerviewEmpty.visibility = View.GONE
     }
 
     private fun enableStopGroupListUiComponents(){

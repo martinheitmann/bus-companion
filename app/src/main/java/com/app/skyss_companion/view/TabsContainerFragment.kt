@@ -10,6 +10,14 @@ import com.app.skyss_companion.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import android.graphics.PorterDuff
+
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuffColorFilter
+import androidx.core.content.ContextCompat
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+
 
 @AndroidEntryPoint
 class TabsContainerFragment : Fragment() {
@@ -52,6 +60,18 @@ class TabsContainerFragment : Fragment() {
                     }
                 }
             }
+
+        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                tab.icon!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(requireContext(), android.R.color.white), PorterDuff.Mode.SRC_IN)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                tab.icon!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(requireContext(), android.R.color.darker_gray), PorterDuff.Mode.SRC_IN)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
         TabLayoutMediator(tabLayout, viewPager, tabConfigurationStrategy).attach()
     }
