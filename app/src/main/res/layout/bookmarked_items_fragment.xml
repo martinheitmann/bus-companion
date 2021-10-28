@@ -5,34 +5,28 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.bookmark.BookmarkedItemsFragment" >
+    android:background="?colorPrimary"
+    tools:context=".view.bookmark.BookmarkedItemsFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="?colorPrimary"
-        android:baselineAligned="false"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:weightSum="2"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -42,35 +36,46 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="left|center_vertical"
                 android:text="Lagrede holdeplasser og linjer"
-                android:textColor="?colorOnPrimary"
                 android:textSize="20sp"
                 tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Holderplasser og linjer tilgjengelig i denne listen er også tilgjengelig som widget på hjem-skjermen."
-                android:textColor="?colorOnPrimary" />
+                android:layout_height="match_parent"
+                android:text="Holderplasser og linjer tilgjengelig i denne listen er også tilgjengelig som widget på hjem-skjermen." />
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/bookmarked_items_tablayout"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"/>
+        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bookmarked_items_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/bookmarked_items_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookmarked_items_tablayout" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

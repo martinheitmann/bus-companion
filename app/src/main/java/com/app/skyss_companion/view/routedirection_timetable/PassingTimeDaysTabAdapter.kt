@@ -36,7 +36,7 @@ class PassingTimeDaysTabAdapter(private val context: Context, private val onTap:
                     R.drawable.textview_date_rounded
                 )
                 val typedValue = TypedValue()
-                context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+                context.theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true)
                 lineNumber.setTextColor(typedValue.data)
             }
         }

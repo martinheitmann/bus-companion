@@ -1,86 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorPrimary"
     tools:context=".view.routedirection_timetable.RouteDirectionTimeTableFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
+        <ImageButton
+            android:id="@+id/time_table_back_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:tint="?colorOnPrimary" />
+
+        <TextView
+            android:id="@+id/time_table_stop_place_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.2" />
+            android:text="TextView1"
+            android:textColor="?colorOnPrimary"
+            android:textSize="18sp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/time_table_bookmark_active"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_bookmark_24"
+            tools:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/time_table_bookmark_inactive"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_bookmark_border_24"
+            android:visibility="visible"
+            tools:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/time_table_refresh_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_baseline_refresh_24"
+            app:tint="?colorOnPrimary" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <LinearLayout
             android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="?colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/time_table_back_button"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_baseline_arrow_back_24"
-                    app:tint="?colorOnPrimary" />
-
-                <TextView
-                    android:id="@+id/time_table_stop_place_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView1"
-                    android:textColor="?colorOnPrimary"
-                    android:textSize="18sp" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/time_table_bookmark_active"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="48dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_baseline_bookmark_24"
-                    tools:visibility="gone" />
-
-                <ImageButton
-                    android:id="@+id/time_table_bookmark_inactive"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_baseline_bookmark_border_24"
-                    android:visibility="visible"
-                    tools:visibility="gone" />
-
-                <ImageButton
-                    android:id="@+id/time_table_refresh_button"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_baseline_refresh_24"
-                    app:tint="?colorOnPrimary" />
-            </LinearLayout>
+            android:padding="8dp">
 
 
             <LinearLayout
@@ -94,7 +101,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:text="000"
-                    android:textColor="?colorOnPrimary"
                     android:textSize="24sp" />
 
                 <TextView
@@ -103,7 +109,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="TextView"
-                    android:textColor="?colorOnPrimary"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -113,18 +118,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:scrollbarThumbHorizontal="@drawable/scrollbar_style"
-                android:scrollbars="horizontal" >
+                android:scrollbars="horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/time_table_route_direction_recyclerview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline5" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/time_table_route_direction_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

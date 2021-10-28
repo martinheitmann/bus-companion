@@ -69,7 +69,7 @@ class StopPlaceFragment : Fragment() {
             viewModel.checkIsFavorited(identifier)
             viewModel.fetchStopPlace(identifier)
             viewModel.stopGroup.observe(viewLifecycleOwner, { stopGroup ->
-                binding.stopPlaceTetxviewName.text = stopGroup.description
+                binding.stopPlaceTextviewName.text = stopGroup.description
             })
             viewModel.filteredStopPlaceListItems.observe(viewLifecycleOwner, { listItems ->
                 adapter.setData(listItems)
@@ -87,11 +87,11 @@ class StopPlaceFragment : Fragment() {
         viewModel.isLoading.observe(viewLifecycleOwner, { value ->
             if(value){
                 binding.progressBar.visibility = View.VISIBLE
-                binding.stopPlaceTetxviewName.visibility = View.GONE
+                binding.stopPlaceTextviewName.visibility = View.GONE
             }
             if(!value){
                 binding.progressBar.visibility = View.GONE
-                binding.stopPlaceTetxviewName.visibility = View.VISIBLE
+                binding.stopPlaceTextviewName.visibility = View.VISIBLE
             }
 
         })

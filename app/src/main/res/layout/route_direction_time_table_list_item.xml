@@ -9,7 +9,6 @@
         android:id="@+id/route_direction_time_table_list_item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?colorPrimary"
         app:cardCornerRadius="8dp">
 
         <TextView
@@ -19,8 +18,7 @@
             android:layout_margin="12dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="00:00"
-            android:textAlignment="center"
-            android:textColor="?colorOnPrimary" />
+            android:textAlignment="center" />
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>

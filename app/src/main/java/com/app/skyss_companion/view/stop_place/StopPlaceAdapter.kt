@@ -2,6 +2,7 @@ package com.app.skyss_companion.view.stop_place
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class StopPlaceAdapter(private val context: Context, private val onTap: (String?
     private inner class ViewHolder1(view: View) : RecyclerView.ViewHolder(view) {
         var stopName: TextView = view.findViewById(R.id.stop_place_stop_name)
         fun bind(position: Int){
+            stopName.setTextColor(Color.WHITE)
             stopName.text = (dataSet[position] as StopPlaceListDivider).text
         }
     }
@@ -98,7 +100,7 @@ class StopPlaceAdapter(private val context: Context, private val onTap: (String?
             )
         }
         return ViewHolder2(
-            LayoutInflater.from(context).inflate(R.layout.stop_place_list_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.stop_place_list_item_rounded, parent, false)
         )
     }
 
