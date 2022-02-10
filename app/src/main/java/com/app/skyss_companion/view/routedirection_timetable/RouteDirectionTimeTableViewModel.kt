@@ -132,7 +132,7 @@ class RouteDirectionTimeTableViewModel @Inject constructor(
             if (mIndex == index && !passingTimeDayTab.isSelected) passingTimeDayTab.copy(isSelected = true)
             else passingTimeDayTab.copy(isSelected = false)
         }
-        passingTimeDayTabs.postValue(newList)
+        newList?.let { ls -> passingTimeDayTabs.postValue(ls) }
     }
 
     private fun applyFilter(

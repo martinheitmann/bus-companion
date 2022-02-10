@@ -192,7 +192,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
         try {
             val cellNumber: String? = sharedPrefs.readWidgetTimeItemsLimit()
             if(cellNumber != null) {
-                return cellNumber?.toInt()
+                return cellNumber.toInt()
             }
             return 3
         } catch (exception: Throwable){

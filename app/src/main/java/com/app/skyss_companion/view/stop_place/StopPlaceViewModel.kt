@@ -46,29 +46,29 @@ class StopPlaceViewModel @Inject constructor(
                 filteredStopPlaceListItems.postValue(stopPlaceListItems)
             }
         }
-        filteredStopPlaceListItems.addSource(lineCodeFilter){ lineCodes ->
+        filteredStopPlaceListItems.addSource(lineCodeFilter) { lineCodes ->
             val stops: List<Stop> = stopGroup.value?.stops ?: emptyList()
             val newItems = filterByLineCodes(stops, lineCodes)
             filteredStopPlaceListItems.postValue(newItems)
         }
     }
 
-    fun addLineCodeToFilter(index: Int){
+    fun addLineCodeToFilter(index: Int) {
         val currentFilter = lineCodeFilter.value?.toMutableList() ?: return
         val currentLineCodes = lineCodes.value?.toMutableList() ?: return
         val itemToAdd = currentLineCodes[index]
-        if(currentFilter.contains(itemToAdd)) return
+        if (currentFilter.contains(itemToAdd)) return
         currentFilter.add(itemToAdd)
         lineCodeFilter.postValue(currentFilter)
     }
 
-    fun removeLineCodeFromFilter(index: Int){
+    fun removeLineCodeFromFilter(index: Int) {
         val currentlySelectedLineCodes = lineCodeFilter.value?.toMutableList() ?: return
         currentlySelectedLineCodes.removeAt(index)
         lineCodeFilter.postValue(currentlySelectedLineCodes)
     }
 
-    fun checkIsFavorited(identifier: String){
+    fun checkIsFavorited(identifier: String) {
         viewModelScope.launch(Dispatchers.IO) {
             /*favoriteRepository.exists(identifier).collect { result ->
                 isFavorited.postValue(result)
@@ -79,15 +79,18 @@ class StopPlaceViewModel @Inject constructor(
         }
     }
 
-    private fun filterByLineCodes(stops: List<Stop>, lineCodes: List<String>): List<StopPlaceListItem>{
-        if(lineCodes.isEmpty()) {
+    private fun filterByLineCodes(
+        stops: List<Stop>,
+        lineCodes: List<String>
+    ): List<StopPlaceListItem> {
+        if (lineCodes.isEmpty()) {
             Log.d(TAG, "Line code filter was empty.")
             return StopPlaceUtils.createListData(stops)
         }
         return StopPlaceUtils.createFilteredListData(stops, lineCodes)
     }
 
-    fun removeFavorited(identifier: String){
+    fun removeFavorited(identifier: String) {
         /*viewModelScope.launch(Dispatchers.IO) {
             favoriteRepository.removeFavorite(identifier)
         }*/
@@ -97,7 +100,7 @@ class StopPlaceViewModel @Inject constructor(
 
     }
 
-    fun addFavorited(identifier: String){
+    fun addFavorited(identifier: String) {
         /*viewModelScope.launch(Dispatchers.IO) {
             val favorite = Favorite(identifier)
             favoriteRepository.insertFavorite(favorite)
@@ -108,13 +111,13 @@ class StopPlaceViewModel @Inject constructor(
         }
     }
 
-    fun fetchStopPlace(identifier: String){
+    fun fetchStopPlace(identifier: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 isLoading.postValue(true)
                 val fetchedStopGroup = stopPlaceRepository.fetchStopPlace(identifier)
-                stopGroup.postValue(fetchedStopGroup)
-            } catch (exception: Exception){
+                fetchedStopGroup?.let { s -> stopGroup.postValue(s) }
+            } catch (exception: Exception) {
                 Log.d(TAG, exception.stackTraceToString())
             } finally {
                 isLoading.postValue(false)
@@ -132,8 +135,6 @@ class StopPlaceViewModel @Inject constructor(
     fun <T> MutableLiveData<T>.forceRefresh() {
         this.value = this.value
     }
-
-
 
 
 }

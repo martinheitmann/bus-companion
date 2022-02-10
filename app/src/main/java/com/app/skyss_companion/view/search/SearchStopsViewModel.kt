@@ -46,7 +46,7 @@ class SearchStopsViewModel @Inject constructor(
             try {
                 isLoading.postValue(true)
                 stopsGroupRepository.filterSearchResults(searchTerm).collect { res ->
-                    Log.d(TAG, "Search filter returned ${res.size} elements: ${res.toString()}")
+                    Log.d(TAG, "Search filter returned ${res.size} elements: $res")
                     stopSearchResults.postValue(res)
                 }
             } catch (e: Exception) {
