@@ -68,7 +68,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
                             applicationContext,
                             enabledWidget.widgetId, // IMPORTANT: Use a unique request code!
                             intentSync,
-                            PendingIntent.FLAG_ONE_SHOT
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
                         )
 
                         // Instantiate the RemoteViews object for the app widget layout.
