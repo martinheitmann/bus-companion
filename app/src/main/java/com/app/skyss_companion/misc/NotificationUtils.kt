@@ -118,7 +118,7 @@ class NotificationUtils {
                 context,
                 requestCode,
                 intent,
-                0
+                PendingIntent.FLAG_IMMUTABLE or 0
             )
         }
 
