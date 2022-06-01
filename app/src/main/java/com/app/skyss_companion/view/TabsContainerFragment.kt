@@ -56,6 +56,10 @@ class TabsContainerFragment : Fragment() {
                     }
                     3 -> {
                         //tab.text = "Instillinger"
+                        tab.setIcon(R.drawable.ic_baseline_map_24)
+                    }
+                    4 -> {
+                        //tab.text = "Instillinger"
                         tab.setIcon(R.drawable.ic_baseline_settings_24)
                     }
                 }

@@ -196,7 +196,7 @@ class RouteDirectionWidgetUpdateService : JobIntentService() {
             }
             return 3
         } catch (exception: Throwable){
-            Log.d(TAG, exception.stackTraceToString())
+            Log.d(TAG, exception.message + " (expected exception)")
             return 3
         }
     }

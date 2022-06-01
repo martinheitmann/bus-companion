@@ -26,5 +26,4 @@ object HttpModule {
     fun provideOkHttpClient() : OkHttpClient {
         return OkHttpClient()
     }
-
 }

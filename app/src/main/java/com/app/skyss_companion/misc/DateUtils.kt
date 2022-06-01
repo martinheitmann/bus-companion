@@ -1,8 +1,10 @@
 package com.app.skyss_companion.misc
 
-import android.util.Log
 import java.text.SimpleDateFormat
-import java.time.*
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -14,7 +16,7 @@ class DateUtils {
         fun isAfterNow(s: String?, formatterPattern: String): Boolean {
             if (s != null) {
                 val zonedDateTime = parseUtcDateStringToEuOsloTimeZone(s)
-                if(zonedDateTime.isAfter(ZonedDateTime.now())) return true
+                if (zonedDateTime.isAfter(ZonedDateTime.now())) return true
                 return false
             }
             return false
@@ -53,6 +55,15 @@ class DateUtils {
 
         fun formatDate(s: String?, pattern: String): LocalDateTime {
             return LocalDateTime.parse(s, getFormatter(pattern))
+        }
+
+        fun parseOffsetDateTime(dateString: String?): OffsetDateTime? {
+            if(dateString == null) return null
+            return try {
+                OffsetDateTime.parse(dateString)
+            } catch (e: Throwable) {
+                null
+            }
         }
     }
 }

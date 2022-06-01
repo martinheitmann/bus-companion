@@ -159,7 +159,8 @@ class StopGroupRemoteViewsFactory(
             }
             return 3
         } catch (exception: Throwable){
-            Log.d(TAG, exception.stackTraceToString())
+            //Log.d(TAG, exception.stackTraceToString())
+            Log.d(TAG, "(error) parse failure in fetchCellNumberBlocking, defaulting to 3")
             return 3
         }
     }
