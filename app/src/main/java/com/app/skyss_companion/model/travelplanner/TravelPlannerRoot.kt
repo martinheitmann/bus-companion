@@ -1,6 +1,6 @@
 package com.app.skyss_companion.model.travelplanner
 
-data class TravelPlannerRoot (
-    private val resultCode: String? = null,
-    private val travelPlans: List<TravelPlan>
+data class TravelPlannerRoot(
+    val resultCode: String? = null,
+    val travelPlans: List<TravelPlan>
 )

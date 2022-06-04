@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.databinding.FragmentTravelPlannerBinding
 import com.app.skyss_companion.model.geocode.GeocodingFeature
@@ -25,6 +27,10 @@ class TravelPlannerFragment : Fragment(),
     private val viewModel: TravelPlannerViewModel by viewModels()
     private var _binding: FragmentTravelPlannerBinding? = null
 
+    private lateinit var adapter: TravelPlannerListAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var recyclerView: RecyclerView
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,6 +45,13 @@ class TravelPlannerFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(mTag, "onViewCreated")
+
+        adapter = TravelPlannerListAdapter(requireContext()) { _ -> print("Hello") }
+        layoutManager = LinearLayoutManager(requireContext())
+        recyclerView = binding.travelPlannerPlansList
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+
         binding.travelPlannerStart.setOnClickListener { toggleDialog("start") }
         binding.travelPlannerDest.setOnClickListener { toggleDialog("dest") }
 
@@ -85,6 +98,16 @@ class TravelPlannerFragment : Fragment(),
 
         viewModel.mergedFeatures.observe(viewLifecycleOwner) {
             /* no-op */
+            /* MediatorLiveData requires a listener in order to remain active.  */
+        }
+
+        viewModel.travelPlans.observe(viewLifecycleOwner){ travelPlans ->
+            adapter.setData(travelPlans)
+        }
+
+        viewModel.travelPlansLoading.observe(viewLifecycleOwner){ loading ->
+            if(loading) binding.travelPlannerPlansListProgressbar.visibility = View.VISIBLE
+            else binding.travelPlannerPlansListProgressbar.visibility = View.GONE
         }
     }
 

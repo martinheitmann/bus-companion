@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.skyss_companion.model.geocode.GeocodingFeature
+import com.app.skyss_companion.model.travelplanner.TravelPlan
 import com.app.skyss_companion.repository.GeocodingRepository
 import com.app.skyss_companion.repository.TravelPlannerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,8 @@ class TravelPlannerViewModel @Inject constructor(
     var features: MutableLiveData<List<GeocodingFeature>> = MutableLiveData()
     var fetchFeaturesError: MutableLiveData<String?> = MutableLiveData(null)
     var fetchFeaturesLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    var travelPlans: MutableLiveData<List<TravelPlan>> = MutableLiveData(emptyList())
+    var travelPlansLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private var fetchFeaturesJob: Job? = null
 
     private val fetchTravelPlanJob = Job()
@@ -92,27 +95,38 @@ class TravelPlannerViewModel @Inject constructor(
         }
     }
 
-    fun fetchTravelPlan() {
+    private fun fetchTravelPlan() {
+        travelPlansLoading.postValue(true)
         Log.d(tag, "fetchTravelPlan invoked")
         fetchTravelPlanScope.launch(Dispatchers.IO) {
-            Log.d(tag, "fetchTravelPlan coroutine running")
-            val from = selectedFromFeature.value
-            val to = selectedToFeature.value
-            val timeType = getTimeType(selectedTimeType.value!!)
-            val timestamp = toTimestampString(selectedLocalDateTime.value!!)
-            if (to != null && from != null) {
-                val travelPlan = travelPlannerRepository.getTravelPlan(
-                    fromFeature = from,
-                    toFeature = to,
-                    timeType = timeType,
-                    timestamp = timestamp,
-                    modes = modes,
-                    mtt = minimumTransferTime,
-                    mwd = maximumWalkDistance
-                )
-                Log.d(tag, "Travel planner response: $travelPlan")
-            } else {
-                Log.d(tag, "to or from was null, skipping fetch sept")
+            try {
+                travelPlansLoading.postValue(true)
+                Log.d(tag, "fetchTravelPlan coroutine running")
+                val from = selectedFromFeature.value
+                val to = selectedToFeature.value
+                val timeType = getTimeType(selectedTimeType.value!!)
+                val timestamp = toTimestampString(selectedLocalDateTime.value!!)
+                if (to != null && from != null) {
+                    val travelPlannerRoot = travelPlannerRepository.getTravelPlan(
+                        fromFeature = from,
+                        toFeature = to,
+                        timeType = timeType,
+                        timestamp = timestamp,
+                        modes = modes,
+                        mtt = minimumTransferTime,
+                        mwd = maximumWalkDistance
+                    )
+                    Log.d(tag, "Travel planner response: $travelPlannerRoot")
+                    travelPlannerRoot?.let { root ->
+                        travelPlans.postValue(root.travelPlans)
+                    }
+                } else {
+                    Log.d(tag, "to or from was null, skipping fetch sept")
+                }
+            } catch (e: Throwable) {
+                Log.d(tag, e.stackTraceToString())
+            } finally {
+                travelPlansLoading.postValue(false)
             }
         }
     }
