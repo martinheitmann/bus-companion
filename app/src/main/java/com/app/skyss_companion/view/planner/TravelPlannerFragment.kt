@@ -143,7 +143,10 @@ class TravelPlannerFragment : Fragment(),
             if (id != null) {
                 val bundle = Bundle()
                 bundle.putString("travelPlanId", id)
-                findNavController().navigate(R.id.action_tabsContainerFragment_to_selectedTravelPlanFragment)
+                findNavController().navigate(
+                    R.id.action_tabsContainerFragment_to_selectedTravelPlanFragment,
+                    bundle
+                )
             }
         }
     }

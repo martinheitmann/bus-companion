@@ -5,12 +5,15 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.skyss_companion.model.travelplanner.TravelPlan
 import com.app.skyss_companion.repository.BookmarkedRouteDirectionRepository
 import com.app.skyss_companion.repository.PassingTimeAlertRepository
 import com.app.skyss_companion.repository.TimeTableRepository
 import com.app.skyss_companion.repository.TravelPlannerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.format.TextStyle
 import java.util.*
 import javax.inject.Inject
@@ -25,20 +28,23 @@ class SelectedTravelPlanViewModel @Inject constructor(
     var selectedTravelPlan: MutableLiveData<TravelPlan> = MutableLiveData()
     var travelPlanLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    fun fetchTravelPlan() {
-        val travelPlan = travelPlannerRepository.getTravelPlanById2()
-        travelPlan?.let { root ->
-            val item = root.travelPlans.firstOrNull()
-            item?.let { tp ->
-                selectedTravelPlan.postValue(tp)
+    fun fetchTravelPlan(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(tag, "fetchTravelPlan called for id $id")
+            val travelPlan = travelPlannerRepository.getTravelPlanById(id)
+            travelPlan?.let { root ->
+                val item = root.travelPlans.firstOrNull()
+                item?.let { tp ->
+                    selectedTravelPlan.postValue(tp)
+                }
             }
-        }
-        try {
-            travelPlanLoading.postValue(true)
-        } catch (e: Throwable) {
-            Log.d(tag, e.stackTraceToString())
-        } finally {
-            travelPlanLoading.postValue(false)
+            try {
+                travelPlanLoading.postValue(true)
+            } catch (e: Throwable) {
+                Log.d(tag, e.stackTraceToString())
+            } finally {
+                travelPlanLoading.postValue(false)
+            }
         }
     }
 

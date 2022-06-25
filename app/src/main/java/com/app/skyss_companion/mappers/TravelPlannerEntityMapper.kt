@@ -32,8 +32,8 @@ class TravelPlannerEntityMapper {
             return TravelPlan(
                 id = id,
                 url = url,
-                startTime = startTime,
-                endTime = endTime,
+                startTime = DateUtils.offsetToZoned(startTime),
+                endTime = DateUtils.offsetToZoned(endTime),
                 end = end,
                 travelSteps = travelSteps
             )
@@ -69,8 +69,8 @@ class TravelPlannerEntityMapper {
 
             return TravelStep(
                 type = type,
-                startTime = startTime,
-                endTime = endTime,
+                startTime = DateUtils.offsetToZoned(startTime),
+                endTime = DateUtils.offsetToZoned(endTime),
                 distance = distance,
                 stopIdentifier = stopIdentifier,
                 duration = duration,
@@ -82,7 +82,7 @@ class TravelPlannerEntityMapper {
                 routeDirection = routeDirection,
                 stop = stop,
                 notes = notes,
-                expectedEndTime = expectedEndTime,
+                expectedEndTime = DateUtils.offsetToZoned(expectedEndTime),
                 intermediates = intermediates,
                 passed = passed,
                 occupancy = occupancy,
@@ -111,6 +111,5 @@ class TravelPlannerEntityMapper {
                 platform = platform
             )
         }
-
     }
 }

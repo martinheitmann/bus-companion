@@ -1,5 +1,6 @@
 package com.app.skyss_companion.repository
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.skyss_companion.http.TravelPlannerClient
 import com.app.skyss_companion.mappers.TravelPlannerEntityMapper
@@ -10,6 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class TravelPlannerRepository @Inject constructor(private val travelPlannerClient: TravelPlannerClient) {
+
+    val tag = "TravelPlannerRepo"
 
     @WorkerThread
     suspend fun getTravelPlans(
@@ -53,6 +56,7 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
 
     @WorkerThread
     suspend fun getTravelPlanById(id: String): TravelPlannerRoot? {
+        Log.d(tag, "getTravelPlanById called for id $id")
         val apiResponse = travelPlannerClient.getTravelPlanById(id)
         apiResponse?.let {
             return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)

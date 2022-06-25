@@ -1,10 +1,7 @@
 package com.app.skyss_companion.misc
 
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -64,6 +61,10 @@ class DateUtils {
             } catch (e: Throwable) {
                 null
             }
+        }
+
+        fun offsetToZoned(offsetDateTime: OffsetDateTime?): ZonedDateTime? {
+            return offsetDateTime?.atZoneSameInstant(ZoneId.of("Europe/Oslo"))
         }
     }
 }

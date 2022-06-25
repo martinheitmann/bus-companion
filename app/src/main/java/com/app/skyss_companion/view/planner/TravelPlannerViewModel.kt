@@ -29,7 +29,7 @@ class TravelPlannerViewModel @Inject constructor(
     var fetchFeaturesError: MutableLiveData<String?> = MutableLiveData(null)
     var fetchFeaturesLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var travelPlans: MutableLiveData<List<TravelPlan>> =
-        MutableLiveData(travelPlannerRepository.getTravelPlans2()?.travelPlans)
+        MutableLiveData()
     var travelPlansLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private var fetchFeaturesJob: Job? = null
 

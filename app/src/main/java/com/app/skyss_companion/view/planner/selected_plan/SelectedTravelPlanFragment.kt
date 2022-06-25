@@ -2,6 +2,7 @@ package com.app.skyss_companion.view.planner.selected_plan
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,11 +53,16 @@ class SelectedTravelPlanFragment : Fragment() {
 
         viewModel.selectedTravelPlan.observe(viewLifecycleOwner) { travelPlan ->
             adapter.setData(travelPlan.travelSteps, travelPlan.end)
-            viewModel.getDateString(travelPlan)?.let { s: String ->
-                binding.selectedTravelPlanDateTime.text = s
+            viewModel.getDateString(travelPlan)?.let { str: String ->
+                binding.selectedTravelPlanDateTime.text = str
             }
         }
-        viewModel.fetchTravelPlan()
+        val bundle = this.arguments
+        bundle?.getString("travelPlanId")?.let { id ->
+            viewModel.fetchTravelPlan(id)
+        } ?: run {
+            Log.d(mTag, "WARNING bundle argument 'travelPlanId' was null, cannot request travel plan")
+        }
     }
 
 }
