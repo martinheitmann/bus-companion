@@ -13,19 +13,22 @@ class TravelPlannerEntityMapper {
         fun mapApiTravelPlannerResponse(apiTravelPlannerResponse: ApiTravelPlannerResponse): TravelPlannerRoot {
             val resultCode: String? = apiTravelPlannerResponse.resultCode
             val travelPlans: List<TravelPlan> =
-                apiTravelPlannerResponse.TravelPlans?.mapNotNull { t -> mapTravelPlanResponse(t) } ?: emptyList()
+                apiTravelPlannerResponse.TravelPlans?.mapNotNull { t -> mapTravelPlanResponse(t) }
+                    ?: emptyList()
             return TravelPlannerRoot(resultCode = resultCode, travelPlans = travelPlans)
         }
 
         private fun mapTravelPlanResponse(travelPlanResponse: TravelPlanResponse?): TravelPlan? {
-            if(travelPlanResponse == null) return null
+            if (travelPlanResponse == null) return null
             val id: String? = travelPlanResponse.id
             val url: String? = travelPlanResponse.url
-            val startTime: OffsetDateTime? = DateUtils.parseOffsetDateTime(travelPlanResponse.StartTime)
+            val startTime: OffsetDateTime? =
+                DateUtils.parseOffsetDateTime(travelPlanResponse.StartTime)
             val endTime: OffsetDateTime? = DateUtils.parseOffsetDateTime(travelPlanResponse.EndTime)
             val end: End? = mapEndResponse(travelPlanResponse.End)
             val travelSteps: List<TravelStep> =
-                travelPlanResponse.TravelSteps?.mapNotNull { t -> mapTravelStepResponse(t) } ?: emptyList()
+                travelPlanResponse.TravelSteps?.mapNotNull { t -> mapTravelStepResponse(t) }
+                    ?: emptyList()
             return TravelPlan(
                 id = id,
                 url = url,
@@ -39,7 +42,8 @@ class TravelPlannerEntityMapper {
         private fun mapTravelStepResponse(travelStepResponse: TravelStepResponse?): TravelStep? {
             if (travelStepResponse == null) return null
             val type: String? = travelStepResponse.Type
-            val startTime: OffsetDateTime? = DateUtils.parseOffsetDateTime(travelStepResponse.StartTime)
+            val startTime: OffsetDateTime? =
+                DateUtils.parseOffsetDateTime(travelStepResponse.StartTime)
             val endTime: OffsetDateTime? = DateUtils.parseOffsetDateTime(travelStepResponse.EndTime)
             val distance: String? = travelStepResponse.Distance
             val stopIdentifier: String? = travelStepResponse.StopIdentifier
@@ -54,9 +58,11 @@ class TravelPlannerEntityMapper {
             } else null
             val stop: Stop? = travelStepResponse.Stop?.let { StopResponseEntityMapper.mapStop(it) }
             val notes: List<Any> = travelStepResponse.Notes ?: emptyList()
-            val expectedEndTime: OffsetDateTime? = DateUtils.parseOffsetDateTime(travelStepResponse.ExpectedEndTime)
+            val expectedEndTime: OffsetDateTime? =
+                DateUtils.parseOffsetDateTime(travelStepResponse.ExpectedEndTime)
             val intermediates: List<Intermediate> =
-                travelStepResponse.Intermediates?.mapNotNull { i -> mapIntermediateResponse(i) } ?: emptyList()
+                travelStepResponse.Intermediates?.mapNotNull { i -> mapIntermediateResponse(i) }
+                    ?: emptyList()
             val passed: Boolean = travelStepResponse.Passed
             val occupancy: String? = travelStepResponse.Occupancy
             val displayTime: String? = travelStepResponse.DisplayTime
@@ -96,7 +102,14 @@ class TravelPlannerEntityMapper {
             if (endResponse == null) return null
             val description: String? = endResponse.Description
             val location: String? = endResponse.Location
-            return End(description = description, location = location)
+            val platform: String? = endResponse.Platform
+            val identifier: String? = endResponse.Identifier
+            return End(
+                description = description,
+                location = location,
+                identifier = identifier,
+                platform = platform
+            )
         }
 
     }

@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
+import com.app.skyss_companion.misc.DateUtils
+import com.app.skyss_companion.model.travelplanner.End
 import com.app.skyss_companion.model.travelplanner.TravelPlan
 import com.app.skyss_companion.model.travelplanner.TravelStep
 import com.google.android.flexbox.FlexboxLayout
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 class TravelPlannerListAdapter(private val context: Context, private val onTap: (Int) -> Unit) : RecyclerView.Adapter<TravelPlannerListAdapter.ViewHolder>(){
@@ -22,8 +26,10 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
         var date: TextView = view.findViewById(R.id.travel_plan_list_item_date)
         var duration: TextView = view.findViewById(R.id.travel_plan_list_item_duration)
         var flex: FlexboxLayout = view.findViewById(R.id.travel_plan_list_item_flex)
+        var card: CardView = view.findViewById(R.id.travel_plan_list_item_card)
         fun bind(position: Int, onTap: (Int) -> Unit){
             val tp = dataSet[position]
+            card.setOnClickListener { onTap(position) }
             date.text = getTimeDurationString(tp)
             duration.text = getDurationMinutes(tp)
             flex.removeAllViews()
@@ -96,8 +102,8 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
         when(travelStep.type){
             "route" -> {
                 //element = View.inflate(context, R.layout.travel_plan_list_item_bus, root)
-                element = inflater.inflate(R.layout.travel_plan_list_item_bus, root, false)
-                val elementText: TextView = element.findViewById(R.id.travel_plan_list_item_bus_text)
+                element = inflater.inflate(R.layout.travel_plan_list_item_route, root, false)
+                val elementText: TextView = element.findViewById(R.id.travel_plan_list_item_route_text)
                 elementText.text = travelStep.routeDirection?.publicIdentifier ?: "?"
             }
             "walk" -> {
@@ -116,5 +122,4 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
         val inflater = LayoutInflater.from(context)
         return inflater.inflate(R.layout.travel_plan_list_item_next, root, false)
     }
-
 }

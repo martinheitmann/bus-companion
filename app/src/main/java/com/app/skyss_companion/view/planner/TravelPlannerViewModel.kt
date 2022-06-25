@@ -15,7 +15,6 @@ import kotlinx.coroutines.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class TravelPlannerViewModel @Inject constructor(
@@ -29,7 +28,8 @@ class TravelPlannerViewModel @Inject constructor(
     var features: MutableLiveData<List<GeocodingFeature>> = MutableLiveData()
     var fetchFeaturesError: MutableLiveData<String?> = MutableLiveData(null)
     var fetchFeaturesLoading: MutableLiveData<Boolean> = MutableLiveData(false)
-    var travelPlans: MutableLiveData<List<TravelPlan>> = MutableLiveData(emptyList())
+    var travelPlans: MutableLiveData<List<TravelPlan>> =
+        MutableLiveData(travelPlannerRepository.getTravelPlans2()?.travelPlans)
     var travelPlansLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private var fetchFeaturesJob: Job? = null
 
@@ -107,7 +107,7 @@ class TravelPlannerViewModel @Inject constructor(
                 val timeType = getTimeType(selectedTimeType.value!!)
                 val timestamp = toTimestampString(selectedLocalDateTime.value!!)
                 if (to != null && from != null) {
-                    val travelPlannerRoot = travelPlannerRepository.getTravelPlan(
+                    val travelPlannerRoot = travelPlannerRepository.getTravelPlans(
                         fromFeature = from,
                         toFeature = to,
                         timeType = timeType,

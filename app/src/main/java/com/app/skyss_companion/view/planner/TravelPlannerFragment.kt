@@ -10,11 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.databinding.FragmentTravelPlannerBinding
 import com.app.skyss_companion.model.geocode.GeocodingFeature
+import com.app.skyss_companion.model.travelplanner.TravelPlan
 import com.app.skyss_companion.view.planner.location_search.SearchLocationDialogFragment
 import com.app.skyss_companion.view.routedirection_timetable.SetAlertDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +48,9 @@ class TravelPlannerFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         Log.d(mTag, "onViewCreated")
 
-        adapter = TravelPlannerListAdapter(requireContext()) { _ -> print("Hello") }
+        adapter = TravelPlannerListAdapter(requireContext()) { pos ->
+            navigateToSelectedTravelPlan(pos)
+        }
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView = binding.travelPlannerPlansList
         recyclerView.layoutManager = layoutManager
@@ -101,12 +105,12 @@ class TravelPlannerFragment : Fragment(),
             /* MediatorLiveData requires a listener in order to remain active.  */
         }
 
-        viewModel.travelPlans.observe(viewLifecycleOwner){ travelPlans ->
+        viewModel.travelPlans.observe(viewLifecycleOwner) { travelPlans ->
             adapter.setData(travelPlans)
         }
 
-        viewModel.travelPlansLoading.observe(viewLifecycleOwner){ loading ->
-            if(loading) binding.travelPlannerPlansListProgressbar.visibility = View.VISIBLE
+        viewModel.travelPlansLoading.observe(viewLifecycleOwner) { loading ->
+            if (loading) binding.travelPlannerPlansListProgressbar.visibility = View.VISIBLE
             else binding.travelPlannerPlansListProgressbar.visibility = View.GONE
         }
     }
@@ -130,6 +134,18 @@ class TravelPlannerFragment : Fragment(),
 
     override fun onDialogClosed(dialog: DialogFragment) {
         // Cleanup if needed from dialog fragment.
+    }
+
+    private fun navigateToSelectedTravelPlan(pos: Int) {
+        val travelPlan = viewModel.travelPlans.value?.get(pos)
+        travelPlan?.let { tp ->
+            val id = tp.id
+            if (id != null) {
+                val bundle = Bundle()
+                bundle.putString("travelPlanId", id)
+                findNavController().navigate(R.id.action_tabsContainerFragment_to_selectedTravelPlanFragment)
+            }
+        }
     }
 
 }

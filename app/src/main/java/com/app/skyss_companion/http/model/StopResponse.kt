@@ -12,4 +12,5 @@ data class StopResponse (
     var Detail: String? = null,
     var SkyssId: String? = null,
     var RouteDirections: List<RouteDirectionResponse>? = null,
+    var Platform: String? = null
 )

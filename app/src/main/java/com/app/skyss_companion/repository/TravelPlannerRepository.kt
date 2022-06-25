@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class TravelPlannerRepository @Inject constructor(private val travelPlannerClient: TravelPlannerClient) {
 
     @WorkerThread
-    suspend fun getTravelPlan(
+    suspend fun getTravelPlans(
         fromFeature: GeocodingFeature,
         toFeature: GeocodingFeature,
         timeType: String, // DEPARTURE || ARRIVAL
@@ -32,7 +32,7 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
         val toName = toFeature.properties.label!!
         val toId = toFeature.properties.id!!
 
-        val apiResponse = travelPlannerClient.getTravelPlan(
+        val apiResponse = travelPlannerClient.getTravelPlans(
             fromLocation = listOf(fromCoord1, fromCoord2),
             toLocation = listOf(toCoord1, toCoord2),
             fromName = fromName,
@@ -49,6 +49,23 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
             return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
         }
         return null
+    }
+
+    @WorkerThread
+    suspend fun getTravelPlanById(id: String): TravelPlannerRoot? {
+        val apiResponse = travelPlannerClient.getTravelPlanById(id)
+        apiResponse?.let {
+            return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
+        }
+        return null
+    }
+
+    fun getTravelPlanById2(): TravelPlannerRoot? {
+        return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(travelPlannerClient.getTravelPlanString1()!!)
+    }
+
+    fun getTravelPlans2(): TravelPlannerRoot? {
+        return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(travelPlannerClient.getTravelPlansString1()!!)
     }
 
 }

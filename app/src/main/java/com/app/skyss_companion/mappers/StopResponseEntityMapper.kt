@@ -74,29 +74,22 @@ class StopResponseEntityMapper {
             )
         }
 
-        fun mapStop(stop: StopResponse): Stop? {
-            var ident: String? = stop.Identifier
-            var desc: String? = stop.Description
-            var loc: String? = stop.Location
-            var sm: List<String>? = stop.ServiceModes
-            var sm2: List<String>? = stop.ServiceModes2
-            var dtl: String? = stop.Detail
-            var sid: String? = stop.SkyssId
-            var rds: List<RouteDirectionResponse>? = stop.RouteDirections
-
-            if (ident != null && desc != null && loc != null && sm != null && sm2 != null && dtl != null && sid != null && rds != null) {
-                return Stop(
-                    identifier = ident,
-                    description = desc,
-                    location = loc,
-                    serviceModes = sm,
-                    serviceModes2 = sm2,
-                    detail = dtl,
-                    skyssId = sid,
-                    routeDirections = rds.mapNotNull { r -> mapRouteDirectionResponse(r) }
-                )
-            }
-            return null
+        fun mapStop(stop: StopResponse): Stop {
+            return Stop(
+                identifier = stop.Identifier ?: "",
+                description = stop.Description,
+                location = stop.Location,
+                serviceModes = stop.ServiceModes,
+                serviceModes2 = stop.ServiceModes2,
+                detail = stop.Detail,
+                skyssId = stop.SkyssId,
+                routeDirections = stop.RouteDirections?.mapNotNull { r ->
+                    mapRouteDirectionResponse(
+                        r
+                    )
+                },
+                platform = stop.Platform
+            )
         }
 
         fun mapTimeTable(timeTable: TimeTableResponse): TimeTable? {

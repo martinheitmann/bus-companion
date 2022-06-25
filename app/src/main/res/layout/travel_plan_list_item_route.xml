@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/travel_plan_list_item_bus_frame"
+    android:id="@+id/travel_plan_list_item_route_frame"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
@@ -9,20 +9,20 @@
     android:layout_marginBottom="4dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/travel_plan_list_item_bus_card"
+        android:id="@+id/travel_plan_list_item_route_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="?colorPrimary"
         app:cardCornerRadius="12dp">
 
         <LinearLayout
-            android:id="@+id/travel_plan_list_item_bus_lin"
+            android:id="@+id/travel_plan_list_item_route_lin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/travel_plan_list_item_bus_image"
+                android:id="@+id/travel_plan_list_item_route_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -33,7 +33,7 @@
                 app:tint="?colorOnPrimary" />
 
             <TextView
-                android:id="@+id/travel_plan_list_item_bus_text"
+                android:id="@+id/travel_plan_list_item_route_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
