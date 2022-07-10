@@ -14,6 +14,7 @@ import com.app.skyss_companion.repository.TravelPlannerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.format.TextStyle
 import java.util.*
 import javax.inject.Inject
@@ -66,6 +67,18 @@ class SelectedTravelPlanViewModel @Inject constructor(
                     Locale.getDefault()
                 )
             } $dayValue.$month.$year $startHour:$startMinute - $endHour:$endMinute"
+        }
+        return null
+    }
+
+    fun getDurationString(t: TravelPlan): String? {
+        val start = t.startTime
+        val end = t.endTime
+        if(start != null && end != null){
+            val duration = Duration.between(start, end)
+            val minutes = duration.toMinutes().toInt()
+            if(minutes == 1) return "1 minutt"
+            return "(${minutes} minutter)"
         }
         return null
     }

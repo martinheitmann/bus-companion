@@ -56,4 +56,10 @@ class LocationSearchListAdapter(private val onTap: (Int) -> Unit) : RecyclerView
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear(){
+        this.dataSet = emptyList()
+        notifyDataSetChanged()
+    }
+
 }

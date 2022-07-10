@@ -2,6 +2,7 @@ package com.app.skyss_companion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import com.app.skyss_companion.misc.NotificationUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Create the notification channel
         // Can safely call this multiple times.
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         NotificationUtils.createNotificationChannel(
             applicationContext,
             applicationContext.getString(R.string.channel_id),

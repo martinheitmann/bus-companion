@@ -53,6 +53,12 @@ object DatabaseModule {
 
     @Singleton
     @Provides
+    fun provideBookmarkedTravelPlanDao(appDatabase: AppDatabase): BookmarkedTravelPlanDao {
+        return appDatabase.bookmarkedTravelPlanDao()
+    }
+
+    @Singleton
+    @Provides
     fun providePassingTimeAlertDao(appDatabase: AppDatabase): PassingTimeAlertDao {
         return appDatabase.passingTimeAlertDao()
     }

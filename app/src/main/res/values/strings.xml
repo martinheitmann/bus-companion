@@ -9,6 +9,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="last_used_geocoding_features">LAST_USED_GEOCODING_FEATURES</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

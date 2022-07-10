@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
@@ -51,10 +52,17 @@ class SelectedTravelPlanFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
+        binding.selectedTravelPlanBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         viewModel.selectedTravelPlan.observe(viewLifecycleOwner) { travelPlan ->
             adapter.setData(travelPlan.travelSteps, travelPlan.end)
             viewModel.getDateString(travelPlan)?.let { str: String ->
                 binding.selectedTravelPlanDateTime.text = str
+            }
+            viewModel.getDurationString(travelPlan)?.let { str ->
+                binding.selectedTravelPlanDuration.text = str
             }
         }
         val bundle = this.arguments
