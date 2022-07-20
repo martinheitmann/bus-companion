@@ -12,4 +12,5 @@ data class Stop (
         val detail: String? = null,
         val skyssId: String? = null,
         val routeDirections: List<RouteDirection>? = null,
+        val platform: String? = null
 )

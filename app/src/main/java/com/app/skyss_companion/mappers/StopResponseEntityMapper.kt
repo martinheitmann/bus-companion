@@ -5,7 +5,7 @@ import com.app.skyss_companion.model.*
 
 class StopResponseEntityMapper {
     companion object {
-        fun mapStopGroupResponse(stopGroup: StopGroupResponse) : StopGroup? {
+        fun mapStopGroupResponse(stopGroup: StopGroupResponse): StopGroup? {
             val ident = stopGroup.Identifier
             val desc = stopGroup.Description
             val loc = stopGroup.Location
@@ -14,21 +14,21 @@ class StopResponseEntityMapper {
             val lc = stopGroup.LineCodes
             val stps = stopGroup.Stops
 
-            if(ident != null && desc != null && loc != null && sm1 != null && sm2 != null){
+            if (ident != null && desc != null && loc != null && sm1 != null && sm2 != null) {
                 return StopGroup(
-                        identifier = ident,
-                        description = desc,
-                        location = loc,
-                        serviceModes = sm1,
-                        serviceModes2 = sm2,
-                        lineCodes = lc,
-                        stops = stps?.mapNotNull { s -> mapStop(s) }
+                    identifier = ident,
+                    description = desc,
+                    location = loc,
+                    serviceModes = sm1,
+                    serviceModes2 = sm2,
+                    lineCodes = lc,
+                    stops = stps?.mapNotNull { s -> mapStop(s) }
                 )
             }
             return null
         }
 
-        fun mapPassingTimeResponse(passingTime: PassingTimeResponse) : PassingTime? {
+        fun mapPassingTimeResponse(passingTime: PassingTimeResponse): PassingTime? {
             val ts = passingTime.Timestamp
             val tid = passingTime.TripIdentifier
             val st = passingTime.Status
@@ -37,7 +37,7 @@ class StopResponseEntityMapper {
             val pi = passingTime.PredictionInaccurate
             val psd = passingTime.Passed
 
-            if(ts != null && tid != null && st != null && dt != null && nt != null && pi != null && psd != null){
+            if (ts != null && tid != null && st != null && dt != null && nt != null && pi != null && psd != null) {
                 return PassingTime(
                     timestamp = ts,
                     tripIdentifier = tid,
@@ -51,7 +51,7 @@ class StopResponseEntityMapper {
             return null
         }
 
-        fun mapRouteDirectionResponse(routeDirection: RouteDirectionResponse) : RouteDirection? {
+        fun mapRouteDirectionResponse(routeDirection: RouteDirectionResponse): RouteDirection? {
             val pid: String? = routeDirection.PublicIdentifier
             val dir: String? = routeDirection.Direction
             val dirn: String? = routeDirection.DirectionName
@@ -61,49 +61,40 @@ class StopResponseEntityMapper {
             val pt: List<PassingTimeResponse>? = routeDirection.PassingTimes
             val nts: List<Any>? = routeDirection.Notes
 
-            if(pid != null && dir != null && dirn != null && sm != null && sm2 != null && id != null && pt != null && nts != null){
-                return RouteDirection(
-                    publicIdentifier = pid,
-                    direction = dir,
-                    directionName = dirn,
-                    serviceMode = sm,
-                    serviceMode2 = sm2,
-                    identifier = id,
-                    passingTimes = mapAllPassingTimeResponses(pt).filterNotNull(),
-                    notes = nts
-                )
-            }
-            return null
+
+            return RouteDirection(
+                publicIdentifier = pid,
+                direction = dir,
+                directionName = dirn,
+                serviceMode = sm,
+                serviceMode2 = sm2,
+                identifier = id,
+                passingTimes = pt?.let { p -> mapAllPassingTimeResponses(p).filterNotNull() },
+                notes = nts
+            )
         }
 
-        fun mapStop(stop: StopResponse) : Stop? {
-            var ident: String? = stop.Identifier
-            var desc: String? = stop.Description
-            var loc: String? = stop.Location
-            var sm: List<String>? = stop.ServiceModes
-            var sm2: List<String>? = stop.ServiceModes2
-            var dtl: String? = stop.Detail
-            var sid: String? = stop.SkyssId
-            var rds: List<RouteDirectionResponse>? = stop.RouteDirections
-
-            if(ident != null && desc != null && loc != null && sm != null && sm2 != null && dtl != null && sid != null && rds != null){
-                return Stop(
-                    identifier = ident,
-                    description = desc,
-                    location = loc,
-                    serviceModes = sm,
-                    serviceModes2 = sm2,
-                    detail = dtl,
-                    skyssId = sid,
-                    routeDirections = rds.mapNotNull { r -> mapRouteDirectionResponse(r) }
-                )
-            }
-            return null
+        fun mapStop(stop: StopResponse): Stop {
+            return Stop(
+                identifier = stop.Identifier ?: "",
+                description = stop.Description,
+                location = stop.Location,
+                serviceModes = stop.ServiceModes,
+                serviceModes2 = stop.ServiceModes2,
+                detail = stop.Detail,
+                skyssId = stop.SkyssId,
+                routeDirections = stop.RouteDirections?.mapNotNull { r ->
+                    mapRouteDirectionResponse(
+                        r
+                    )
+                },
+                platform = stop.Platform
+            )
         }
 
-        fun mapTimeTable(timeTable: TimeTableResponse) : TimeTable? {
+        fun mapTimeTable(timeTable: TimeTableResponse): TimeTable? {
             val pt: List<PassingTimeResponse>? = timeTable.PassingTimes
-            if(pt != null){
+            if (pt != null) {
                 return TimeTable(
                     passingTimes = mapAllPassingTimeResponses(pt).filterNotNull(),
                 )
@@ -111,16 +102,16 @@ class StopResponseEntityMapper {
             return null
         }
 
-        fun mapAllTimeTables(timeTables: List<TimeTableResponse>) : List<TimeTable?>{
+        fun mapAllTimeTables(timeTables: List<TimeTableResponse>): List<TimeTable?> {
             return timeTables.map { tt -> mapTimeTable(tt) }
         }
 
-        fun mapAllStopGroupResponses(stopGroups: List<StopGroupResponse>) : List<StopGroup?> {
+        fun mapAllStopGroupResponses(stopGroups: List<StopGroupResponse>): List<StopGroup?> {
             return stopGroups.map { stop -> mapStopGroupResponse(stop) }
         }
 
-        fun mapAllPassingTimeResponses(passingTimes: List<PassingTimeResponse>) : List<PassingTime?>{
-            return passingTimes.map { passingTime -> mapPassingTimeResponse(passingTime)}
+        fun mapAllPassingTimeResponses(passingTimes: List<PassingTimeResponse>): List<PassingTime?> {
+            return passingTimes.map { passingTime -> mapPassingTimeResponse(passingTime) }
         }
     }
 }

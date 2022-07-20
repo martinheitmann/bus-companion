@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.app.skyss_companion">
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +19,7 @@
         android:theme="@style/Theme.Skysscompanion"
         android:fullBackupContent="@xml/backup_descriptor">
 
+        <!-- APP WIDGET RECEIVER -->
         <receiver
             android:name=".widget.StopGroupAppWidgetProvider"
             android:label="Holdeplass"
@@ -33,7 +33,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorites_list_widget_info" />
         </receiver>
-
         <receiver
             android:name=".widget.RouteDirectionAppWidgetProvider"
             android:label="Linje"
@@ -47,7 +46,22 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/route_direction_widget_info" />
         </receiver>
+        <receiver
+            android:name=".widget.TravelPlannerAppWidgetProvider"
+            android:label="Reiseplan"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/travel_planner_widget_info" />
+        </receiver>
+        <!-- APP WIDGET RECEIVER END -->
+
+        <!-- Broadcast receivers -->
         <receiver android:name=".broadcastreceivers.AlertNotificationBroadcastReceiver"
             android:exported="true">
             <intent-filter>
@@ -56,12 +70,24 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".broadcastreceivers.TravelPlannerWidgetBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <!-- Broadcast receivers END -->
+
+        <!-- WorkManager initialize -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove">
         </provider>
+        <!-- WorkManager initialize END -->
 
+        <!-- MainActivity -->
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="true">
@@ -70,6 +96,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- MainActivity END -->
+
+        <!-- Widget Config activities -->
         <activity android:name=".widget.stopgroup.StopGroupWidgetConfigActivity"
             android:exported="true">
             <intent-filter>
@@ -82,16 +111,33 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <activity android:name=".widget.travelplanner.TravelPlannerWidgetConfigActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <!-- Widget Config activities END -->
 
+        <!-- BIND REMOTEVIEWS -->
         <service
             android:name=".widget.stopgroup.StopGroupWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
+            android:name=".widget.travelplanner.TravelPlannerWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <!-- BIND REMOTEVIEWS END -->
+
+        <!-- BIND JOB SERVICE -->
+        <service
             android:name=".widget.stopgroup.StopGroupWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <service
             android:name=".widget.routedirection.RouteDirectionWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".widget.travelplanner.TravelPlannerWidgetUpdateJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" >
+        </service>
+        <!-- BIND JOB SERVICE END -->
     </application>
 </manifest>

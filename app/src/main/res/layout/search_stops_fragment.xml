@@ -119,7 +119,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/edittext_rounded_blue"
                 android:drawableStart="@drawable/ic_baseline_search_24"
-                android:drawableTint="#CCFFFFFF"
+                android:drawableTint="#808080"
                 android:hint="Søk etter holdeplasser"
                 android:importantForAutofill="no"
                 android:inputType="text"
