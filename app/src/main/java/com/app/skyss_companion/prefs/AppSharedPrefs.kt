@@ -87,7 +87,10 @@ class AppSharedPrefs @Inject constructor(
     }
 
     suspend fun writeLastUsedGeocodingFeatures(geocodingFeature: GeocodingFeature) {
-        Log.d(tag, "writeLastUsedGeocodingFeatures writing feature with type ${geocodingFeature.type}.")
+        Log.d(
+            tag,
+            "writeLastUsedGeocodingFeatures writing feature with type ${geocodingFeature.type}."
+        )
         if (sharedPreferences == null) return
         val serializedArray = sharedPreferences.getString(
             context.getString(R.string.last_used_geocoding_features),
@@ -104,7 +107,7 @@ class AppSharedPrefs @Inject constructor(
                 }
             }
         }
-        if(geocodingFeatures.contains(geocodingFeature)){
+        if (geocodingFeatures.contains(geocodingFeature)) {
             val index = geocodingFeatures.indexOf(geocodingFeature)
             geocodingFeatures.removeAt(index)
         }
@@ -136,7 +139,29 @@ class AppSharedPrefs @Inject constructor(
                 }
             }
         }
-        Log.d(tag, "readLastUsedGeocodingFeatures returning list of ${geocodingFeatures?.size} elements.")
+        Log.d(
+            tag,
+            "readLastUsedGeocodingFeatures returning list of ${geocodingFeatures?.size} elements."
+        )
         return geocodingFeatures
+    }
+
+    suspend fun writeWidgetRowItemCount(rowCount: Int) {
+        if (sharedPreferences == null) return
+        with(sharedPreferences.edit()) {
+            putInt(context.getString(R.string.widget_travelplanner_entry_row_count), rowCount)
+            apply()
+        }
+    }
+
+    suspend fun readWidgetRowItemCount(): Int? {
+        if (sharedPreferences == null) return null
+        val rowCount =
+            sharedPreferences.getInt(
+                context.getString(R.string.widget_travelplanner_entry_row_count),
+                -1
+            )
+        return if(rowCount == -1) null
+        else rowCount
     }
 }

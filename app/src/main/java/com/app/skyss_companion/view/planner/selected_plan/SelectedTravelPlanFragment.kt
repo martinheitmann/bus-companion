@@ -1,26 +1,21 @@
 package com.app.skyss_companion.view.planner.selected_plan
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.PackageManagerCompat.LOG_TAG
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.skyss_companion.R
 import com.app.skyss_companion.databinding.FragmentSelectedTravelPlanBinding
-import com.app.skyss_companion.databinding.FragmentTravelPlannerBinding
-import com.app.skyss_companion.misc.DateUtils
 import com.app.skyss_companion.view.planner.SelectedTravelPlanAdapter
-import com.app.skyss_companion.view.planner.TravelPlannerListAdapter
-import com.app.skyss_companion.view.planner.TravelPlannerViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.TextStyle
-import java.util.*
+
 
 @AndroidEntryPoint
 class SelectedTravelPlanFragment : Fragment() {
@@ -39,7 +34,7 @@ class SelectedTravelPlanFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSelectedTravelPlanBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -69,8 +64,10 @@ class SelectedTravelPlanFragment : Fragment() {
         bundle?.getString("travelPlanId")?.let { id ->
             viewModel.fetchTravelPlan(id)
         } ?: run {
-            Log.d(mTag, "WARNING bundle argument 'travelPlanId' was null, cannot request travel plan")
+            Log.d(
+                mTag,
+                "WARNING bundle argument 'travelPlanId' was null, cannot request travel plan. Contents were: " + bundle.toString(),
+            )
         }
     }
-
 }

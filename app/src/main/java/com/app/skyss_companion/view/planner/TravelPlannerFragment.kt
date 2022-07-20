@@ -23,7 +23,8 @@ import java.time.*
 
 @AndroidEntryPoint
 class TravelPlannerFragment : Fragment(),
-    SearchLocationDialogFragment.SearchLocationDialogListener, SavedTravelPlansDialog.SavedTravelPlansDialogListener {
+    SearchLocationDialogFragment.SearchLocationDialogListener,
+    SavedTravelPlansDialog.SavedTravelPlansDialogListener {
 
     private val mTag = "TravelPlannerFragment"
     private val viewModel: TravelPlannerViewModel by viewModels()
@@ -59,50 +60,12 @@ class TravelPlannerFragment : Fragment(),
         binding.travelPlannerStart.setOnClickListener { toggleDialog("start") }
         binding.travelPlannerDest.setOnClickListener { toggleDialog("dest") }
 
-        viewModel.selectedFromFeature.observe(viewLifecycleOwner) { feature ->
-            feature?.let { f ->
-                binding.travelPlannerStart.text = f.properties.label
-            }
-        }
-
-        viewModel.selectedToFeature.observe(viewLifecycleOwner) { feature ->
-            feature?.let { f ->
-                binding.travelPlannerDest.text = f.properties.label
-            }
-        }
-
-        viewModel.selectedLocalDateTime.observe(viewLifecycleOwner) { ldt ->
-            binding.travelPlannerDateTextview.text = viewModel.formatDate(ldt)
-        }
-
-        viewModel.selectedTimeType.observe(viewLifecycleOwner) { tt ->
-            binding.travelPlannerTimetypeSwitch.isChecked = tt
-            if (!tt) {
-                binding.travelPlannerDepartureLabel.setTextColor(R.attr.colorPrimary)
-                binding.travelPlannerArrivalLabel.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.cardview_dark_background
-                    )
-                )
-            } else {
-                binding.travelPlannerDepartureLabel.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.cardview_dark_background
-                    )
-                )
-                binding.travelPlannerArrivalLabel.setTextColor(R.attr.colorPrimary)
-            }
-        }
-
-        binding.travelPlannerTimetypeSwitch.setOnClickListener {
-            viewModel.flipSwitch()
-        }
-
-        binding.travelPlannerDatepickerButton.setOnClickListener {
-            openDatePicker()
-        }
+        viewModel.selectedFromFeature.observe(viewLifecycleOwner, ::selectedFromFeatureObserver)
+        viewModel.selectedToFeature.observe(viewLifecycleOwner, ::selectedToFeatureObserver)
+        viewModel.selectedLocalDateTime.observe(viewLifecycleOwner, ::selectedLocalDateTimeObserver)
+        viewModel.selectedTimeType.observe(viewLifecycleOwner, ::selectedTimeTypeObserver)
+        binding.travelPlannerTimetypeSwitch.setOnClickListener { viewModel.flipSwitch() }
+        binding.travelPlannerDatepickerButton.setOnClickListener { openDatePicker() }
 
         binding.travelPlannerViewSavedButton.setOnClickListener {
             val bundle = Bundle()
@@ -112,9 +75,7 @@ class TravelPlannerFragment : Fragment(),
             fragment.show(childFragmentManager, "saved_travel_plans")
         }
 
-        viewModel.mergedFeatures.observe(viewLifecycleOwner) {
-            /* no-op */
-        }
+        viewModel.mergedFeatures.observe(viewLifecycleOwner) {/* no-op */ }
 
         viewModel.travelPlans.observe(viewLifecycleOwner) { travelPlans ->
             adapter.setData(travelPlans)
@@ -140,6 +101,43 @@ class TravelPlannerFragment : Fragment(),
             viewLifecycleOwner,
             ::setTime
         )
+    }
+
+    private fun selectedTimeTypeObserver(timeType: Boolean) {
+        binding.travelPlannerTimetypeSwitch.isChecked = timeType
+        if (!timeType) {
+            binding.travelPlannerDepartureLabel.setTextColor(R.attr.colorPrimary)
+            binding.travelPlannerArrivalLabel.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cardview_dark_background
+                )
+            )
+        } else {
+            binding.travelPlannerDepartureLabel.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cardview_dark_background
+                )
+            )
+            binding.travelPlannerArrivalLabel.setTextColor(R.attr.colorPrimary)
+        }
+    }
+
+    private fun selectedFromFeatureObserver(feature: GeocodingFeature?) {
+        feature?.let { f ->
+            binding.travelPlannerStart.text = f.properties.label
+        }
+    }
+
+    private fun selectedToFeatureObserver(feature: GeocodingFeature?) {
+        feature?.let { f ->
+            binding.travelPlannerDest.text = f.properties.label
+        }
+    }
+
+    private fun selectedLocalDateTimeObserver(localDateTime: LocalDateTime) {
+        binding.travelPlannerDateTextview.text = viewModel.formatDate(localDateTime)
     }
 
     private fun toggleDialog(type: String) {

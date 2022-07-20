@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import com.app.skyss_companion.http.TravelPlannerClient
 import com.app.skyss_companion.mappers.TravelPlannerEntityMapper
+import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.model.geocode.GeocodingFeature
+import com.app.skyss_companion.model.travelplanner.BookmarkedTravelPlan
 import com.app.skyss_companion.model.travelplanner.TravelPlannerRoot
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -61,6 +63,41 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
         apiResponse?.let {
             return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
         }
+        return null
+    }
+
+    @WorkerThread
+    suspend fun getTravelPlansFromSaved(data: BookmarkedTravelPlan): TravelPlannerRoot? {
+        return getTravelPlans(
+            fromFeature = data.fromFeature,
+            toFeature = data.toFeature,
+            timeType = data.timeType,
+            timestamp = data.timestamp,
+            modes = data.modes,
+            mtt = data.minimumTransferTime,
+            mwd = data.maximumWalkDistance
+        )
+    }
+
+    @WorkerThread
+    suspend fun getTravelPlansFromWidgetConfig(data: EnabledWidget): TravelPlannerRoot? {
+        val fromFeature = data.fromFeature
+        val toFeature = data.toFeature
+        val timeType = data.timeType
+        val timestamp = data.timestamp
+        val modes = data.modes
+        val mtt = data.minimumTransferTime
+        val mwd = data.maximumWalkDistance
+        if (fromFeature != null && toFeature != null && timeType != null && timestamp != null && modes != null && mtt != null && mwd != null)
+            return getTravelPlans(
+                fromFeature,
+                toFeature,
+                timeType,
+                timestamp,
+                modes,
+                mtt,
+                mwd
+            )
         return null
     }
 

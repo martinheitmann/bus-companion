@@ -15,5 +15,6 @@ class SkyssCompanionApp : Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
             .setWorkerFactory(workerFactory)
+            .setJobSchedulerJobIdRange(0, 2000)
             .build()
 }
