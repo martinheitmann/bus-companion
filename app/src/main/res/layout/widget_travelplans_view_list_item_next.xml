@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/travel_plan_list_item_next_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_baseline_chevron_right_24"
         android:tint="@color/black" />
