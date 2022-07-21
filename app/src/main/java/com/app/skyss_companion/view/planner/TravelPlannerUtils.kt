@@ -11,7 +11,11 @@ class TravelPlannerUtils {
             if (start != null && end != null) {
                 val localStart = start.toLocalTime()
                 val localEnd = end.toLocalTime()
-                return "${localStart.hour}:${localStart.minute} - ${localEnd.hour}:${localStart.minute}"
+                return "${
+                    localStart.hour.toString().padStart(2, '0')
+                }:${localStart.minute.toString().padStart(2, '0')} - ${
+                    localEnd.hour.toString().padStart(2, '0')
+                }:${localStart.minute.toString().padStart(2, '0')}"
             }
             return "Ukjent varighet..."
         }

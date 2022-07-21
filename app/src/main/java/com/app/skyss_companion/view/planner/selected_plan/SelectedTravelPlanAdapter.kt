@@ -1,4 +1,4 @@
-package com.app.skyss_companion.view.planner
+package com.app.skyss_companion.view.planner.selected_plan
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -160,9 +160,9 @@ class SelectedTravelPlanAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == 1) {
-            (holder as SelectedTravelPlanAdapter.RouteViewHolder).bind(position)
+            (holder as RouteViewHolder).bind(position)
         } else {
-            (holder as SelectedTravelPlanAdapter.WalkViewHolder).bind(position)
+            (holder as WalkViewHolder).bind(position)
         }
     }
 

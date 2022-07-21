@@ -1,19 +1,16 @@
 package com.app.skyss_companion.view.planner.selected_plan
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.FragmentSelectedTravelPlanBinding
-import com.app.skyss_companion.view.planner.SelectedTravelPlanAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
