@@ -239,4 +239,14 @@ class TravelPlannerViewModel @Inject constructor(
             sharedPrefs.writeLastUsedGeocodingFeatures(geocodingFeature)
         }
     }
+
+    fun deleteSavedTravelPlan(position: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            savedTravelPlans.value?.let { data ->
+                data[position].let { element ->
+                    bookmarkedTravelPlanRepository.removeBookmarkedTravelPlan(element)
+                }
+            }
+        }
+    }
 }

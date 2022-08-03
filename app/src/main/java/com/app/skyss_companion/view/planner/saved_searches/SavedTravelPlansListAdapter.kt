@@ -13,8 +13,10 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.model.travelplanner.BookmarkedTravelPlan
 import java.time.format.DateTimeFormatter
 
-class SavedTravelPlansListAdapter(private val onTap: (Int) -> Unit) :
-    RecyclerView.Adapter<SavedTravelPlansListAdapter.ViewHolder>() {
+class SavedTravelPlansListAdapter(
+    private val onTap: (Int) -> Unit,
+    private val onDeleteButtonTap: (Int) -> Unit
+) : RecyclerView.Adapter<SavedTravelPlansListAdapter.ViewHolder>() {
 
     val TAG = "SavedTPListAdapter"
     var dataSet = listOf<BookmarkedTravelPlan>()
@@ -25,16 +27,14 @@ class SavedTravelPlansListAdapter(private val onTap: (Int) -> Unit) :
         var to: TextView = view.findViewById(R.id.bookmarked_travel_plan_list_item_to_text)
         var timestamp: TextView = view.findViewById(R.id.bookmarked_travel_plan_list_item_timestamp)
         var layout: FrameLayout = view.findViewById(R.id.bookmarked_travel_plan_list_item_frame)
-        fun bind(position: Int, onTap: (Int) -> Unit) {
+        fun bind(position: Int, onTap: (Int) -> Unit, onDeleteButtonTap: (Int) -> Unit) {
             val item = dataSet[position]
             layout.setOnClickListener { onTap(position) }
             from.text = item.fromFeature.properties.label
             to.text = item.toFeature.properties.label
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             timestamp.text = formatter.format(item.createdAt)
-            delete.setOnClickListener {
-                // no-op
-            }
+            delete.setOnClickListener { onDeleteButtonTap(position) }
         }
     }
 
@@ -45,7 +45,7 @@ class SavedTravelPlansListAdapter(private val onTap: (Int) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(position, onTap)
+        holder.bind(position, onTap, onDeleteButtonTap)
     }
 
     override fun getItemCount(): Int {
