@@ -9,11 +9,13 @@ import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
+import java.time.LocalDateTime
 import java.util.*
 
-class TravelPlannerTimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TravelPlannerTimePickerFragment(private val partialDate: LocalDateTime) : DialogFragment(),
+    TimePickerDialog.OnTimeSetListener {
 
-    val mTag = "TPTimePicckerFrag"
+    val mTag = "TPTimePickerFrag"
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Use the current time as the default values for the picker
@@ -26,10 +28,19 @@ class TravelPlannerTimePickerFragment : DialogFragment(), TimePickerDialog.OnTim
     }
 
     override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
+        val dateWithTime = partialDate
+            .withHour(hour)
+            .withMinute(minute)
+            .withSecond(0)
+        val dateWithTimeString = dateWithTime.toString()
         val bundle = Bundle()
         bundle.putInt("hour", hour)
         bundle.putInt("minute", minute)
-        Log.d(mTag, "onTimeSet setting bundle with with hour,minute = $hour,$minute")
+        bundle.putString("fullDate", dateWithTimeString)
+        Log.d(
+            mTag,
+            "onTimeSet setting bundle with with hour,minute, fullDate = $hour,$minute, $dateWithTimeString"
+        )
         setFragmentResult(FragmentReturnType.TIME.type, bundle)
     }
 }

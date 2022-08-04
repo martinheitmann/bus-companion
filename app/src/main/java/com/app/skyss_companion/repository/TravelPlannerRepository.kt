@@ -26,7 +26,7 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
         mtt: Int, // Minimum transfer time
         mwd: Int // Maximum walking distance
     ): TravelPlannerRoot? {
-
+        Log.d(tag, "getTravelPlans received timestamp: $timestamp")
         val fromCoord1 = fromFeature.geometry.coordinates.last()
         val fromCoord2 = fromFeature.geometry.coordinates.first()
         val fromName = fromFeature.properties.label!!
@@ -64,19 +64,6 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
             return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
         }
         return null
-    }
-
-    @WorkerThread
-    suspend fun getTravelPlansFromSaved(data: BookmarkedTravelPlan): TravelPlannerRoot? {
-        return getTravelPlans(
-            fromFeature = data.fromFeature,
-            toFeature = data.toFeature,
-            timeType = data.timeType,
-            timestamp = data.timestamp,
-            modes = data.modes,
-            mtt = data.minimumTransferTime,
-            mwd = data.maximumWalkDistance
-        )
     }
 
     @WorkerThread
