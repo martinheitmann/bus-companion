@@ -19,7 +19,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -179,8 +181,10 @@ class TravelPlannerViewModel @Inject constructor(
     }
 
     private fun toTimestampString(ldt: LocalDateTime): String {
+        val asZonedTime = ZonedDateTime.of(ldt, ZoneId.of("Europe/Oslo"))
+        val asUtc = asZonedTime.withZoneSameInstant( ZoneId.of("UTC") )
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        return formatter.format(ldt)
+        return formatter.format(asUtc)
     }
 
     fun flipSwitch() {
