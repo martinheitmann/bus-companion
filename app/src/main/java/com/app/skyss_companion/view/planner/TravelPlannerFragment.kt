@@ -175,26 +175,23 @@ class TravelPlannerFragment : Fragment(),
         val month = bundle.getInt("month")
         val day = bundle.getInt("day")
         Log.d(tag, "setDateAndOpenTimePicker called with year,month,day = $year,$month,$day")
-        viewModel.selectedLocalDateTime.value?.let { localDateTime ->
-            val newLocalDateTime = localDateTime
-                .withYear(year)
-                .withMonth(month)
-                .withDayOfMonth(day)
-            viewModel.selectedLocalDateTime.postValue(newLocalDateTime)
-        }
-        val timePickerFragment = TravelPlannerTimePickerFragment()
+        val partialDate = LocalDateTime
+            .now()
+            .withYear(year)
+            .withMonth(month)
+            .withDayOfMonth(day)
+        val timePickerFragment = TravelPlannerTimePickerFragment(partialDate)
         timePickerFragment.show(childFragmentManager, "travelPlannerTimePicker")
     }
 
     private fun setTime(requestKey: String, bundle: Bundle) {
         val hour = bundle.getInt("hour")
         val minute = bundle.getInt("minute")
+        val fullDateAsString = bundle.getString("fullDate")
+        val fullDateAndTime = LocalDateTime.parse(fullDateAsString)
         Log.d(tag, "setTime called with hour,minute = $hour,$minute")
         viewModel.selectedLocalDateTime.value?.let { localDateTime ->
-            val newLocalDateTime = localDateTime
-                .withHour(hour)
-                .withMinute(minute)
-            viewModel.selectedLocalDateTime.postValue(newLocalDateTime)
+            viewModel.selectedLocalDateTime.postValue(fullDateAndTime)
         }
     }
 

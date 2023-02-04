@@ -28,9 +28,10 @@ class TravelPlannerDatePickerFragment : DialogFragment(), DatePickerDialog.OnDat
         // Do something with the date chosen by the user
         val bundle = Bundle()
         bundle.putInt("year", year)
-        bundle.putInt("month", month)
+        bundle.putInt("month", month + 1)
         bundle.putInt("day", day)
         Log.d(mTag, "onDateSet setting bundle with with year,month,day = $year,$month,$day")
         setFragmentResult(FragmentReturnType.DATE.type, bundle)
+        // TS=2022-08-06T18%3A29
     }
 }
