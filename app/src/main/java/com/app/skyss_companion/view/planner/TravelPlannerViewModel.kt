@@ -19,7 +19,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -52,7 +54,8 @@ class TravelPlannerViewModel @Inject constructor(
     var selectedToFeature: MutableLiveData<GeocodingFeature?> = MutableLiveData(null)
     var mergedFeatures: MediatorLiveData<GeocodingFeature> = MediatorLiveData()
 
-    var selectedLocalDateTime: MutableLiveData<LocalDateTime> = MutableLiveData(LocalDateTime.now())
+    var selectedLocalDateTime: MutableLiveData<LocalDateTime> =
+        MutableLiveData(LocalDateTime.now().withSecond(0))
     var selectedTimeType: MutableLiveData<Boolean> = MutableLiveData(false)
 
     val savedTravelPlans: MutableLiveData<List<BookmarkedTravelPlan>> = MutableLiveData()
@@ -69,14 +72,16 @@ class TravelPlannerViewModel @Inject constructor(
             fetchTravelPlan()
         }
         mergedFeatures.addSource(selectedLocalDateTime) {
-            Log.d(tag, "selectedFromFeature livedata trigger")
             val toFeature = selectedToFeature.value
             val fromFeature = selectedFromFeature.value
-            if (toFeature != null && fromFeature != null)
+            if (toFeature != null && fromFeature != null) {
+                Log.d(tag, "selectedLocalDateTime livedata trigger, fetching as result")
                 fetchTravelPlan()
+            } else Log.d(tag, "selectedLocalDateTime livedata trigger, fetch conditions not met")
+
         }
         mergedFeatures.addSource(selectedToFeature) {
-            Log.d(tag, "selectedFromFeature livedata trigger")
+            Log.d(tag, "selectedToFeature livedata trigger")
             fetchTravelPlan()
         }
         fetchBookmarkedTravelPlansScope.launch(Dispatchers.IO) {
@@ -128,7 +133,7 @@ class TravelPlannerViewModel @Inject constructor(
         }
     }
 
-    fun cancelGeocode(){
+    fun cancelGeocode() {
         if (fetchFeaturesJob?.isActive == true) {
             fetchFeaturesJob?.cancel("Function called with active job, old job is irrelevant")
         }
@@ -175,16 +180,18 @@ class TravelPlannerViewModel @Inject constructor(
         return formatter.format(dt)
     }
 
-    fun toTimestampString(ldt: LocalDateTime): String {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm.ss'Z'")
-        return formatter.format(ldt)
+    private fun toTimestampString(ldt: LocalDateTime): String {
+        val asZonedTime = ZonedDateTime.of(ldt, ZoneId.of("Europe/Oslo"))
+        val asUtc = asZonedTime.withZoneSameInstant( ZoneId.of("UTC") )
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        return formatter.format(asUtc)
     }
 
     fun flipSwitch() {
         this.selectedTimeType.postValue(!this.selectedTimeType.value!!)
     }
 
-    fun getTimeType(value: Boolean): String {
+    private fun getTimeType(value: Boolean): String {
         return if (value) "ARRIVAL"
         else "DEPARTURE"
     }
@@ -228,7 +235,8 @@ class TravelPlannerViewModel @Inject constructor(
     suspend fun getLastUsedLocations() {
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(tag, "getLastUsedLocations starting coroutine with viewModel scope.")
-            val ret: List<GeocodingFeature> = sharedPrefs.readLastUsedGeocodingFeatures() ?: emptyList()
+            val ret: List<GeocodingFeature> =
+                sharedPrefs.readLastUsedGeocodingFeatures() ?: emptyList()
             Log.d(tag, "getLastUsedLocations returned ${ret.size} items.")
             lastUsedLocations.postValue(ret)
         }
@@ -240,7 +248,7 @@ class TravelPlannerViewModel @Inject constructor(
         }
     }
 
-    fun deleteSavedTravelPlan(position: Int){
+    fun deleteSavedTravelPlan(position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             savedTravelPlans.value?.let { data ->
                 data[position].let { element ->

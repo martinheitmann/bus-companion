@@ -8,6 +8,11 @@ import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.model.geocode.GeocodingFeature
 import com.app.skyss_companion.model.travelplanner.BookmarkedTravelPlan
 import com.app.skyss_companion.model.travelplanner.TravelPlannerRoot
+import com.app.skyss_companion.view.planner.TravelPlannerUtils
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,7 +31,7 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
         mtt: Int, // Minimum transfer time
         mwd: Int // Maximum walking distance
     ): TravelPlannerRoot? {
-
+        Log.d(tag, "getTravelPlans received timestamp: $timestamp")
         val fromCoord1 = fromFeature.geometry.coordinates.last()
         val fromCoord2 = fromFeature.geometry.coordinates.first()
         val fromName = fromFeature.properties.label!!
@@ -67,24 +72,12 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
     }
 
     @WorkerThread
-    suspend fun getTravelPlansFromSaved(data: BookmarkedTravelPlan): TravelPlannerRoot? {
-        return getTravelPlans(
-            fromFeature = data.fromFeature,
-            toFeature = data.toFeature,
-            timeType = data.timeType,
-            timestamp = data.timestamp,
-            modes = data.modes,
-            mtt = data.minimumTransferTime,
-            mwd = data.maximumWalkDistance
-        )
-    }
-
-    @WorkerThread
     suspend fun getTravelPlansFromWidgetConfig(data: EnabledWidget): TravelPlannerRoot? {
         val fromFeature = data.fromFeature
         val toFeature = data.toFeature
         val timeType = data.timeType
-        val timestamp = data.timestamp
+        //val timestamp = data.timestamp
+        val timestamp = toTimestampString(LocalDateTime.now())
         val modes = data.modes
         val mtt = data.minimumTransferTime
         val mwd = data.maximumWalkDistance
@@ -107,6 +100,13 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
 
     fun getTravelPlans2(): TravelPlannerRoot? {
         return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(travelPlannerClient.getTravelPlansString1()!!)
+    }
+
+    private fun toTimestampString(ldt: LocalDateTime): String {
+        val asZonedTime = ZonedDateTime.of(ldt, ZoneId.of("Europe/Oslo"))
+        val asUtc = asZonedTime.withZoneSameInstant( ZoneId.of("UTC") )
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        return formatter.format(asUtc)
     }
 
 }
