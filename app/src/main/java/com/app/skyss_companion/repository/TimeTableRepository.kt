@@ -14,6 +14,43 @@ import javax.inject.Singleton
 @Singleton
 class TimeTableRepository @Inject constructor(private val stopsClient: StopsClient) {
 
+
+    @WorkerThread
+    suspend fun mFetchTimeTables(
+        stopIdentifier: String,
+        routeDirectionIdentifier: String,
+        numberOfDays: Int
+    ): List<Pair<LocalDateTime, DateTimeTable>> {
+        var dateTimeTables = emptyList<Pair<LocalDateTime, DateTimeTable>>()
+        val currentDate = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        for(i in 0..numberOfDays){
+            val futureDate = currentDate.plusDays(i.toLong())
+            val futureDateString: String = futureDate.format(formatter)
+            val apiTimeTablesResponse = stopsClient.fetchTimeTables(
+                stopIdentifier,
+                routeDirectionIdentifier,
+                futureDateString
+            )
+            apiTimeTablesResponse?.Timetables?.let { apiTimeTables ->
+                val timeTables = StopResponseEntityMapper.mapAllTimeTables(apiTimeTables)
+                if (timeTables.isNotEmpty()) {
+                    timeTables.first()?.let { timeTable ->
+                        val dateTimeTable = DateTimeTable(
+                            date = futureDate,
+                            dateString = futureDateString,
+                            timeTable = timeTable
+                        )
+                        val pair = Pair(futureDate, dateTimeTable)
+                        dateTimeTables = dateTimeTables + pair
+                    }
+                }
+            }
+
+        }
+        return dateTimeTables
+    }
+
     @WorkerThread
     suspend fun fetchTimeTables(
         stopIdentifier: String,

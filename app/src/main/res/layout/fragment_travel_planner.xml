@@ -39,7 +39,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_baseline_view_list_24"
-                    android:tint="?colorPrimary" />
+                    android:tint="?colorPrimary"
+                    android:contentDescription="TODO" />
 
                 <Space
                     android:layout_width="wrap_content"

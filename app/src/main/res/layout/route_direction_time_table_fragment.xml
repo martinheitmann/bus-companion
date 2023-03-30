@@ -29,7 +29,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="?colorOnPrimary" />
+            app:tint="?colorOnPrimary"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/time_table_stop_place_name"
@@ -50,7 +51,8 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_bookmark_24"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            android:contentDescription="TODO" />
 
         <ImageButton
             android:id="@+id/time_table_bookmark_inactive"
@@ -59,7 +61,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_bookmark_border_24"
             android:visibility="visible"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            android:contentDescription="TODO" />
 
         <ImageButton
             android:id="@+id/time_table_refresh_button"
@@ -67,7 +70,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_refresh_24"
-            app:tint="?colorOnPrimary" />
+            app:tint="?colorOnPrimary"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

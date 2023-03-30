@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,28 +18,53 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.databinding.SearchStopsFragmentBinding
 import com.app.skyss_companion.model.StopGroup
+import com.app.skyss_companion.view.bookmark.SavedElementsView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchStopsFragment : Fragment() {
     val TAG = "SearchStopsFragment"
-    private val viewModel: SearchStopsViewModel by viewModels()
+    /*private val viewModel: SearchStopsViewModel by viewModels()
     private lateinit var adapter: SearchViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: LinearLayoutManager
     private var _binding: SearchStopsFragmentBinding? = null
 
-    private val binding get() = _binding!!
+    private val binding get() = _binding!!*/
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = SearchStopsFragmentBinding.inflate(inflater, container, false)
         return binding.root
+    }*/
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        //_binding = BookmarkedItemsFragmentBinding.inflate(inflater, container, false)
+        //return binding.root
+
+        return ComposeView(requireContext()).apply {
+            // Dispose of the Composition when the view's LifecycleOwner
+            // is destroyed
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SearchStopsScreen(onStopGroupSelected = ::navigateToStopPlace)
+            }
+        }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    private fun navigateToStopPlace(stopIdentifier: String){
+        val bundle = Bundle()
+        bundle.putString("STOP_IDENTIFIER", stopIdentifier)
+        //viewModel.addStopGroupToRecentlyUsed()
+        findNavController().navigate(R.id.action_tabsContainerFragment_to_stopPlaceFragment, bundle)
+    }
+
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         adapter = SearchViewAdapter(onItemTapped = {s: String -> navigateToStopPlace(s)} )
         recyclerView = binding.searchStopsRecyclerview
@@ -92,9 +119,9 @@ class SearchStopsFragment : Fragment() {
             }
 
         })
-    }
+    }*/
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         viewModel.cancelJob()
     }
@@ -148,6 +175,6 @@ class SearchStopsFragment : Fragment() {
             }
             binding.searchStopsTextviewItemCount.visibility = View.VISIBLE
         }
-    }
+    }*/
 
 }
