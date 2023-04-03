@@ -1,6 +1,7 @@
 package com.app.skyss_companion.view.stop_place
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.app.skyss_companion.R
 
 @AndroidEntryPoint
 class StopPlaceFragment : Fragment() {
-    val TAG = "SearchStopsFragment"
+    val fragmentTag = "StopPlaceFragment"
     private val viewModel: StopPlaceViewModel by viewModels()
     private lateinit var adapter: StopPlaceAdapter
     private lateinit var lineCodesAdapter: StopPlaceLineCodeAdapter
@@ -116,6 +117,7 @@ class StopPlaceFragment : Fragment() {
     }
 
     private fun navigateToTimeTable(stopIdentifier: String?, routeDirectionIdentifier: String?, stopName: String?, directionName: String?, lineNumber: String?){
+        Log.d(fragmentTag, "navigating to time table with $stopIdentifier, $routeDirectionIdentifier, $stopName, $directionName, $lineNumber")
         if(stopIdentifier != null && routeDirectionIdentifier != null){
             val bundle = Bundle()
             bundle.putString("STOP_IDENTIFIER", stopIdentifier)

@@ -48,5 +48,12 @@
         <argument
             android:name="identifier"
             app:argType="string" />
+        <action
+            android:id="@+id/action_stopGroupFragment_to_timeTableComposeFragment"
+            app:destination="@id/timeTableComposeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/timeTableComposeFragment"
+        android:name="com.app.skyss_companion.view.routedirection_timetable.TimeTableComposeFragment"
+        android:label="TimeTableComposeFragment" />
 </navigation>

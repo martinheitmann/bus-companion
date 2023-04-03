@@ -33,10 +33,12 @@ class StopPlaceUtils {
                     }
                     data.add(
                         StopGroupDeparturesEntry(
-                            description = routeDirection.directionName ?: "Ukjent rute",
-                            departures = departures,
-                            identifier = stop.identifier,
-                            lineCode = routeDirection.publicIdentifier ?: "0",
+                            stopIdentifier = stop.identifier,
+                            routeDirectionIdentifier = routeDirection.identifier,
+                            lineNumber = routeDirection.publicIdentifier ?: "0",
+                            directionName = routeDirection.directionName ?: "Ukjent rute",
+                            displayTimes = routeDirection.passingTimes?.mapNotNull { p -> p.displayTime } ?: emptyList(),
+                            stopName = stop.description,
                         )
                     )
                 }

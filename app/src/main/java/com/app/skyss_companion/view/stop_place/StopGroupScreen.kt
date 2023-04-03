@@ -29,45 +29,52 @@ import com.app.skyss_companion.R
 fun PreviewStopGroupScreen() {
     var name = "Holdeplass 1"
     var data = mutableListOf(
-        StopGroupNameDivider("Loddefjord Terminal A"),
-        StopGroupDeparturesEntry(
-            identifier = "id1",
-            lineCode = "3",
-            description = "Til Åsane Terminal",
-            departures = listOf("3 min", "17:30", "18:30", "19:00", "19:15")
-        ),
-        StopGroupDeparturesEntry(
-            identifier = "id2",
-            lineCode = "20",
-            description = "Til Haukeland Sykehus",
-            departures = listOf("11 min", "17:43", "18:15", "18:30")
-        ),
-        StopGroupNameDivider("Loddefjord Terminal B"),
-        StopGroupDeparturesEntry(
-            identifier = "id1",
-            lineCode = "3",
-            description = "Til Vadmyra",
-            departures = listOf("3 min", "17:30", "18:30", "19:00", "19:15")
-        ),
-        StopGroupDeparturesEntry(
-            identifier = "id2",
-            lineCode = "20",
-            description = "Til Storavatnet Terminal",
-            departures = listOf("11 min", "17:43", "18:15", "18:30")
+        StopGroupNameDivider("Loddefjord Terminal A"), StopGroupDeparturesEntry(
+            lineNumber = "3",
+            directionName = "Til Åsane Terminal",
+            displayTimes = listOf("11 min", "17:43", "18:15", "18:30"),
+            routeDirectionIdentifier = "rd1",
+            stopIdentifier = "s1",
+            stopName = "stop1",
+            routeDirectionName = "Til Åsane Terminal"
+        ), StopGroupDeparturesEntry(
+            lineNumber = "20",
+            directionName = "Til Haukeland Sykehus",
+            displayTimes = listOf("11 min", "17:43", "18:15", "18:30"),
+            routeDirectionIdentifier = "rd2",
+            stopIdentifier = "s1",
+            stopName = "stop1",
+            routeDirectionName = "Til Haukeland Sykehus",
+        ), StopGroupNameDivider("Loddefjord Terminal B"), StopGroupDeparturesEntry(
+            lineNumber = "3",
+            directionName = "Til Vadmyra",
+            displayTimes = listOf("3 min", "17:30", "18:30", "19:00", "19:15"),
+            routeDirectionIdentifier = "rd2",
+            stopIdentifier = "s1",
+            stopName = "stop1",
+            routeDirectionName = "Til Vadmyra",
+        ), StopGroupDeparturesEntry(
+            lineNumber = "20",
+            directionName = "Til Storavatnet Terminal",
+            displayTimes = listOf("11 min", "17:43", "18:15", "18:30"),
+            routeDirectionIdentifier = "rd2",
+            stopIdentifier = "s1",
+            stopName = "stop1",
+            routeDirectionName = "Til Storavatnet Terminal",
         )
     )
-    data = mutableListOf<StopGroupListItem>()
+    //data = mutableListOf<StopGroupListItem>()
     AppTheme {
         Column(modifier = Modifier.fillMaxWidth()) {
             ButtonRow({}, {})
             StopGroupHeaderBox(
                 stopGroupName = name,
                 availableLinecodes = data.filterIsInstance<StopGroupDeparturesEntry>()
-                    .map { d -> d.lineCode },
+                    .map { d -> d.lineNumber },
                 selectedLinecodes = emptyList()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (data.isNotEmpty()) StopGroupList(data) else EmptyListView()
+            if (data.isNotEmpty()) StopGroupList(data) { _, _, _ , _, _-> } else EmptyListView()
         }
     }
 }
@@ -76,6 +83,13 @@ fun PreviewStopGroupScreen() {
 fun StopGroupScreen(
     identifier: String,
     stopGroupViewModel: StopGroupViewModel = viewModel(),
+    onRouteDirectionTapped: (
+        stopIdentifier: String?,
+        routeDirectionIdentifier: String?,
+        stopName: String?,
+        directionName: String?,
+        lineNumber: String?
+    ) -> Unit,
     onBackTapped: () -> Unit,
     onBookmarkTapped: () -> Unit
 ) {
@@ -92,11 +106,21 @@ fun StopGroupScreen(
             ButtonRow(onBackTapped, onBookmarkTapped)
             StopGroupHeaderBox(
                 stopGroupName = data?.description ?: "Ukjent holdeplass",
-                availableLinecodes = data?.lineCodes ?: emptyList<String>(),
+                availableLinecodes = data?.lineCodes ?: emptyList(),
                 selectedLinecodes = emptyList()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (dataList.isNotEmpty()) StopGroupList(dataList) else EmptyListView()
+            if (dataList.isNotEmpty()) StopGroupList(
+                dataList
+            ) { stopIdentifier, routeDirectionIdentifier, stopName, directionName, lineNumber ->
+                onRouteDirectionTapped(
+                    stopIdentifier,
+                    routeDirectionIdentifier,
+                    stopName,
+                    directionName,
+                    lineNumber
+                )
+            } else EmptyListView()
         }
     }
 }
@@ -125,8 +149,9 @@ fun StopGroupHeaderBox(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 StopGroupLineCodes(availableLinecodes, selectedLinecodes, isExpanded)
-                if (availableLinecodes.size > 6)
-                    ExpandShrinkButton(isExpanded) { isExpanded = !isExpanded }
+                if (availableLinecodes.size > 6) ExpandShrinkButton(isExpanded) {
+                    isExpanded = !isExpanded
+                }
             }
         }
     }
@@ -137,11 +162,10 @@ fun ExpandShrinkButton(isExpanded: Boolean, onToggled: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth()) {
         TextButton(onClick = onToggled, content = @Composable() {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (!isExpanded)
-                    Icon(
-                        painter = painterResource(R.drawable.ic_baseline_add_24),
-                        contentDescription = "Show more"
-                    )
+                if (!isExpanded) Icon(
+                    painter = painterResource(R.drawable.ic_baseline_add_24),
+                    contentDescription = "Show more"
+                )
                 else Icon(
                     painter = painterResource(R.drawable.baseline_remove_24),
                     contentDescription = "Show less"
@@ -192,13 +216,9 @@ fun LineCodeItem(t: String) {
         modifier = Modifier
             .padding(all = 4.dp)
             .border(
-                width = 1.dp,
-                color = Color.Gray,
-                shape = RoundedCornerShape(12.dp)
-            ),
-        contentAlignment = Alignment.Center
-    )
-    {
+                width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(12.dp)
+            ), contentAlignment = Alignment.Center
+    ) {
         Box(modifier = Modifier.padding(8.dp)) {
             Text(text = t, textAlign = TextAlign.Center)
         }
@@ -215,12 +235,22 @@ fun StopGroupLineCodes(available: List<String>, selected: List<String>, isExpand
 }
 
 @Composable
-fun StopGroupList(items: List<StopGroupListItem>) {
+fun StopGroupList(
+    items: List<StopGroupListItem>,
+    onDepartureTapped:
+        (
+        stopIdentifier: String?,
+        routeDirectionIdentifier: String?,
+        stopName: String?,
+        directionName: String?,
+        lineNumber: String?
+    ) -> Unit
+) {
     Row {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             items.forEach { item ->
                 when (item) {
-                    is StopGroupDeparturesEntry -> StopGroupDepartures(item)
+                    is StopGroupDeparturesEntry -> StopGroupDepartures(item, onDepartureTapped)
                     is StopGroupNameDivider -> StopGroupListDivider(item)
                 }
             }
@@ -229,28 +259,44 @@ fun StopGroupList(items: List<StopGroupListItem>) {
 }
 
 @Composable
-fun StopGroupDepartures(entry: StopGroupDeparturesEntry) {
+fun StopGroupDepartures(
+    entry: StopGroupDeparturesEntry,
+    onTapped: (
+        stopIdentifier: String?,
+        routeDirectionIdentifier: String?,
+        stopName: String?,
+        directionName: String?,
+        lineNumber: String?
+    ) -> Unit,
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp)
+            .clickable {
+                onTapped(
+                    entry.stopIdentifier,
+                    entry.routeDirectionIdentifier,
+                    entry.stopName,
+                    entry.directionName,
+                    entry.lineNumber
+                )
+            }
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(entry.lineCode, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                Text(entry.lineNumber, fontWeight = FontWeight.Bold, fontSize = 22.sp)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(entry.description)
+                Text(entry.directionName)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                if (entry.departures.isNotEmpty()) entry.departures
-                    .take(5)
-                    .map { d ->
-                        Box(modifier = Modifier.padding(end = 12.dp)) {
-                            Text(d)
-                        }
-                    } else Text("Ingen flere avganger i dag...")
+                if (entry.displayTimes.isNotEmpty()) entry.displayTimes.take(5).map { d ->
+                    Box(modifier = Modifier.padding(end = 12.dp)) {
+                        Text(d)
+                    }
+                } else Text("Ingen flere avganger i dag...")
             }
         }
     }

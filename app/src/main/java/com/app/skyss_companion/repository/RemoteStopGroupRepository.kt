@@ -16,22 +16,14 @@ import javax.inject.Singleton
 class RemoteStopGroupRepository @Inject constructor(private val stopsClient: StopsClient) {
     val tag = "RemoteStopGroupRepository"
 
-    private val _stopGroup = MutableStateFlow<StopGroup?>(null)
-    val stopGroup = _stopGroup.asStateFlow()
-
     @WorkerThread
-    private suspend fun fetchStopGroup(stopIdentifier: String): StopGroup? {
+    suspend fun fetchStopGroup(stopIdentifier: String): StopGroup? {
         if (stopIdentifier.isEmpty()) throw IllegalArgumentException("Argument 'stopIdentifier' must be a string of valid length.")
         stopsClient.fetchStopGroup(stopIdentifier)?.let { stopGroup ->
             return stopGroup
         } ?: run {
             return null
         }
-    }
-
-    suspend fun updateStopGroup(identifier: String){
-        val stopGroup = fetchStopGroup(identifier)
-        _stopGroup.update { stopGroup }
     }
 
 }

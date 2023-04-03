@@ -24,7 +24,7 @@ class StopGroupViewModel @Inject constructor(
     val tag = "StopGroupViewModel"
 
     val isLoadingStopGroup: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val stopGroup: StateFlow<StopGroup?> = remoteStopGroupRepository.stopGroup
+    val stopGroup: MutableStateFlow<StopGroup?> = MutableStateFlow(null)
     val stopGroupList: Flow<List<StopGroupListItem>> = stopGroup.map { s ->
         s?.stops?.let { StopPlaceUtils.createViewData(it, emptyList()) } ?: emptyList()
     }
@@ -34,16 +34,13 @@ class StopGroupViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 isLoadingStopGroup.update { true }
-                remoteStopGroupRepository.updateStopGroup(identifier)
+                val fetchedStopGroup = remoteStopGroupRepository.fetchStopGroup(identifier)
+                stopGroup.update { fetchedStopGroup }
             } catch (exception: Exception) {
                 Log.d(tag, exception.stackTraceToString())
             } finally {
                 isLoadingStopGroup.update { true }
             }
         }
-    }
-
-    fun getLineCodes(stopGroup: StopGroup): List<String> {
-        return  stopGroup.lineCodes ?: emptyList()
     }
 }
