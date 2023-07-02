@@ -25,4 +25,5 @@ data class TravelStep(
     val passed: Boolean = false,
     val occupancy: String? = null,
     val displayTime: String? = null,
+    val waitDuration: String? = null,
 )

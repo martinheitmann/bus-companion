@@ -11,15 +11,18 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.misc.DateUtils
+import com.app.skyss_companion.misc.LogcatUtils
 import com.app.skyss_companion.model.travelplanner.End
 import com.app.skyss_companion.model.travelplanner.TravelPlan
 import com.app.skyss_companion.model.travelplanner.TravelStep
 import com.google.android.flexbox.FlexboxLayout
+import com.google.gson.Gson
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-class TravelPlannerListAdapter(private val context: Context, private val onTap: (Int) -> Unit) : RecyclerView.Adapter<TravelPlannerListAdapter.ViewHolder>(){
-    val tag = "PTimeFilterAdapter"
+class TravelPlannerListAdapter(private val context: Context, private val onTap: (Int) -> Unit) :
+    RecyclerView.Adapter<TravelPlannerListAdapter.ViewHolder>() {
+    val tag = "TPListAdapter"
     var dataSet = listOf<TravelPlan>()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,7 +30,7 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
         var duration: TextView = view.findViewById(R.id.travel_plan_list_item_duration)
         var flex: FlexboxLayout = view.findViewById(R.id.travel_plan_list_item_flex)
         var card: CardView = view.findViewById(R.id.travel_plan_list_item_card)
-        fun bind(position: Int, onTap: (Int) -> Unit){
+        fun bind(position: Int, onTap: (Int) -> Unit) {
             val tp = dataSet[position]
             card.setOnClickListener { onTap(position) }
             date.text = TravelPlannerUtils.getTimeDurationString(tp)
@@ -38,7 +41,7 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
                 val newView = getLayoutElement(stp, context, flex)
                 flex.addView(newView)
                 Log.d(tag, "position $position/${dataSet.lastIndex}, list size ${dataSet.size}")
-                if(idx != tp.travelSteps.lastIndex){
+                if (idx != tp.travelSteps.lastIndex) {
                     flex.addView(getLayoutNext(context, flex))
                 }
             }
@@ -68,8 +71,10 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(newItems: List<TravelPlan>){
+    fun setData(newItems: List<TravelPlan>) {
         this.dataSet = newItems
+        val stepsOnly = newItems.map { i -> i.travelSteps }
+        LogcatUtils.printStringInSegments(string = Gson().toJson(stepsOnly), tag = tag)
         notifyDataSetChanged()
     }
 
@@ -77,17 +82,20 @@ class TravelPlannerListAdapter(private val context: Context, private val onTap: 
     fun getLayoutElement(travelStep: TravelStep, context: Context, root: ViewGroup): View {
         val element: View
         val inflater = LayoutInflater.from(context)
-        when(travelStep.type){
+        when (travelStep.type) {
             "route" -> {
                 //element = View.inflate(context, R.layout.travel_plan_list_item_bus, root)
                 element = inflater.inflate(R.layout.travel_plan_list_item_route, root, false)
-                val elementText: TextView = element.findViewById(R.id.travel_plan_list_item_route_text)
+                val elementText: TextView =
+                    element.findViewById(R.id.travel_plan_list_item_route_text)
                 elementText.text = travelStep.routeDirection?.publicIdentifier ?: "?"
             }
+
             "walk" -> {
                 //element = View.inflate(context, R.layout.travel_plan_list_item_walk, root)
                 element = inflater.inflate(R.layout.travel_plan_list_item_walk, root, false)
             }
+
             else -> {
                 //element = View.inflate(context, R.layout.travel_plan_list_item_unknown, root)
                 element = inflater.inflate(R.layout.travel_plan_list_item_unknown, root, false)

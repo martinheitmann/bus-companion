@@ -15,6 +15,7 @@ data class TravelStepResponse(
     val Duration: String? = null,
     val Status: String? = null,
     val Path: String? = null,
+    val WaitDuration: String? = null,
     val TripIdentifier: String? = null,
     val CallIdentifier: String? = null,
     val RouteDirectionIdentifier: String? = null,

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.R
 import com.app.skyss_companion.model.geocode.GeocodingProperties
 import com.app.skyss_companion.view.routedirection_timetable.PassingTimeListItem
+import com.google.gson.Gson
 
 class LocationSearchListAdapter(private val onTap: (Int) -> Unit) : RecyclerView.Adapter<LocationSearchListAdapter.ViewHolder>() {
 
@@ -52,6 +53,10 @@ class LocationSearchListAdapter(private val onTap: (Int) -> Unit) : RecyclerView
     @SuppressLint("NotifyDataSetChanged")
     fun setData(newItems: List<GeocodingProperties>){
         Log.d(TAG, "PassingTimeListAdapter setData triggered with ${newItems.size} new items.")
+        // TODO: REMOVE
+        /*val json = Gson().toJson(newItems)
+        Log.d(TAG, json.take(2000))
+        Log.d(TAG, json.takeLast(json.length - 2000))*/
         this.dataSet = newItems
         notifyDataSetChanged()
     }

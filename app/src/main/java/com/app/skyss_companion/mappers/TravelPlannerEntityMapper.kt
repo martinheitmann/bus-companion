@@ -53,6 +53,7 @@ class TravelPlannerEntityMapper {
             val tripIdentifier: String? = travelStepResponse.TripIdentifier
             val callIdentifier: String? = travelStepResponse.CallIdentifier
             val routeDirectionIdentifier: String? = travelStepResponse.RouteDirectionIdentifier
+            val waitDuration: String? = travelStepResponse.WaitDuration
             val routeDirection: RouteDirection? = if (travelStepResponse.RouteDirection != null) {
                 StopResponseEntityMapper.mapRouteDirectionResponse(travelStepResponse.RouteDirection)
             } else null
@@ -76,6 +77,7 @@ class TravelPlannerEntityMapper {
                 duration = duration,
                 status = status,
                 path = path,
+                waitDuration = waitDuration,
                 tripIdentifier = tripIdentifier,
                 callIdentifier = callIdentifier,
                 routeDirectionIdentifier = routeDirectionIdentifier,

@@ -1,0 +1,435 @@
+{
+  "resultCode": "SUCCESS",
+  "TravelPlans": [
+    {
+      "id": "r-cd7dd108-ba04-457f-b14a-3f24d2ef5953",
+      "url": "https://reise.skyss.no/planner/travel-plan/r-cd7dd108-ba04-457f-b14a-3f24d2ef5953",
+      "StartTime": "2023-06-17T12:42:00.000Z",
+      "EndTime": "2023-06-17T13:26:00.000Z",
+      "End": {
+        "Description": "Melkeplassen, Bergen",
+        "Location": "60.376186,5.3064337"
+      },
+      "TravelSteps": [
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T12:42:32.000Z",
+          "EndTime": "2023-06-17T12:48:00.000Z",
+          "Distance": "351",
+          "Duration": "PT5M",
+          "Status": "Schedule",
+          "Path": "_vloJue{^BGVcAFY?k@@cAAO?e@\\kANg@Ha@De@?uBAaD?qAAWH?H??UCQAMEKCOPSHKZ_@p@w@BN",
+          "Stop": {
+            "Description": "Vestre Vadmyra, Bergen",
+            "Location": "60.363438,5.223603",
+            "ServiceModes": []
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T12:48:00.000Z",
+          "Passed": false
+        },
+        {
+          "Type": "route",
+          "StartTime": "2023-06-17T12:48:00.000Z",
+          "EndTime": "2023-06-17T13:02:00.000Z",
+          "Distance": "8064",
+          "StopIdentifier": "NSR:Quay:55034",
+          "Duration": "PT14M",
+          "Status": "Late",
+          "Path": "soloJif|^@Al@u@b@kARc@x@aC`@iANSVc@l@y@X_@d@a@FGbAq@XKLA`@SFC^c@??@?LUXm@Tk@Ji@BQJg@BW@WHkABO@K?SAKEOIIGAGBEBELKNUN]NO?wA?S?UCKESe@K]G_@@KAKAKCICGEEEACMGWSo@Ci@Gc@EWEYEMKMGMKU?KAICKEKEGECEAG?GDEFEHCLAJ?P@PBLDLDFNfAAn@i@IO^e@r@SZGJEFIHI@MY?WH[FIR[f@s@??JODEHEHBDJ@LATh@H@o@HeADEDIBMBO?Q?KAIH]HSNYRWVUVQXQVK`@Ml@Qp@S^KTMXORMNOPUN[L]L]H_@Jc@F_@Fg@Dy@Bm@?e@Ak@Ck@Ek@Gk@Ie@I_@Me@KYQa@Qa@??AAOYYa@SYUYYWq@g@{@s@WQYUKKMIIIi@_@k@i@u@s@_@_@Y]Wa@m@}@c@w@SWUc@c@cAa@_A]s@]s@[e@]i@[a@OQ??SWc@e@g@g@e@_@a@Yg@[y@c@s@_@c@UYKQGSOKIOMGGAMCKCIEGECECESEWC[AYAS@U@YBWDUFYHa@`@{AH]De@B_@@_@@c@A[CWE[Ic@GWGQIMGMSUKGMEKCM?UFe@NYFe@Hc@Dc@Fc@@c@?e@A{@Iu@Ea@Ca@?q@D[DaAPaBLWT_GTq@Ai@A_@Ci@Ki@Oo@[]Wc@_@s@s@kAoA{EmFaC}CsBuCkCgEgAmBw@wA_CmEiAuBc@y@_@w@]u@Ws@Qg@WgAUiASmAMoAIqAGuAIkDEoBIcBIeAMsAGqAUmAQw@GWEYEYIa@[{@EQOe@M[QQIGAA??GEKEGCWg@g@aAc@_Aa@mAUk@UwAM}@KaAIkAEaAImCAqC?mEBwE`C_gBlAc|@LcJFaH@wGCqFEoBIeCMiCMkBMaBUyBQ_B[uBe@iCc@oB_@}AOa@Sk@Um@Q]Yi@g@{@]o@sOmVMS]qAWiAGWM[OSQEQFGFGFGF",
+          "TripIdentifier": "SKY:ServiceJourney:3-169512-13499923",
+          "CallIdentifier": "NSR:Quay:55034_SKY:ServiceJourney:3-169512-13499923_17062023-1448_stopNSR:Quay:53230_dt2023-06-17_",
+          "RouteDirectionIdentifier": "SKY:Line:3~outbound",
+          "RouteDirection": {
+            "PublicIdentifier": "3",
+            "DirectionName": "Til Støbotn",
+            "ServiceMode": "Bus",
+            "ServiceMode2": "Bus",
+            "Identifier": "SKY:Line:3~outbound",
+            "PassingTimes": [],
+            "Notes": []
+          },
+          "Stop": {
+            "Identifier": "NSR:Quay:55034",
+            "Description": "Vestre Vadmyra",
+            "Location": "60.362324,5.228613",
+            "ServiceModes": [
+              "bus"
+            ],
+            "RouteDirections": [
+              {
+                "PublicIdentifier": "3",
+                "DirectionName": "Til Støbotn",
+                "ServiceMode": "Bus",
+                "ServiceMode2": "Bus",
+                "Identifier": "SKY:Line:3~outbound",
+                "PassingTimes": [],
+                "Notes": []
+              }
+            ]
+          },
+          "DisplayTime": "10 min",
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:02:00.000Z",
+          "Intermediates": [
+            {
+              "StopName": "Lyngfaret",
+              "Status": "Schedule",
+              "AimedTime": "14:49"
+            },
+            {
+              "StopName": "Loddefjord terminal",
+              "Status": "Schedule",
+              "AimedTime": "14:51"
+            },
+            {
+              "StopName": "Bjørndalsbakken",
+              "Status": "Schedule",
+              "AimedTime": "14:52"
+            },
+            {
+              "StopName": "Tennebekk",
+              "Status": "Schedule",
+              "AimedTime": "14:53"
+            },
+            {
+              "StopName": "Lyngbø rv. 555",
+              "Status": "Schedule",
+              "AimedTime": "14:57"
+            }
+          ],
+          "Passed": false
+        },
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T13:02:00.000Z",
+          "EndTime": "2023-06-17T13:04:45.000Z",
+          "Distance": "190",
+          "StopIdentifier": "NSR:Quay:53230",
+          "Duration": "PT3M",
+          "Status": "Schedule",
+          "Path": "qdqoJ}dn_@?AGBGDGHINMr@En@EDCz@A`@?N?H@JBF@BDBN@DABADCBE@I@I?O@[?IBG@CBCB?B@BB@DFTFH??D?@EXR?A",
+          "Stop": {
+            "Identifier": "NSR:Quay:53230",
+            "Description": "Møhlenpris",
+            "Location": "60.38617,5.320632",
+            "ServiceModes": [
+              "bus"
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:04:45.000Z",
+          "Passed": false
+        },
+        {
+          "Type": "route",
+          "StartTime": "2023-06-17T13:16:00.000Z",
+          "EndTime": "2023-06-17T13:23:00.000Z",
+          "Distance": "2221",
+          "StopIdentifier": "NSR:Quay:53228",
+          "Duration": "PT7M",
+          "Status": "Schedule",
+          "Path": "sbqoJc~m_@@BZRLTtP~WXl@LTRl@Hx@B^@`@Ab@Cj@Iz@Ir@CPW|B??CTGZKTEHE@U?OAG?GBIx@AJIz@E`@En@WfEG`AY|BSbAK^St@a@vAOb@eAnDUz@IZ?@??I^G`@CZCZ?h@?\\Bp@B\\N|AHn@DA@AHAL?X@PDRDPJTNPNLHFFHDHBHBLDHBHBNDB@D@HBNFTFLDNDPBF?H?N?JAJ?P?LARMPOLQHQFM??@EDOL[DOBEDGDEDCD?DBDFDHBHFp@D\\Nd@HPRb@JTTn@DLXhADVFb@@P?V?T?T@T@TDNFHLADCXc@JQ??JMX_@rA}Av@_ANQLOHKHKJIDEZYPOZU^SPMb@Y??HGRM`BgADCRKRIRGRCPA\\BPD`@Jb@JNF^Lp@N",
+          "TripIdentifier": "SKY:ServiceJourney:19-169512-15107362",
+          "CallIdentifier": "NSR:Quay:53228_SKY:ServiceJourney:19-169512-15107362_17062023-1516_stopNSR:Quay:54940_dt2023-06-17_",
+          "WaitDuration": "PT12M",
+          "RouteDirectionIdentifier": "SKY:Line:19~inbound",
+          "RouteDirection": {
+            "PublicIdentifier": "19",
+            "DirectionName": "Til Løvstakkskiftet",
+            "ServiceMode": "Bus",
+            "ServiceMode2": "Bus",
+            "Identifier": "SKY:Line:19~inbound",
+            "PassingTimes": [],
+            "Notes": []
+          },
+          "Stop": {
+            "Identifier": "NSR:Quay:53228",
+            "Description": "Møhlenpris",
+            "Location": "60.385857,5.319424",
+            "ServiceModes": [
+              "bus"
+            ],
+            "RouteDirections": [
+              {
+                "PublicIdentifier": "19",
+                "DirectionName": "Til Løvstakkskiftet",
+                "ServiceMode": "Bus",
+                "ServiceMode2": "Bus",
+                "Identifier": "SKY:Line:19~inbound",
+                "PassingTimes": [],
+                "Notes": []
+              }
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:23:00.000Z",
+          "Intermediates": [
+            {
+              "StopName": "Gyldenpris N",
+              "Status": "Schedule",
+              "AimedTime": "15:17"
+            },
+            {
+              "StopName": "Carl Konows gate",
+              "Status": "Schedule",
+              "AimedTime": "15:19"
+            },
+            {
+              "StopName": "Gabriel Tischendorfs vei",
+              "Status": "Schedule",
+              "AimedTime": "15:20"
+            },
+            {
+              "StopName": "Svingen",
+              "Status": "Schedule",
+              "AimedTime": "15:21"
+            },
+            {
+              "StopName": "Kaptein Amlands vei",
+              "Status": "Schedule",
+              "AimedTime": "15:22"
+            }
+          ],
+          "Passed": false
+        },
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T13:23:00.000Z",
+          "EndTime": "2023-06-17T13:26:21.000Z",
+          "Distance": "182",
+          "StopIdentifier": "NSR:Quay:54940",
+          "Duration": "PT3M",
+          "Status": "Schedule",
+          "Path": "ofooJ}|j_@?HTFPF@[RFDu@DeA?Q?CEg@Cy@Am@CqA?u@MAYH",
+          "Stop": {
+            "Identifier": "NSR:Quay:54940",
+            "Description": "Melkeplassen",
+            "Location": "60.376244,5.303995",
+            "ServiceModes": [
+              "bus"
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:26:21.000Z",
+          "Passed": false
+        }
+      ]
+    },
+    {
+      "id": "r-2ba1f744-68a2-483b-8026-f890ead813f8",
+      "url": "https://reise.skyss.no/planner/travel-plan/r-2ba1f744-68a2-483b-8026-f890ead813f8",
+      "StartTime": "2023-06-17T13:02:00.000Z",
+      "EndTime": "2023-06-17T13:46:00.000Z",
+      "End": {
+        "Description": "Melkeplassen, Bergen",
+        "Location": "60.376186,5.3064337"
+      },
+      "TravelSteps": [
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T13:02:32.000Z",
+          "EndTime": "2023-06-17T13:08:00.000Z",
+          "Distance": "351",
+          "Duration": "PT5M",
+          "Status": "Schedule",
+          "Path": "_vloJue{^BGVcAFY?k@@cAAO?e@\\kANg@Ha@De@?uBAaD?qAAWH?H??UCQAMEKCOPSHKZ_@p@w@BN",
+          "Stop": {
+            "Description": "Vestre Vadmyra, Bergen",
+            "Location": "60.363438,5.223603",
+            "ServiceModes": []
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:08:00.000Z",
+          "Passed": false
+        },
+        {
+          "Type": "route",
+          "StartTime": "2023-06-17T13:08:00.000Z",
+          "EndTime": "2023-06-17T13:22:00.000Z",
+          "Distance": "8064",
+          "StopIdentifier": "NSR:Quay:55034",
+          "Duration": "PT14M",
+          "Status": "Schedule",
+          "Path": "soloJif|^@Al@u@b@kARc@x@aC`@iANSVc@l@y@X_@d@a@FGbAq@XKLA`@SFC^c@??@?LUXm@Tk@Ji@BQJg@BW@WHkABO@K?SAKEOIIGAGBEBELKNUN]NO?wA?S?UCKESe@K]G_@@KAKAKCICGEEEACMGWSo@Ci@Gc@EWEYEMKMGMKU?KAICKEKEGECEAG?GDEFEHCLAJ?P@PBLDLDFNfAAn@i@IO^e@r@SZGJEFIHI@MY?WH[FIR[f@s@??JODEHEHBDJ@LATh@H@o@HeADEDIBMBO?Q?KAIH]HSNYRWVUVQXQVK`@Ml@Qp@S^KTMXORMNOPUN[L]L]H_@Jc@F_@Fg@Dy@Bm@?e@Ak@Ck@Ek@Gk@Ie@I_@Me@KYQa@Qa@??AAOYYa@SYUYYWq@g@{@s@WQYUKKMIIIi@_@k@i@u@s@_@_@Y]Wa@m@}@c@w@SWUc@c@cAa@_A]s@]s@[e@]i@[a@OQ??SWc@e@g@g@e@_@a@Yg@[y@c@s@_@c@UYKQGSOKIOMGGAMCKCIEGECECESEWC[AYAS@U@YBWDUFYHa@`@{AH]De@B_@@_@@c@A[CWE[Ic@GWGQIMGMSUKGMEKCM?UFe@NYFe@Hc@Dc@Fc@@c@?e@A{@Iu@Ea@Ca@?q@D[DaAPaBLWT_GTq@Ai@A_@Ci@Ki@Oo@[]Wc@_@s@s@kAoA{EmFaC}CsBuCkCgEgAmBw@wA_CmEiAuBc@y@_@w@]u@Ws@Qg@WgAUiASmAMoAIqAGuAIkDEoBIcBIeAMsAGqAUmAQw@GWEYEYIa@[{@EQOe@M[QQIGAA??GEKEGCWg@g@aAc@_Aa@mAUk@UwAM}@KaAIkAEaAImCAqC?mEBwE`C_gBlAc|@LcJFaH@wGCqFEoBIeCMiCMkBMaBUyBQ_B[uBe@iCc@oB_@}AOa@Sk@Um@Q]Yi@g@{@]o@sOmVMS]qAWiAGWM[OSQEQFGFGFGF",
+          "TripIdentifier": "SKY:ServiceJourney:3-169512-13499921",
+          "CallIdentifier": "NSR:Quay:55034_SKY:ServiceJourney:3-169512-13499921_17062023-1508_stopNSR:Quay:53230_dt2023-06-17_",
+          "RouteDirectionIdentifier": "SKY:Line:3~outbound",
+          "RouteDirection": {
+            "PublicIdentifier": "3",
+            "DirectionName": "Til Støbotn",
+            "ServiceMode": "Bus",
+            "ServiceMode2": "Bus",
+            "Identifier": "SKY:Line:3~outbound",
+            "PassingTimes": [],
+            "Notes": []
+          },
+          "Stop": {
+            "Identifier": "NSR:Quay:55034",
+            "Description": "Vestre Vadmyra",
+            "Location": "60.362324,5.228613",
+            "ServiceModes": [
+              "bus"
+            ],
+            "RouteDirections": [
+              {
+                "PublicIdentifier": "3",
+                "DirectionName": "Til Støbotn",
+                "ServiceMode": "Bus",
+                "ServiceMode2": "Bus",
+                "Identifier": "SKY:Line:3~outbound",
+                "PassingTimes": [],
+                "Notes": []
+              }
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:22:00.000Z",
+          "Intermediates": [
+            {
+              "StopName": "Lyngfaret",
+              "Status": "Schedule",
+              "AimedTime": "15:09"
+            },
+            {
+              "StopName": "Loddefjord terminal",
+              "Status": "Schedule",
+              "AimedTime": "15:11"
+            },
+            {
+              "StopName": "Bjørndalsbakken",
+              "Status": "Schedule",
+              "AimedTime": "15:12"
+            },
+            {
+              "StopName": "Tennebekk",
+              "Status": "Schedule",
+              "AimedTime": "15:13"
+            },
+            {
+              "StopName": "Lyngbø rv. 555",
+              "Status": "Schedule",
+              "AimedTime": "15:17"
+            }
+          ],
+          "Passed": false
+        },
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T13:22:00.000Z",
+          "EndTime": "2023-06-17T13:24:45.000Z",
+          "Distance": "190",
+          "StopIdentifier": "NSR:Quay:53230",
+          "Duration": "PT3M",
+          "Status": "Schedule",
+          "Path": "qdqoJ}dn_@?AGBGDGHINMr@En@EDCz@A`@?N?H@JBF@BDBN@DABADCBE@I@I?O@[?IBG@CBCB?B@BB@DFTFH??D?@EXR?A",
+          "Stop": {
+            "Identifier": "NSR:Quay:53230",
+            "Description": "Møhlenpris",
+            "Location": "60.38617,5.320632",
+            "ServiceModes": [
+              "bus"
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:24:45.000Z",
+          "Passed": false
+        },
+        {
+          "Type": "route",
+          "StartTime": "2023-06-17T13:36:00.000Z",
+          "EndTime": "2023-06-17T13:43:00.000Z",
+          "Distance": "2221",
+          "StopIdentifier": "NSR:Quay:53228",
+          "Duration": "PT7M",
+          "Status": "Schedule",
+          "Path": "sbqoJc~m_@@BZRLTtP~WXl@LTRl@Hx@B^@`@Ab@Cj@Iz@Ir@CPW|B??CTGZKTEHE@U?OAG?GBIx@AJIz@E`@En@WfEG`AY|BSbAK^St@a@vAOb@eAnDUz@IZ?@??I^G`@CZCZ?h@?\\Bp@B\\N|AHn@DA@AHAL?X@PDRDPJTNPNLHFFHDHBHBLDHBHBNDB@D@HBNFTFLDNDPBF?H?N?JAJ?P?LARMPOLQHQFM??@EDOL[DOBEDGDEDCD?DBDFDHBHFp@D\\Nd@HPRb@JTTn@DLXhADVFb@@P?V?T?T@T@TDNFHLADCXc@JQ??JMX_@rA}Av@_ANQLOHKHKJIDEZYPOZU^SPMb@Y??HGRM`BgADCRKRIRGRCPA\\BPD`@Jb@JNF^Lp@N",
+          "TripIdentifier": "SKY:ServiceJourney:19-169512-15107361",
+          "CallIdentifier": "NSR:Quay:53228_SKY:ServiceJourney:19-169512-15107361_17062023-1536_stopNSR:Quay:54940_dt2023-06-17_",
+          "WaitDuration": "PT12M",
+          "RouteDirectionIdentifier": "SKY:Line:19~inbound",
+          "RouteDirection": {
+            "PublicIdentifier": "19",
+            "DirectionName": "Til Løvstakkskiftet",
+            "ServiceMode": "Bus",
+            "ServiceMode2": "Bus",
+            "Identifier": "SKY:Line:19~inbound",
+            "PassingTimes": [],
+            "Notes": []
+          },
+          "Stop": {
+            "Identifier": "NSR:Quay:53228",
+            "Description": "Møhlenpris",
+            "Location": "60.385857,5.319424",
+            "ServiceModes": [
+              "bus"
+            ],
+            "RouteDirections": [
+              {
+                "PublicIdentifier": "19",
+                "DirectionName": "Til Løvstakkskiftet",
+                "ServiceMode": "Bus",
+                "ServiceMode2": "Bus",
+                "Identifier": "SKY:Line:19~inbound",
+                "PassingTimes": [],
+                "Notes": []
+              }
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:43:00.000Z",
+          "Intermediates": [
+            {
+              "StopName": "Gyldenpris N",
+              "Status": "Schedule",
+              "AimedTime": "15:37"
+            },
+            {
+              "StopName": "Carl Konows gate",
+              "Status": "Schedule",
+              "AimedTime": "15:39"
+            },
+            {
+              "StopName": "Gabriel Tischendorfs vei",
+              "Status": "Schedule",
+              "AimedTime": "15:40"
+            },
+            {
+              "StopName": "Svingen",
+              "Status": "Schedule",
+              "AimedTime": "15:41"
+            },
+            {
+              "StopName": "Kaptein Amlands vei",
+              "Status": "Schedule",
+              "AimedTime": "15:42"
+            }
+          ],
+          "Passed": false
+        },
+        {
+          "Type": "walk",
+          "StartTime": "2023-06-17T13:43:00.000Z",
+          "EndTime": "2023-06-17T13:46:21.000Z",
+          "Distance": "182",
+          "StopIdentifier": "NSR:Quay:54940",
+          "Duration": "PT3M",
+          "Status": "Schedule",
+          "Path": "ofooJ}|j_@?HTFPF@[RFDu@DeA?Q?CEg@Cy@Am@CqA?u@MAYH",
+          "Stop": {
+            "Identifier": "NSR:Quay:54940",
+            "Description": "Melkeplassen",
+            "Location": "60.376244,5.303995",
+            "ServiceModes": [
+              "bus"
+            ]
+          },
+          "Notes": [],
+          "ExpectedEndTime": "2023-06-17T13:46:21.000Z",
+          "Passed": false
+        }
+      ]
+    }
+  ],
+  "nextCursor": "rO0ABXcxAQAJTkVYVF9QQUdFBoHb2IAAAAAAABdwABdTVFJFRVRfQU5EX0FSUklWQUxfVElNRQ=="
+}
