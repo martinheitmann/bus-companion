@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.stopgroup
+package com.app.skyss_companion.widget.xml.stopgroup
 
 import android.app.Application
 import android.util.Log

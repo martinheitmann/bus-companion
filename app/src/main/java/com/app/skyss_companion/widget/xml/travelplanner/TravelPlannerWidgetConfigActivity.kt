@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.travelplanner
+package com.app.skyss_companion.widget.xml.travelplanner
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -9,12 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.skyss_companion.databinding.WidgetFavoritesConfigBinding
 import com.app.skyss_companion.databinding.WidgetTravelplansConfigBinding
-import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
-import com.app.skyss_companion.widget.TravelPlannerAppWidgetProvider
-import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetConfigAdapter
-import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetConfigViewModel
+import com.app.skyss_companion.widget.xml.TravelPlannerAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

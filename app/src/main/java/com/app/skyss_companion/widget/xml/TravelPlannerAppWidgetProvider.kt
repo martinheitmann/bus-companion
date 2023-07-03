@@ -1,29 +1,27 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.xml
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
-import androidx.core.app.JobIntentService
 import androidx.work.*
-import com.app.skyss_companion.widget.routedirection.RouteDirectionWidgetUpdateService
-import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetUpdateService
+import com.app.skyss_companion.widget.xml.travelplanner.TravelPlannerWidgetUpdateJobService
 import com.app.skyss_companion.workers.RemoveWidgetsWorker
-import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
 
-/**
- * Implementation of App Widget functionality.
- */
-class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
-    val TAG = "RouteDirWidgetProvider"
+class TravelPlannerAppWidgetProvider : AppWidgetProvider() {
+    val TAG = "TravelPlannerAppWidgetProvider"
 
     // We have to invoke this in order to update the widget from
     // a button on the app widget.
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
-        try{
+        try {
             Log.d(TAG, "onReceive called")
             if (intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
                 val appWidgetId = intent.extras?.get(AppWidgetManager.EXTRA_APPWIDGET_ID) as Int?
@@ -32,7 +30,7 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
                     updateAppWidget(context, appWidgetId)
                 }
             }
-        } catch(e: Throwable){
+        } catch (e: Throwable) {
             Log.d(TAG, "onReceive caught exception: ${e.stackTraceToString()}")
         }
     }
@@ -48,7 +46,7 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
             for (appWidgetId in appWidgetIds) {
                 updateAppWidget(context, appWidgetId, refresh = true)
             }
-        } catch (e: Throwable){
+        } catch (e: Throwable) {
             Log.d(TAG, "onUpdate caught exception: ${e.stackTraceToString()}")
         }
     }
@@ -68,7 +66,7 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
         Log.d(TAG, "onDeleted called")
-        if(appWidgetIds != null && context != null) {
+        if (appWidgetIds != null && context != null) {
             Log.d(TAG, "onDeleted appWidget ids received: ${appWidgetIds.contentToString()}")
             val data = workDataOf("appWidgetIds" to appWidgetIds)
             val clearWidgetsRequest: WorkRequest = OneTimeWorkRequestBuilder<RemoveWidgetsWorker>()
@@ -89,7 +87,7 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
     ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
 
-        if(context != null){
+        if (context != null) {
             val widgetOptions = appWidgetManager?.getAppWidgetOptions(appWidgetId)
             val width = widgetOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)
             val height = widgetOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT)
@@ -98,12 +96,14 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
             Log.d(TAG, "onAppWidgetOptionsChanged max width/height: $width/$height")
             Log.d(TAG, "onAppWidgetOptionsChanged min width/height: $mWidth/$mHeight")
 
-            val updateConfigRequest: WorkRequest = OneTimeWorkRequestBuilder<UpdateEnabledWidgetConfigWorker>()
-                .build()
+            updateAppWidget(context, appWidgetId)
+            /*val updateConfigRequest: WorkRequest =
+                OneTimeWorkRequestBuilder<UpdateEnabledWidgetConfigWorker>()
+                    .build()
 
             WorkManager
                 .getInstance(context)
-                .enqueue(updateConfigRequest)
+                .enqueue(updateConfigRequest)*/
         }
     }
 
@@ -114,13 +114,30 @@ class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
         refresh: Boolean? = null
     ) {
         Log.d(TAG, "updateAppWidget called with appWidgetId $appWidgetId")
-        val intent: Intent = mIntent ?: Intent()
-        intent.putExtra("APP_WIDGET_ID", appWidgetId)
-        JobIntentService.enqueueWork(
-            context,
-            RouteDirectionWidgetUpdateService::class.java,
-            2,
-            intent
-        )
+        /*val workData = workDataOf("APP_WIDGET_ID" to appWidgetId)
+        val updateConfigRequest: OneTimeWorkRequest =
+            OneTimeWorkRequestBuilder<TravelPlannerWidgetUpdateWorker>()
+                .setInputData(workData)
+                .build()
+
+        WorkManager
+            .getInstance(context)
+            .beginUniqueWork(
+                "travel_planner_widget_update",
+                ExistingWorkPolicy.REPLACE,
+                updateConfigRequest
+            )*/
+        val bundle = PersistableBundle()
+        bundle.putInt("APP_WIDGET_ID", appWidgetId)
+
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val jobInfo = JobInfo.Builder(1115, ComponentName(context ,
+            TravelPlannerWidgetUpdateJobService::class.java))
+        val job = jobInfo.setRequiresCharging(false)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .setExtras(bundle)
+            .build()
+
+        jobScheduler.schedule(job)
     }
 }

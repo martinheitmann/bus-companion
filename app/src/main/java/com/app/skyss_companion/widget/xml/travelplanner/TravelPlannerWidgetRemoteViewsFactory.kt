@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.travelplanner
+package com.app.skyss_companion.widget.xml.travelplanner
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE

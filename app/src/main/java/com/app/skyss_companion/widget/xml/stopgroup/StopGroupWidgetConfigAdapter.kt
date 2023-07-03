@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.stopgroup
+package com.app.skyss_companion.widget.xml.stopgroup
 
 import android.view.LayoutInflater
 import android.view.View

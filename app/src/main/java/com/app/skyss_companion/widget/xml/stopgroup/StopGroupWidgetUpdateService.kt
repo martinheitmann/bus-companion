@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.stopgroup
+package com.app.skyss_companion.widget.xml.stopgroup
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -11,7 +11,7 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.repository.StopGroupRepository
 import com.app.skyss_companion.repository.StopPlaceRepository
-import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
+import com.app.skyss_companion.widget.xml.StopGroupAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat

@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.travelplanner
+package com.app.skyss_companion.widget.xml.travelplanner
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
@@ -15,7 +15,7 @@ import com.app.skyss_companion.R
 import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.repository.EnabledWidgetRepository
 import com.app.skyss_companion.view.planner.selected_plan.SelectedTravelPlanFragment
-import com.app.skyss_companion.widget.TravelPlannerAppWidgetProvider
+import com.app.skyss_companion.widget.xml.TravelPlannerAppWidgetProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*

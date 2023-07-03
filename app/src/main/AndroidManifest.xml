@@ -21,7 +21,7 @@
 
         <!-- APP WIDGET RECEIVER -->
         <receiver
-            android:name=".widget.StopGroupAppWidgetProvider"
+            android:name=".widget.xml.StopGroupAppWidgetProvider"
             android:label="Holdeplass"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="true">
@@ -34,7 +34,7 @@
                 android:resource="@xml/favorites_list_widget_info" />
         </receiver>
         <receiver
-            android:name=".widget.RouteDirectionAppWidgetProvider"
+            android:name=".widget.xml.RouteDirectionAppWidgetProvider"
             android:label="Linje"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="true">
@@ -47,7 +47,7 @@
                 android:resource="@xml/route_direction_widget_info" />
         </receiver>
         <receiver
-            android:name=".widget.TravelPlannerAppWidgetProvider"
+            android:name=".widget.xml.TravelPlannerAppWidgetProvider"
             android:label="Reiseplan"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="true">
@@ -99,19 +99,19 @@
         <!-- MainActivity END -->
 
         <!-- Widget Config activities -->
-        <activity android:name=".widget.stopgroup.StopGroupWidgetConfigActivity"
+        <activity android:name=".widget.xml.stopgroup.StopGroupWidgetConfigActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".widget.routedirection.RouteDirectionWidgetConfigActivity"
+        <activity android:name=".widget.xml.routedirection.RouteDirectionWidgetConfigActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".widget.travelplanner.TravelPlannerWidgetConfigActivity"
+        <activity android:name=".widget.xml.travelplanner.TravelPlannerWidgetConfigActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -121,21 +121,21 @@
 
         <!-- BIND REMOTEVIEWS -->
         <service
-            android:name=".widget.stopgroup.StopGroupWidgetRemoteViewsService"
+            android:name=".widget.xml.stopgroup.StopGroupWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
-            android:name=".widget.travelplanner.TravelPlannerWidgetRemoteViewsService"
+            android:name=".widget.xml.travelplanner.TravelPlannerWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <!-- BIND REMOTEVIEWS END -->
 
         <!-- BIND JOB SERVICE -->
         <service
-            android:name=".widget.stopgroup.StopGroupWidgetUpdateService"
+            android:name=".widget.xml.stopgroup.StopGroupWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".widget.routedirection.RouteDirectionWidgetUpdateService"
+            android:name=".widget.xml.routedirection.RouteDirectionWidgetUpdateService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service android:name=".widget.travelplanner.TravelPlannerWidgetUpdateJobService"
+        <service android:name=".widget.xml.travelplanner.TravelPlannerWidgetUpdateJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" >
         </service>
         <!-- BIND JOB SERVICE END -->

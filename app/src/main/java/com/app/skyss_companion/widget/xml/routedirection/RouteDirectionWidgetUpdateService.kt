@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.routedirection
+package com.app.skyss_companion.widget.xml.routedirection
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -13,14 +13,10 @@ import com.app.skyss_companion.model.PassingTime
 import com.app.skyss_companion.model.TimeTable
 import com.app.skyss_companion.prefs.AppSharedPrefs
 import com.app.skyss_companion.repository.*
-import com.app.skyss_companion.widget.RouteDirectionAppWidgetProvider
-import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
+import com.app.skyss_companion.widget.xml.RouteDirectionAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 

@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
+import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -34,6 +35,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class TravelPlannerComposeViewModel @Inject constructor(
@@ -70,7 +72,7 @@ class TravelPlannerComposeViewModel @Inject constructor(
     init {
         travelPlanListenerScope.launch {
             viewState.collect { state ->
-                if (state.selectedDepartureFeature != null && state.selectedDestinationFeature != null){
+                if (state.selectedDepartureFeature != null && state.selectedDestinationFeature != null) {
                     fetchTravelPlans()
                 } else {
                     Log.d(
@@ -90,12 +92,28 @@ class TravelPlannerComposeViewModel @Inject constructor(
 
     val maximumWalkDistance = 2000
 
-    private fun runGeocode(text: String) {
+    /*private fun runGeocode(text: String) {
         Log.d(classTag, "[runGeocode] attempting to geocode '${text}'.")
         cancelJobIfActive(geocodeScope)
-        geocodeJob = viewModelScope.launch {
+        geocodeJob = geocodeScope.launch {
             suspendWithLoading(_isLoadingGeocode) {
-                delay(1500)
+                //delay(1.5.seconds)
+                Log.d(classTag, "[runGeocode] calling geocode for ${text}.")
+                val result = geocodingRepository.autocompleteGeocodeLocationText(text)
+                Log.d(
+                    classTag,
+                    "[runGeocode] geocode attempt returned ${result?.features?.size} results."
+                )
+                _geocodingFeatures.value = result?.features ?: emptyList()
+            }
+        }
+    }*/
+
+    private fun runGeocode(text: String) {
+        Log.d(classTag, "[runGeocode] attempting to geocode '${text}'.")
+        geocodeJob = geocodeScope.launch {
+            suspendWithLoading(_isLoadingGeocode) {
+                Log.d(classTag, "[runGeocode] calling geocode for ${text}.")
                 val result = geocodingRepository.autocompleteGeocodeLocationText(text)
                 Log.d(
                     classTag,
@@ -195,7 +213,11 @@ class TravelPlannerComposeViewModel @Inject constructor(
         }
     }
 
-    fun fetchTravelPlans() {
+    fun convertZonedDateTimeToLocalZone(z: ZonedDateTime): ZonedDateTime {
+        return z.withZoneSameLocal(ZoneId.systemDefault())
+    }
+
+    private fun fetchTravelPlans() {
         val departureFeature = viewState.value.selectedDepartureFeature
         val destinationFeature = viewState.value.selectedDestinationFeature
         val timeType = viewState.value.timeType
@@ -209,20 +231,22 @@ class TravelPlannerComposeViewModel @Inject constructor(
         )
         if (departureFeature != null && destinationFeature != null) {
             travelPlanScope.launch {
-                travelPlannerRepository.getTravelPlans(
-                    fromFeature = departureFeature,
-                    toFeature = destinationFeature,
-                    timeType = timeType.name,
-                    timestamp = timestamp,
-                    modes = modes,
-                    mtt = mtt,
-                    mwd = mwd
-                )?.let { result ->
-                    Log.d(
-                        classTag,
-                        "[fetchTravelPlans] returned ${result.travelPlans.size} travelplans."
-                    )
-                    _travelPlans.value = result.travelPlans
+                suspendWithLoading(_isLoadingTravelPlans) {
+                    travelPlannerRepository.getTravelPlans(
+                        fromFeature = departureFeature,
+                        toFeature = destinationFeature,
+                        timeType = timeType.name,
+                        timestamp = timestamp,
+                        modes = modes,
+                        mtt = mtt,
+                        mwd = mwd
+                    )?.let { result ->
+                        Log.d(
+                            classTag,
+                            "[fetchTravelPlans] returned ${result.travelPlans.size} travelplans."
+                        )
+                        _travelPlans.value = result.travelPlans
+                    }
                 }
             }
         } else {
@@ -246,13 +270,39 @@ class TravelPlannerComposeViewModel @Inject constructor(
      * @return true if the argument job was active and canceled. False otherwise.
      */
     private fun cancelJobIfActive(scope: CoroutineScope): Boolean {
+        Log.d(classTag, "[cancelJobIfActive] checking job status.")
         return try {
-            if (scope.isActive)
+            if (scope.isActive) {
+                Log.d(classTag, "[cancelJobIfActive] job active, cancelling coroutine job.")
                 scope.cancel("only a single instance of job can be active")
-            false
+                true
+            } else {
+                Log.d(classTag, "[cancelJobIfActive] no active job, returning false.")
+                false
+            }
         } catch (e: Throwable) {
-            if (e is CancellationException) true
-            else throw e
+            Log.d(classTag, "[cancelJobIfActive] job cancelled with exception.")
+            when (e) {
+                is CancellationException -> {
+                    Log.d(
+                        classTag,
+                        "[cancelJobIfActive] coroutine cancelled with CancellationException."
+                    )
+                    true
+                }
+
+                is IllegalStateException -> {
+                    Log.d(
+                        classTag,
+                        "[cancelJobIfActive] IllegalStateException caught due to no job in scope."
+                    )
+                    false
+                }
+
+                else -> {
+                    throw e
+                }
+            }
         }
     }
 }

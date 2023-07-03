@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.travelplanner
+package com.app.skyss_companion.widget.xml.travelplanner
 
 import android.annotation.SuppressLint
 import android.util.Log

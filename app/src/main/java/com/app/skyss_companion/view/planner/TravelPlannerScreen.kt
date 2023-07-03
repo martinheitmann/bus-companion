@@ -34,6 +34,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,7 +83,7 @@ fun TravelPlannerScreenPreview() {
                 null,
                 null
             )
-            PlannerResultsList(travelPlans)
+            PlannerResultsList(travelPlans) {}
         }
     }
 }
@@ -91,6 +92,7 @@ fun TravelPlannerScreenPreview() {
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun TravelPlannerScreen(
+    onCardTapped: (t: TravelPlan) -> Unit,
     viewModel: TravelPlannerComposeViewModel = viewModel()
 ) {
     var fromFeaturesDialog by remember { mutableStateOf(false) }
@@ -105,7 +107,6 @@ fun TravelPlannerScreen(
 
     AppTheme {
         if (fromFeaturesDialog) LocationSearchComposeDialog(
-            currentSearchText = viewState.departureSearchText,
             onTextUpdated = { text -> viewModel.setDepartureSearchText(text) },
             onPropertySelected = {
                 viewModel.setFeature(FeatureType.DEPARTURE, it)
@@ -122,7 +123,6 @@ fun TravelPlannerScreen(
         )
 
         if (toFeaturesDialog) LocationSearchComposeDialog(
-            currentSearchText = viewState.destinationSearchText,
             onTextUpdated = { text -> viewModel.setDestinationSearchText(text) },
             onPropertySelected = {
                 viewModel.setFeature(FeatureType.DESTINATION, it)
@@ -151,6 +151,7 @@ fun TravelPlannerScreen(
                     showTimePicker = true
                 },
                 currentDate = viewState.plannerTime
+                //currentDate = viewModel.convertZonedDateTimeToLocalZone(viewState.plannerTime)
             )
 
         if (showTimePicker)
@@ -176,7 +177,7 @@ fun TravelPlannerScreen(
                 selectedDestinationFeature = viewState.selectedDestinationFeature,
                 selectedDepartureFeature = viewState.selectedDepartureFeature
             )
-            PlannerResultsList(travelPlans)
+            PlannerResultsList(travelPlans, onCardTapped)
         }
     }
 }
@@ -364,23 +365,28 @@ fun PlannerDateTimeSelectionRow(
 }
 
 @Composable
-fun PlannerResultsList(travelPlans: List<TravelPlan>) {
+fun PlannerResultsList(travelPlans: List<TravelPlan>, onCardTapped: (t: TravelPlan) -> Unit) {
     Column {
         Spacer(modifier = Modifier.height(8.dp))
-        travelPlans.map { t -> PlannerResultListItem(t) }
+        travelPlans.map { t -> PlannerResultListItem(t, onCardTapped) }
     }
 }
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PlannerResultListItem(travelPlan: TravelPlan) {
-    val start = "${travelPlan.startTime?.hour}:${travelPlan.startTime?.minute}"
+fun PlannerResultListItem(travelPlan: TravelPlan, onCardTapped: (t: TravelPlan) -> Unit) {
+    val start =
+        "${
+            travelPlan.startTime?.hour.toString().padEnd(2, '0')
+        }:${travelPlan.startTime?.minute.toString().padEnd(2, '0')}"
     val end = "${travelPlan.endTime?.hour}:${travelPlan.endTime?.minute}"
     val startEpoch = travelPlan.startTime?.toEpochSecond() ?: 0
     val endEpoch = travelPlan.endTime?.toEpochSecond() ?: 0
     val duration = (endEpoch - startEpoch) / 60
-    Card(modifier = Modifier.padding(bottom = 8.dp)) {
+    Card(modifier = Modifier
+        .padding(bottom = 8.dp)
+        .clickable { onCardTapped(travelPlan) }) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -414,7 +420,7 @@ fun TravelStepElement(travelStep: TravelStep) {
         }
 
         else -> {
-
+            // TODO: Define TravelStepElement else block.
         }
     }
 }

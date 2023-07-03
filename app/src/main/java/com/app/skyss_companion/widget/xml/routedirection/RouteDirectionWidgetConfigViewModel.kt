@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.routedirection
+package com.app.skyss_companion.widget.xml.routedirection
 
 import android.app.Application
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.travelplanner
+package com.app.skyss_companion.widget.xml.travelplanner
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -9,13 +9,11 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.RemoteViews
-import androidx.navigation.NavDeepLinkBuilder
 import com.app.skyss_companion.R
 import com.app.skyss_companion.broadcastreceivers.TravelPlannerWidgetBroadcastReceiver
 import com.app.skyss_companion.model.EnabledWidget
 import com.app.skyss_companion.repository.EnabledWidgetRepository
-import com.app.skyss_companion.view.planner.selected_plan.SelectedTravelPlanFragment
-import com.app.skyss_companion.widget.TravelPlannerAppWidgetProvider
+import com.app.skyss_companion.widget.xml.TravelPlannerAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.time.LocalDateTime

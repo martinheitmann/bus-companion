@@ -56,13 +56,13 @@ fun TravelPlanScreenPreview() {
 
 @Composable
 fun TravelPlanScreen(
-    identifier: String,
+    id: String,
     onBackTapped: () -> Unit,
     onBookmarkTapped: () -> Unit,
-    viewModel: SelectedTravelPlanViewModel = viewModel(),
+    viewModel: TravelPlanComposeViewModel = viewModel(),
 ) {
     val travelPlan by viewModel.selectedTravelPlan.observeAsState()
-    viewModel.fetchTravelPlan(identifier)
+    viewModel.fetchTravelPlanById(id)
     AppTheme { TravelPlanContainer(travelPlan, onBackTapped, onBookmarkTapped) }
 }
 

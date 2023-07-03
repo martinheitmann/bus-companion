@@ -36,7 +36,8 @@ class SelectedTravelPlanFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val bundle = this.arguments
-        val identifier = bundle?.getString("travelPlanId") ?: ""
+        val identifier = bundle?.getString("travel_plan_id") ?: ""
+        val url = bundle?.getString("travel_plan_url") ?: ""
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -44,7 +45,6 @@ class SelectedTravelPlanFragment : Fragment() {
             }
         }
     }
-
     private fun onBookmark() {}
 
     private fun onBack() {

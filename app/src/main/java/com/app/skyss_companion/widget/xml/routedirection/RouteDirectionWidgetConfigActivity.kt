@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.routedirection
+package com.app.skyss_companion.widget.xml.routedirection
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.WidgetViewPassingtimesConfigActivityBinding
-import com.app.skyss_companion.widget.RouteDirectionAppWidgetProvider
-import com.app.skyss_companion.widget.StopGroupAppWidgetProvider
+import com.app.skyss_companion.widget.xml.RouteDirectionAppWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 

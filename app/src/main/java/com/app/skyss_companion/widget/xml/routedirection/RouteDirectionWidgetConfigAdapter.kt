@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget.routedirection
+package com.app.skyss_companion.widget.xml.routedirection
 
 import android.view.LayoutInflater
 import android.view.View

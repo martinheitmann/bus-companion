@@ -1,4 +1,4 @@
-package com.app.skyss_companion.widget
+package com.app.skyss_companion.widget.xml
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -8,21 +8,21 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.work.*
-import com.app.skyss_companion.widget.stopgroup.StopGroupWidgetUpdateService
+import com.app.skyss_companion.widget.xml.routedirection.RouteDirectionWidgetUpdateService
 import com.app.skyss_companion.workers.RemoveWidgetsWorker
 import com.app.skyss_companion.workers.UpdateEnabledWidgetConfigWorker
 
 /**
  * Implementation of App Widget functionality.
  */
-class StopGroupAppWidgetProvider : AppWidgetProvider() {
-    val TAG = "StopGroupWidgetProvider"
+class RouteDirectionAppWidgetProvider : AppWidgetProvider() {
+    val TAG = "RouteDirWidgetProvider"
 
     // We have to invoke this in order to update the widget from
     // a button on the app widget.
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
-        try {
+        try{
             Log.d(TAG, "onReceive called")
             if (intent?.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
                 val appWidgetId = intent.extras?.get(AppWidgetManager.EXTRA_APPWIDGET_ID) as Int?
@@ -117,8 +117,8 @@ class StopGroupAppWidgetProvider : AppWidgetProvider() {
         intent.putExtra("APP_WIDGET_ID", appWidgetId)
         JobIntentService.enqueueWork(
             context,
-            StopGroupWidgetUpdateService::class.java,
-            1,
+            RouteDirectionWidgetUpdateService::class.java,
+            2,
             intent
         )
     }

@@ -22,9 +22,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +37,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.app.skyss_companion.R
 import com.app.skyss_companion.model.geocode.GeocodingFeature
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 
 /*@Composable
@@ -57,7 +61,6 @@ fun LocationSearchComposeDialogPreview(
 
 @Composable
 fun LocationSearchComposeDialog(
-    currentSearchText: String,
     onTextUpdated: (t: String) -> Unit,
     onPropertySelected: (GeocodingFeature) -> Unit,
     onDialogDismissed: () -> Unit,
@@ -76,7 +79,6 @@ fun LocationSearchComposeDialog(
             lastUsedFeatures = lastUsedGeocodingFeatures,
             currentFeatures = currentGeocodingFeatures,
             isLoading = isLoadingGeocodingFeatures,
-            searchText = currentSearchText,
             onPropertySelected = onPropertySelected,
             onDialogDismissed = onDialogDismissed,
             onTextUpdated = onTextUpdated
@@ -87,7 +89,6 @@ fun LocationSearchComposeDialog(
 @Composable
 fun LocationSearchBody(
     onDialogDismissed: () -> Unit,
-    searchText: String,
     onTextUpdated: (t: String) -> Unit,
     onPropertySelected: (GeocodingFeature) -> Unit,
     currentFeatures: List<GeocodingFeature>?,
@@ -102,7 +103,7 @@ fun LocationSearchBody(
     ) {
         Column {
             ButtonRow(onDialogDismissed)
-            SearchField(searchText, onTextChanged = onTextUpdated)
+            SearchField(onTextChanged = onTextUpdated)
             if (isLoading)
                 LoadingIndicator()
             else DialogListContent(
@@ -157,7 +158,21 @@ fun ButtonRow(onCloseTapped: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchField(text: String, onTextChanged: (String) -> Unit) {
+fun SearchField(onTextChanged: (String) -> Unit) {
+    var searchText by remember { mutableStateOf("") }
+    var isTyping by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = searchText) {
+        if (searchText.isBlank()) {
+            isTyping = false
+            return@LaunchedEffect
+        }
+        isTyping = true
+        delay(1.seconds)
+        isTyping = false
+        onTextChanged(searchText)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -165,8 +180,17 @@ fun SearchField(text: String, onTextChanged: (String) -> Unit) {
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = text,
-            onValueChange = onTextChanged,
+            value = searchText,
+            onValueChange = { t -> searchText = t },
+            trailingIcon = @Composable {
+                if (isTyping) {
+                    Box( modifier = Modifier.padding(4.dp)) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.padding(4.dp)
+                        )
+                    }
+                }
+            },
             placeholder = @Composable { Text("Søk etter sted...") },
             leadingIcon = @Composable {
                 Icon(
@@ -197,7 +221,7 @@ fun DialogListContent(
     onFeatureSelected: (GeocodingFeature) -> Unit
 ) {
     val features: List<GeocodingFeature> = currentFeatures ?: (lastUsedFeatures ?: emptyList())
-    FeaturesList(features,  onFeatureSelected)
+    FeaturesList(features, onFeatureSelected)
 }
 
 @Composable
