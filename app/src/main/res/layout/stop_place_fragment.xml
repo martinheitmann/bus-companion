@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:scaleType="center"
             android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="#CCFFFFFF" />
+            app:tint="#CCFFFFFF"
+            android:contentDescription="TODO" />
 
         <Space
             android:layout_width="0dp"
@@ -40,10 +41,11 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:contentDescription="TODO"
+            android:contentDescription="Back"
             android:src="@drawable/ic_baseline_bookmark_border_24"
             app:tint="#CCFFFFFF"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/stop_place_imagebutton_bookmark_active"
@@ -53,7 +55,8 @@
             android:contentDescription="TODO"
             android:src="@drawable/ic_baseline_bookmark_24"
             app:tint="#CCFFFFFF"
-            tools:visibility="gone" />
+            tools:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/stop_place_imagebutton_refresh"
@@ -61,7 +64,8 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_refresh_24"
-            app:tint="#CCFFFFFF" />
+            app:tint="#CCFFFFFF"
+            android:contentDescription="TODO" />
 
     </LinearLayout>
 

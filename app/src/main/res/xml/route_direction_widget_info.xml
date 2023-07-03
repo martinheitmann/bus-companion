@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/widget_view_passingtimes"
     android:initialLayout="@layout/widget_view_passingtimes"
-    android:configure="com.app.skyss_companion.widget.routedirection.RouteDirectionWidgetConfigActivity"
+    android:configure="com.app.skyss_companion.widget.xml.routedirection.RouteDirectionWidgetConfigActivity"
     android:minWidth="250dp"
     android:minHeight="80dp"
     android:previewImage="@drawable/widget1"

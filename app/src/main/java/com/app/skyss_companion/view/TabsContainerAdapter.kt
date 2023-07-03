@@ -6,6 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.app.skyss_companion.prefs.SettingsFragment
 import com.app.skyss_companion.view.alerts.ActiveAlertsFragment
 import com.app.skyss_companion.view.bookmark.BookmarkedItemsFragment
+import com.app.skyss_companion.view.planner.TravelPlannerComposeFragment
 import com.app.skyss_companion.view.planner.TravelPlannerFragment
 import com.app.skyss_companion.view.search.SearchStopsFragment
 import java.io.IOException
@@ -18,7 +19,7 @@ class TabsContainerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
         val favoritesFragment = BookmarkedItemsFragment()
         val settingsFragment = SettingsFragment()
         val alertsFragment = ActiveAlertsFragment()
-        val plannerFragment = TravelPlannerFragment()
+        val plannerFragment = TravelPlannerComposeFragment()
 
         Log.d("TabsContainerAdapter", "current position -> $position")
 

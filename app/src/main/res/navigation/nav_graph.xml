@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_tabsContainerFragment_to_selectedTravelPlanFragment"
             app:destination="@id/selectedTravelPlanFragment" />
+        <action
+            android:id="@+id/action_tabsContainerFragment_to_stopGroupFragment"
+            app:destination="@id/stopGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/stopPlaceFragment"
@@ -38,4 +41,19 @@
         android:name="com.app.skyss_companion.view.planner.selected_plan.SelectedTravelPlanFragment"
         android:label="fragment_selected_travel_plan"
         tools:layout="@layout/fragment_selected_travel_plan" />
+    <fragment
+        android:id="@+id/stopGroupFragment"
+        android:name="com.app.skyss_companion.view.stop_place.StopGroupFragment"
+        android:label="StopGroupFragment" >
+        <argument
+            android:name="identifier"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_stopGroupFragment_to_timeTableComposeFragment"
+            app:destination="@id/timeTableComposeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeTableComposeFragment"
+        android:name="com.app.skyss_companion.view.routedirection_timetable.TimeTableComposeFragment"
+        android:label="TimeTableComposeFragment" />
 </navigation>

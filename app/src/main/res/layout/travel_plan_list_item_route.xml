@@ -30,7 +30,8 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="8dp"
                 app:srcCompat="@drawable/ic_baseline_directions_bus_24"
-                app:tint="?colorOnPrimary" />
+                app:tint="?colorOnPrimary"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/travel_plan_list_item_route_text"

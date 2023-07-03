@@ -48,6 +48,7 @@ class SearchStopsViewModel @Inject constructor(
                 stopsGroupRepository.filterSearchResults(searchTerm).collect { res ->
                     Log.d(TAG, "Search filter returned ${res.size} elements: $res")
                     stopSearchResults.postValue(res)
+                    coroutineJob?.cancel()
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.stackTraceToString())

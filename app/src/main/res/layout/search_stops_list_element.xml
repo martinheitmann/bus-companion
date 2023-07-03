@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 app:srcCompat="@drawable/ic_baseline_directions_railway_24"
-                tools:visibility="gone" />
+                tools:visibility="gone"
+                android:contentDescription="TODO" />
 
             <ImageView
                 android:id="@+id/imageview_bus"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 app:srcCompat="@drawable/ic_baseline_directions_bus_24"
-                tools:visibility="gone" />
+                tools:visibility="gone"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/list_element_title"

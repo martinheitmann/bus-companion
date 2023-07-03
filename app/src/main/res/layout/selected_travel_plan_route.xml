@@ -71,7 +71,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minHeight="40dp"
-                    app:srcCompat="@drawable/ic_baseline_directions_bus_24" />
+                    app:srcCompat="@drawable/ic_baseline_directions_bus_24"
+                    android:contentDescription="TODO" />
 
                 <Space
                     android:layout_width="8dp"

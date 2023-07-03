@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.skyss_companion.databinding.FragmentSelectedTravelPlanBinding
+import com.app.skyss_companion.view.stop_place.StopGroupScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -19,24 +22,45 @@ class SelectedTravelPlanFragment : Fragment() {
 
 
     private val mTag = "TravelPlannerFragment"
-    private val viewModel: SelectedTravelPlanViewModel by viewModels()
+
+    /*private val viewModel: SelectedTravelPlanViewModel by viewModels()
     private var _binding: FragmentSelectedTravelPlanBinding? = null
 
     private lateinit var adapter: SelectedTravelPlanAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
 
-    private val binding get() = _binding!!
-
+    private val binding get() = _binding!!*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSelectedTravelPlanBinding.inflate(inflater, container, false)
-        return binding.root
+        val bundle = this.arguments
+        val identifier = bundle?.getString("travel_plan_id") ?: ""
+        val url = bundle?.getString("travel_plan_url") ?: ""
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                TravelPlanScreen(identifier, ::onBack, ::onBookmark)
+            }
+        }
+    }
+    private fun onBookmark() {}
+
+    private fun onBack() {
+        findNavController().popBackStack()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    /* override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View {
+         _binding = FragmentSelectedTravelPlanBinding.inflate(inflater, container, false)
+         return binding.root
+     }*/
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = SelectedTravelPlanAdapter(requireContext())
         layoutManager = LinearLayoutManager(requireContext())
@@ -66,5 +90,5 @@ class SelectedTravelPlanFragment : Fragment() {
                 "WARNING bundle argument 'travelPlanId' was null, cannot request travel plan. Contents were: " + bundle.toString(),
             )
         }
-    }
+    }*/
 }

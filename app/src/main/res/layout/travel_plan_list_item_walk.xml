@@ -13,5 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_margin="4dp"
-        app:srcCompat="@drawable/ic_baseline_directions_walk_24" />
+        app:srcCompat="@drawable/ic_baseline_directions_walk_24"
+        android:contentDescription="TODO" />
 </FrameLayout>

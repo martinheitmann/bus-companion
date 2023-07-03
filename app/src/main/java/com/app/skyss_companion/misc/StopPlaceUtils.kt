@@ -1,15 +1,50 @@
 package com.app.skyss_companion.misc
 
-import android.util.Log
 import com.app.skyss_companion.model.Stop
 import com.app.skyss_companion.view.stop_place.StopPlaceListDivider
 import com.app.skyss_companion.view.stop_place.StopPlaceListEntry
 import com.app.skyss_companion.view.stop_place.StopPlaceListItem
+import com.app.skyss_companion.view.stop_place.model.StopGroupDeparturesEntry
+import com.app.skyss_companion.view.stop_place.model.StopGroupListItem
+import com.app.skyss_companion.view.stop_place.model.StopGroupNameDivider
 
 class StopPlaceUtils {
     companion object {
 
         val TAG = "StopPlaceUtils"
+
+        fun createViewData(stops: List<Stop>, lineCodes: List<String>): List<StopGroupListItem> {
+            val data = mutableListOf<StopGroupListItem>()
+            stops.forEach { stop ->
+                val routeDirections = if (lineCodes.isNotEmpty())
+                    stop.routeDirections?.filter { routeDirection ->
+                        lineCodes.contains(routeDirection.publicIdentifier)
+                    }
+                else stop.routeDirections
+                val header = StopGroupNameDivider(stop.description ?: "Ingen beskrivelse")
+                data.add(header)
+                routeDirections?.forEach { routeDirection ->
+                    val departures = mutableListOf<String>()
+                    routeDirection.passingTimes?.forEach { pt ->
+                        val display = pt.displayTime
+                        if (display != null) {
+                            departures.add(display)
+                        }
+                    }
+                    data.add(
+                        StopGroupDeparturesEntry(
+                            stopIdentifier = stop.identifier,
+                            routeDirectionIdentifier = routeDirection.identifier,
+                            lineNumber = routeDirection.publicIdentifier ?: "0",
+                            directionName = routeDirection.directionName ?: "Ukjent rute",
+                            displayTimes = routeDirection.passingTimes?.mapNotNull { p -> p.displayTime } ?: emptyList(),
+                            stopName = stop.description,
+                        )
+                    )
+                }
+            }
+            return data
+        }
 
         fun createListData(stops: List<Stop>): List<StopPlaceListItem> {
             //Log.d(TAG, "${stops.size} stops passed to list generator")

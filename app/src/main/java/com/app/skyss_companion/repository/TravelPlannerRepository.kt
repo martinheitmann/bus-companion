@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class TravelPlannerRepository @Inject constructor(private val travelPlannerClient: TravelPlannerClient) {
 
-    val tag = "TravelPlannerRepo"
+    val classTag = "REPO-540201"
 
     @WorkerThread
     suspend fun getTravelPlans(
@@ -31,7 +31,7 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
         mtt: Int, // Minimum transfer time
         mwd: Int // Maximum walking distance
     ): TravelPlannerRoot? {
-        Log.d(tag, "getTravelPlans received timestamp: $timestamp")
+        Log.d(classTag, "[getTravelPlans] received timestamp $timestamp as argument.")
         val fromCoord1 = fromFeature.geometry.coordinates.last()
         val fromCoord2 = fromFeature.geometry.coordinates.first()
         val fromName = fromFeature.properties.label!!
@@ -63,8 +63,18 @@ class TravelPlannerRepository @Inject constructor(private val travelPlannerClien
 
     @WorkerThread
     suspend fun getTravelPlanById(id: String): TravelPlannerRoot? {
-        Log.d(tag, "getTravelPlanById called for id $id")
+        Log.d(classTag, "[getTravelPlanById] attempting to fetch travel plan with id $id.")
         val apiResponse = travelPlannerClient.getTravelPlanById(id)
+        apiResponse?.let {
+            return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
+        }
+        return null
+    }
+
+    @WorkerThread
+    suspend fun getTravelPlanByUrl(url: String): TravelPlannerRoot? {
+        Log.d(classTag, "[getTravelPlanById] attempting to fetch travel plan from $url.")
+        val apiResponse = travelPlannerClient.getTravelPlanByUrl(url)
         apiResponse?.let {
             return TravelPlannerEntityMapper.mapApiTravelPlannerResponse(it)
         }

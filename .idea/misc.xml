@@ -1,95 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/edittext_rounded.xml" value="0.356140350877193" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/textview_date_rounded_primaryvariant.xml" value="0.2964912280701754" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/textview_linecode_rounded.xml" value="0.29342105263157897" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/textview_linecode_rounded_red.xml" value="0.2964912280701754" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/textview_linecode_rounded_white.xml" value="0.322" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/widget_item_rounded_border.xml" value="0.3245" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable-v24/widget_rounded_corners_blue.xml" value="0.356140350877193" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/app_icon_bus_background.xml" value="0.3416666666666667" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/app_icon_bus_foreground.xml" value="0.3416666666666667" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/ic_baseline_directions_bus_24.xml" value="0.3017543859649123" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/ic_baseline_directions_railway_24.xml" value="0.3017543859649123" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/ic_bus_stop.xml" value="0.474025974025974" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/drawable/widget_route_rounded_corners.xml" value="0.3235" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/active_alerts_fragment.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/active_alerts_list_item.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/activity_main.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/bookmark_routedirection_list_item.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/bookmarked_items_fragment.xml" value="0.27898550724637683" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/bookmarked_route_directions_list_fragment.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/bookmarked_stop_groups_list_fragment.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/bookmarked_travelplan_list_item.xml" value="0.31666666666666665" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/dialog_saved_travel_plans.xml" value="0.31666666666666665" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/dialog_search_location.xml" value="0.25" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/dialog_set_alert.xml" value="0.2820175438596491" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/fragment_selected_travel_plan.xml" value="0.33289473684210524" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/fragment_tabs_container.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/fragment_travel_planner.xml" value="0.33" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/location_item.xml" value="0.33" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/remoteview_linearlayout.xml" value="0.44519927536231885" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/remoteview_linearlayout_match_length_wrap_height.xml" value="0.44519927536231885" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/remoteview_textview.xml" value="0.44519927536231885" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/route_direction_time_table_filter_item.xml" value="0.28289473684210525" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/route_direction_time_table_fragment.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/route_direction_time_table_list_item.xml" value="0.28289473684210525" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/search_stops_fragment.xml" value="0.3425438596491228" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/search_stops_list_element.xml" value="0.2881578947368421" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/selected_travel_plan_intermediates_row_element.xml" value="0.33" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/selected_travel_plan_list_footer.xml" value="0.463768115942029" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/selected_travel_plan_route.xml" value="0.2736842105263158" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/selected_travel_plan_walk.xml" value="0.2736842105263158" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/settings_activity.xml" value="0.2736842105263158" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_fragment.xml" value="0.33" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_linecode_filter_item.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_linecode_item.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_list_divider.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_list_item.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/stop_place_list_item_rounded.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/text_view_layout.xml" value="0.2710526315789474" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_itermediates_row_element.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item.xml" value="0.21166306695464362" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item_bus.xml" value="0.46578947368421053" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item_next.xml" value="0.46578947368421053" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item_route.xml" value="0.33289473684210524" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item_unknown.xml" value="0.46578947368421053" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/travel_plan_list_item_walk.xml" value="0.46578947368421053" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_bookmarked_travelplan.xml" value="0.31666666666666665" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_favorite_config_item.xml" value="0.21784420289855072" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_favorites_config.xml" value="0.21784420289855072" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplan.xml" value="0.16944444444444445" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplan_list_element.xml" value="0.31666666666666665" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_config.xml" value="0.33" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_view.xml" value="0.46603260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_view_list_item.xml" value="0.44519927536231885" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_view_list_item_next.xml" value="0.24728260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_view_list_item_route.xml" value="0.1" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_travelplans_view_list_item_walk.xml" value="0.24728260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_view_favorited_stopgroup.xml" value="0.27982456140350875" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_view_passingtimes.xml" value="0.24728260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_view_stopgroup_item.xml" value="0.24728260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_view_stopgroup_simple_1.xml" value="0.46603260869565216" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/layout/widget_view_travelplans.xml" value="0.45384615384615384" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/mipmap-anydpi-v26/app_icon_bus.xml" value="0.474025974025974" />
-        <entry key="..\:/Users/marth/StudioProjects/skyss-companion/app/src/main/res/xml/travel_planner_widget_info.xml" value="0.12777777777777777" />
-      </map>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.44519927536231885" />
-      </ProjectState>
-    </option>
   </component>
 </project>

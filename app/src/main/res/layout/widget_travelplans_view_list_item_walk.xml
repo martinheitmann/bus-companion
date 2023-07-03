@@ -13,5 +13,6 @@
         android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_baseline_directions_walk_24" />
+        android:src="@drawable/ic_baseline_directions_walk_24"
+        android:contentDescription="TODO" />
 </FrameLayout>

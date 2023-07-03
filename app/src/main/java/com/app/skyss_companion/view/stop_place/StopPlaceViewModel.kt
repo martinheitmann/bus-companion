@@ -129,12 +129,14 @@ class StopPlaceViewModel @Inject constructor(
         return stopGroup.lineCodes ?: emptyList()
     }
 
+    fun toListItems(stopGroup: StopGroup) {
+
+    }
+
     /**
      * Helper method for forcing a LiveData refresh.
      */
     fun <T> MutableLiveData<T>.forceRefresh() {
         this.value = this.value
     }
-
-
 }

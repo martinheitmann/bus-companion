@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/widget_view_passingtimes"
     android:initialLayout="@layout/widget_travelplans_view"
-    android:configure="com.app.skyss_companion.widget.travelplanner.TravelPlannerWidgetConfigActivity"
+    android:configure="com.app.skyss_companion.widget.xml.travelplanner.TravelPlannerWidgetConfigActivity"
     android:minWidth="250dp"
     android:minHeight="80dp"
     android:previewImage="@drawable/widget3"
